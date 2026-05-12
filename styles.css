@@ -92,6 +92,8 @@ body::before {
   transition: transform 0.3s ease;
 }
 .nav a:hover::after { transform: scaleX(1); }
+.nav a.active { color: var(--ink); }
+.nav a.active::after { transform: scaleX(1); background: var(--ink); }
 
 .status { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); }
 .dot {
@@ -111,6 +113,225 @@ body::before {
 @media (max-width: 640px) {
   .status { display: none; }
 }
+
+/* =========================================================
+   Page hero (inner pages)
+   ========================================================= */
+.page-hero {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(3.5rem, 10vh, 6rem) var(--gutter) clamp(2rem, 5vh, 3.5rem);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+
+.page-hero .eyebrow {
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.05s forwards;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.15s forwards;
+}
+
+/* =========================================================
+   Landing page index cards
+   ========================================================= */
+.page-index {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(3rem, 8vh, 5rem) var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 760px) {
+  .page-index { grid-template-columns: 1fr; }
+}
+
+.page-card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-right: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.page-card:first-child { padding-left: 0; }
+.page-card:last-child { border-right: none; padding-right: 0; }
+.page-card:hover { background: rgba(20, 17, 15, 0.025); }
+
+@media (max-width: 760px) {
+  .page-card {
+    padding: 1.75rem 0;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .page-card:last-child { border-bottom: none; }
+}
+
+.page-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+}
+
+.page-card-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.page-card-arrow {
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--muted);
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+.page-card:hover .page-card-arrow {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+.page-card-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  transition: color 0.2s ease;
+}
+.page-card:hover .page-card-title { color: var(--accent); }
+
+.page-card-desc {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  margin-top: auto;
+}
+
+/* =========================================================
+   Sprints
+   ========================================================= */
+.sprint {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--rule);
+  transition: padding-left 0.4s ease;
+}
+.sprint:first-child { padding-top: 0; }
+.sprint:last-child { border-bottom: none; }
+.sprint:hover { padding-left: 0.75rem; }
+
+.sprint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sprint-id {
+  display: flex;
+  gap: 1.25rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.sprint-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sprint-dates {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.sprint-status {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.status-active {
+  color: #4a8c3f;
+  border-color: rgba(74, 140, 63, 0.35);
+  background: rgba(74, 140, 63, 0.06);
+}
+
+.status-done {
+  color: var(--muted);
+  border-color: var(--rule);
+}
+
+.status-upcoming {
+  color: var(--muted);
+  border-color: var(--rule);
+  background: transparent;
+}
+
+.sprint-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+
+.sprint-desc {
+  color: #3d3a36;
+  margin-bottom: 1rem;
+  max-width: 58ch;
+}
+
+.sprint-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.sprint-tags li {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+/* Full-width section variant (inner pages) */
+.section.full-width { border-top: 1px solid var(--rule); }
 
 /* =========================================================
    Hero
