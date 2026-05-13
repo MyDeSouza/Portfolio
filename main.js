@@ -57,19 +57,5 @@
 
   navItems.forEach(function (item) {
     item.addEventListener('touchstart', function () { moveTo(item, true); }, { passive: true });
-
-    // Let the indicator finish sliding before the page loads
-    if (!item.classList.contains('active')) {
-      item.addEventListener('click', function (e) {
-        // Preserve cmd/ctrl/shift-click (open in new tab, etc.)
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-        var href = item.getAttribute('href');
-        if (!href) return;
-        e.preventDefault();
-        if (activeItem) activeItem.classList.add('leaving');
-        moveTo(item, true);
-        setTimeout(function () { window.location.href = href; }, 370);
-      });
-    }
   });
 }());
