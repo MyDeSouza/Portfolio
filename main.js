@@ -67,7 +67,7 @@
         if (!href) return;
         e.preventDefault();
         moveTo(item, true);
-        setTimeout(function () { window.location.href = href; }, 460);
+        setTimeout(function () { window.location.href = href; }, 1020);
       });
     }
   });
