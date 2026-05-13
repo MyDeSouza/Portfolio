@@ -52,10 +52,10 @@ body::before {
   position: sticky;
   top: 0;
   z-index: 10;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem var(--gutter);
+  padding: 0.75rem var(--gutter);
   background: rgba(247, 244, 238, 0.9);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -91,43 +91,75 @@ body::before {
   line-height: 1.2;
 }
 
-.nav { display: flex; gap: 1.75rem; }
-.nav a {
-  position: relative;
-  transition: color 0.2s ease;
+/* ── Nav pill ─────────────────────────────────────────── */
+.nav-pill-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
-.nav a:hover { color: var(--accent); }
-.nav a::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: -4px;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-.nav a:hover::after { transform: scaleX(1); }
-.nav a.active { color: var(--ink); }
-.nav a.active::after { transform: scaleX(1); background: var(--ink); }
 
-.status { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); }
-.dot {
-  width: 7px; height: 7px;
+.nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #1a1a18;
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: #4a8c3f;
-  box-shadow: 0 0 0 0 rgba(74, 140, 63, 0.6);
-  animation: pulse 2.4s ease-out infinite;
+  transition: background 0.2s ease;
 }
-@keyframes pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(74, 140, 63, 0.6); }
-  70%  { box-shadow: 0 0 0 8px rgba(74, 140, 63, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(74, 140, 63, 0); }
+.nav-item:hover  { background: rgba(255, 255, 255, 0.1); }
+.nav-item.active { background: rgba(255, 255, 255, 0.13); }
+
+.nav-icon {
+  width: 17px;
+  height: 17px;
+  display: block;
 }
 
-/* hide some bits on small screens */
-@media (max-width: 640px) {
-  .status { display: none; }
+/* Home icon — cycles between scroll and coffee */
+.home-icon-wrap {
+  position: relative;
+  width: 17px;
+  height: 17px;
+}
+.icon-scroll,
+.icon-coffee {
+  position: absolute;
+  top: 0; left: 0;
+  width: 17px;
+  height: 17px;
+}
+.icon-scroll { animation: homeIconScroll 6s ease-in-out infinite; }
+.icon-coffee  { animation: homeIconCoffee 6s ease-in-out infinite; }
+
+@keyframes homeIconScroll {
+  0%, 40%  { opacity: 1; }
+  50%, 90% { opacity: 0; }
+  100%     { opacity: 1; }
+}
+@keyframes homeIconCoffee {
+  0%, 40%  { opacity: 0; }
+  50%, 90% { opacity: 1; }
+  100%     { opacity: 0; }
+}
+
+/* Per-page label beneath the pill */
+.nav-label {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 /* =========================================================
