@@ -206,14 +206,36 @@ body::before {
 
 /* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
 @media (max-width: 1024px) and (orientation: portrait) {
+  /* Expanded: centred via right:50% + translateX(50%) trick */
   .nav-pill-wrapper {
     position: fixed;
     bottom: calc(20px + env(safe-area-inset-bottom));
-    left: 50%;
-    transform: translateX(-50%);
+    left: auto;
+    right: 50%;
+    transform: translateX(50%);
     z-index: 20;
+    transition: right 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .nav-pill { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18); }
+  /* Collapsed: fly to bottom-right corner */
+  .nav-pill-wrapper.collapsed {
+    right: 20px;
+    transform: translateX(0);
+  }
+  /* Squircle + larger size */
+  .nav-pill {
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+  }
+  /* Keep larger padding when collapsed (overrides base 8px) */
+  .nav-pill-wrapper.collapsed .nav-pill { padding: 10px; }
+  /* Larger touch targets */
+  .nav-item        { width: 44px; height: 44px; }
+  .nav-icon        { width: 20px; height: 20px; }
+  .home-icon-wrap  { width: 20px; height: 20px; }
+  .icon-scroll,
+  .icon-coffee     { width: 20px; height: 20px; }
   .nav-label { display: none; }
 }
 
@@ -223,7 +245,9 @@ body::before {
     position: static;
     bottom: auto;
     left: auto;
+    right: auto;
     transform: none;
+    transition: none;
   }
 }
 
