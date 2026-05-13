@@ -203,6 +203,8 @@ body::before {
 .nav-pill-wrapper.collapsed .nav-pill { gap: 0; padding: 8px; }
 .nav-pill-wrapper.collapsed .nav-item:not(.active) { width: 0; opacity: 0; }
 .nav-pill-wrapper.collapsed .nav-label { opacity: 0; }
+/* No need to show "selected" when it's the only icon visible */
+.nav-pill-wrapper.collapsed .nav-item.active { background: transparent; animation: none; }
 
 /* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
 @media (max-width: 1024px) and (orientation: portrait) {
@@ -230,8 +232,8 @@ body::before {
   }
   /* Keep larger padding when collapsed (overrides base 8px) */
   .nav-pill-wrapper.collapsed .nav-pill { padding: 10px; }
-  /* Larger touch targets */
-  .nav-item        { width: 44px; height: 44px; }
+  /* Larger touch targets + squircle active highlight */
+  .nav-item        { width: 44px; height: 44px; border-radius: 10px; }
   .nav-icon        { width: 20px; height: 20px; }
   .home-icon-wrap  { width: 20px; height: 20px; }
   .icon-scroll,
