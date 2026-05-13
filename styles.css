@@ -207,7 +207,7 @@ body::before {
 .nav-pill-wrapper.collapsed .nav-item.active { background: transparent; animation: none; }
 
 /* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
-@media (max-width: 1024px) and (orientation: portrait) {
+@media (max-width: 1366px) and (orientation: portrait) {
   /* Expanded: centred via right:50% + translateX(50%) trick */
   .nav-pill-wrapper {
     position: fixed;
@@ -242,7 +242,7 @@ body::before {
 }
 
 /* ── Landscape (phone & tablet): pill back in topbar ──────── */
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 1366px) and (orientation: landscape) {
   .nav-pill-wrapper {
     position: static;
     bottom: auto;
