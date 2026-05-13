@@ -56,9 +56,21 @@
   }
 
   navItems.forEach(function (item) {
-    item.addEventListener('mouseenter',  function () { moveTo(item, true); });
-    item.addEventListener('mouseleave',  function () { moveTo(activeItem, true); });
-    // Touch: slide before navigation so the motion is briefly visible
-    item.addEventListener('touchstart',  function () { moveTo(item, true); }, { passive: true });
+    item.addEventListener('mouseenter', function () { moveTo(item, true); });
+    item.addEventListener('mouseleave', function () { moveTo(activeItem, true); });
+    item.addEventListener('touchstart', function () { moveTo(item, true); }, { passive: true });
+
+    // Let the indicator finish sliding before the page loads
+    if (!item.classList.contains('active')) {
+      item.addEventListener('click', function (e) {
+        // Preserve cmd/ctrl/shift-click (open in new tab, etc.)
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        var href = item.getAttribute('href');
+        if (!href) return;
+        e.preventDefault();
+        moveTo(item, true);
+        setTimeout(function () { window.location.href = href; }, 460);
+      });
+    }
   });
 }());
