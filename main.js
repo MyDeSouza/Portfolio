@@ -56,8 +56,6 @@
   }
 
   navItems.forEach(function (item) {
-    item.addEventListener('mouseenter', function () { moveTo(item, true); });
-    item.addEventListener('mouseleave', function () { moveTo(activeItem, true); });
     item.addEventListener('touchstart', function () { moveTo(item, true); }, { passive: true });
 
     // Let the indicator finish sliding before the page loads
