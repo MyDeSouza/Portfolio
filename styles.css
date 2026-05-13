@@ -105,7 +105,7 @@ body::before {
   gap: 10px;
   background: #1a1a18;
   border-radius: 999px;
-  padding: 8px 20px;
+  padding: 8px;
   transition: gap 0.35s ease, padding 0.35s ease;
 }
 
@@ -192,9 +192,32 @@ body::before {
 }
 
 /* Collapse on scroll-down — JS adds .collapsed to .nav-pill-wrapper */
-.nav-pill-wrapper.collapsed .nav-pill { gap: 0; padding: 8px 9px; }
+.nav-pill-wrapper.collapsed .nav-pill { gap: 0; padding: 8px; }
 .nav-pill-wrapper.collapsed .nav-item:not(.active) { width: 0; opacity: 0; }
 .nav-pill-wrapper.collapsed .nav-label { opacity: 0; }
+
+/* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .nav-pill-wrapper {
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+  }
+  .nav-pill { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18); }
+  .nav-label { display: none; }
+}
+
+/* ── Landscape (phone & tablet): pill back in topbar ──────── */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .nav-pill-wrapper {
+    position: static;
+    bottom: auto;
+    left: auto;
+    transform: none;
+  }
+}
 
 /* =========================================================
    Page hero (inner pages)
