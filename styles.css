@@ -166,6 +166,13 @@ body::before {
 .nav-item:hover  .nav-icon,
 .nav-item:hover  .home-icon-wrap { opacity: 1; }
 
+/* Icon on the page being left fades back to dim as the indicator slides away */
+.nav-item.leaving .nav-icon,
+.nav-item.leaving .home-icon-wrap {
+  opacity: 0.4;
+  transition: opacity 0.55s ease;
+}
+
 /* Home icon — slides up: exit top, teleport below (clipped), enter from bottom */
 .icon-scroll,
 .icon-coffee {

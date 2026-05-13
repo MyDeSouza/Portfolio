@@ -66,6 +66,7 @@
         var href = item.getAttribute('href');
         if (!href) return;
         e.preventDefault();
+        if (activeItem) activeItem.classList.add('leaving');
         moveTo(item, true);
         setTimeout(function () { window.location.href = href; }, 620);
       });
