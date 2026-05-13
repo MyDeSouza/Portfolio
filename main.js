@@ -68,7 +68,7 @@
         e.preventDefault();
         if (activeItem) activeItem.classList.add('leaving');
         moveTo(item, true);
-        setTimeout(function () { window.location.href = href; }, 620);
+        setTimeout(function () { window.location.href = href; }, 370);
       });
     }
   });
