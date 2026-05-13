@@ -129,6 +129,7 @@ body::before {
 /* Home icon — cycles between scroll and coffee */
 .home-icon-wrap {
   position: relative;
+  display: inline-block;
   width: 17px;
   height: 17px;
 }
@@ -140,7 +141,7 @@ body::before {
   height: 17px;
 }
 .icon-scroll { animation: homeIconScroll 6s ease-in-out infinite; }
-.icon-coffee  { animation: homeIconCoffee 6s ease-in-out infinite; }
+.icon-coffee  { opacity: 0; animation: homeIconCoffee 6s ease-in-out infinite; }
 
 @keyframes homeIconScroll {
   0%, 40%  { opacity: 1; }
