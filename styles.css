@@ -280,19 +280,39 @@ p, .body {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: rgba(247, 249, 252, 0.9);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(247, 249, 252, 0.5);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  transition: background var(--dur-2) var(--ease-in-out);
 }
 
+.topbar {
+  border-bottom: 1px solid var(--rule);
+  transition: border-color var(--dur-2) var(--ease-in-out);
+}
+
+/* Over a dark/coloured section — JS adds .over-dark to .topbar */
+.topbar.over-dark::before {
+  background: rgba(0, 0, 0, 0.22);
+}
+.topbar.over-dark {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+.topbar.over-dark .mark-name { color: #ffffff; }
+.topbar.over-dark .mark-role { color: rgba(255, 255, 255, 0.6); }
+.topbar.over-dark .nav-label { color: rgba(255, 255, 255, 0.6); }
+
 [data-mode="project"] .topbar::before {
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
 }
 [data-mode="project"] .topbar {
   border-bottom-color: rgba(255, 255, 255, 0.12);
 }
+[data-mode="project"] .mark-name { color: #ffffff; }
+[data-mode="project"] .mark-role { color: rgba(255, 255, 255, 0.6); }
+[data-mode="project"] .nav-label { color: rgba(255, 255, 255, 0.6); }
 
 .mark {
   display: flex;
@@ -308,6 +328,7 @@ p, .body {
   letter-spacing: -0.01em;
   line-height: 1.1;
   color: var(--fg);
+  transition: color var(--dur-2) var(--ease-in-out);
 }
 .mark-role {
   font-family: var(--serif);
@@ -317,6 +338,7 @@ p, .body {
   letter-spacing: 0;
   text-transform: none;
   line-height: 1.2;
+  transition: color var(--dur-2) var(--ease-in-out);
 }
 
 /* ── Nav pill ─────────────────────────────────────────── */
@@ -421,7 +443,7 @@ p, .body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, color var(--dur-2) var(--ease-in-out);
 }
 
 /* Collapse on scroll-down — JS adds .collapsed to .nav-pill-wrapper */

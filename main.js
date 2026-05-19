@@ -3,6 +3,26 @@
   var pill    = document.querySelector('.nav-pill');
   if (!wrapper || !pill) return;
 
+  // ── Topbar over-dark detection ───────────────────────────
+  var topbar   = document.querySelector('.topbar');
+  var darkEls  = document.querySelectorAll('.project-cover, [data-dark]');
+
+  function checkDark() {
+    if (!topbar || !darkEls.length) return;
+    var h = topbar.offsetHeight;
+    var isDark = false;
+    darkEls.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < h && r.bottom > 0) isDark = true;
+    });
+    topbar.classList.toggle('over-dark', isDark);
+  }
+
+  if (darkEls.length) {
+    window.addEventListener('scroll', checkDark, { passive: true });
+    checkDark();
+  }
+
   // ── Scroll collapse ─────────────────────────────────────────
   var lastY   = window.scrollY;
   var ticking = false;
