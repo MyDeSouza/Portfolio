@@ -337,12 +337,12 @@ p, .body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #1a1a18;
+  background: rgba(20, 20, 18, 0.45);
   border-radius: 999px;
   padding: 8px;
   position: relative; /* contains the sliding indicator */
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   transition: gap 0.35s ease, padding 0.35s ease, background-color var(--dur-2) var(--ease-in-out);
 }
 
