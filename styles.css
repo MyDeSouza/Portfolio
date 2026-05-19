@@ -273,30 +273,15 @@ p, .body {
   text-transform: uppercase;
 }
 
-/* Over a dark/coloured section — JS adds .over-dark to .topbar */
+/* Over a dark/coloured section — text only */
 .topbar.over-dark .mark-name { color: #ffffff; }
 .topbar.over-dark .mark-role { color: rgba(255, 255, 255, 0.6); }
 .topbar.over-dark .nav-label { color: rgba(255, 255, 255, 0.6); }
-/* Pill inverts: white pill, dark indicator, icons go black, active icon stays white */
-.topbar.over-dark .nav-pill                    { background: #ffffff; }
-.topbar.over-dark .nav-indicator               { background: #1a1a18; }
-.topbar.over-dark .nav-item:active             { background: rgba(12, 17, 22, 0.14); }
-.topbar.over-dark .nav-icon                    { filter: invert(1); }
-.topbar.over-dark .home-icon-wrap              { filter: invert(1); }
-.topbar.over-dark .nav-item.active .nav-icon   { filter: none; }
-.topbar.over-dark .nav-item.active .home-icon-wrap { filter: none; }
 
-/* Project-mode pages are always over-dark */
+/* Project-mode pages — text only */
 [data-mode="project"] .mark-name { color: #ffffff; }
 [data-mode="project"] .mark-role { color: rgba(255, 255, 255, 0.6); }
 [data-mode="project"] .nav-label { color: rgba(255, 255, 255, 0.6); }
-[data-mode="project"] .nav-pill                    { background: #ffffff; }
-[data-mode="project"] .nav-indicator               { background: #1a1a18; }
-[data-mode="project"] .nav-item:active             { background: rgba(12, 17, 22, 0.14); }
-[data-mode="project"] .nav-icon                    { filter: invert(1); }
-[data-mode="project"] .home-icon-wrap              { filter: invert(1); }
-[data-mode="project"] .nav-item.active .nav-icon   { filter: none; }
-[data-mode="project"] .nav-item.active .home-icon-wrap { filter: none; }
 
 .mark {
   display: flex;
@@ -337,7 +322,7 @@ p, .body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(20, 20, 18, 0.45);
+  background: rgba(20, 20, 18, 0.28);
   border-radius: 999px;
   padding: 8px;
   position: relative; /* contains the sliding indicator */
