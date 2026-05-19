@@ -283,7 +283,7 @@ p, .body {
 
 /* Pill flips to dark frosted */
 .topbar.over-dark .nav-pill,
-[data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.45); }
+[data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.32); }
 
 /* Icons flip to white */
 .topbar.over-dark .nav-icon,
