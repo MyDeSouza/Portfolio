@@ -276,7 +276,7 @@ p, .body {
 /* ── Over dark / project mode: swap to dark frosted pill + white icons ── */
 /* Pill flips to dark frosted */
 .topbar.over-dark .nav-pill,
-[data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.32); }
+[data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.22); }
 
 /* Icons flip to white */
 .topbar.over-dark .nav-icon,
@@ -331,12 +331,12 @@ p, .body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(205, 206, 212, 0.26);
+  background: rgba(205, 206, 212, 0.16);
   border-radius: 999px;
   padding: 8px;
   position: relative; /* contains the sliding indicator */
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
   transition: gap 0.35s ease, padding 0.35s ease, background-color var(--dur-2) var(--ease-in-out);
 }
 
