@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="default">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About — Max DeSouza</title>
-  <meta name="description" content="About Max DeSouza — background, values, and contact." />
+  <meta name="description" content="Max DeSouza — product UX designer in Toronto." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -34,61 +34,119 @@
           </svg>
         </a>
       </nav>
-      <span class="nav-label">CV</span>
+      <span class="nav-label">About</span>
     </div>
   </header>
 
-  <section class="page-hero">
-    <p class="eyebrow">Background &amp; Contact</p>
-    <h1 class="page-title">About</h1>
-  </section>
+  <main>
+    <div class="me-body">
 
-  <section class="section full-width">
-    <div class="section-head">
-      <span class="section-num">01</span>
-      <h2 class="section-title">Background</h2>
-    </div>
-    <div class="section-body">
-      <p class="lead">
-        Write 2–3 sentences about who you are. Keep it human and direct.
-        What do you make? What do you care about? Why should someone want to work with you?
-      </p>
-      <p>
-        A second paragraph for more detail — your background, your approach,
-        or what kind of projects you're drawn to. Keep it concise; the work speaks louder than the bio.
-      </p>
-      <ul class="skills">
-        <li>Skill one</li>
-        <li>Skill two</li>
-        <li>Skill three</li>
-        <li>Skill four</li>
-      </ul>
-    </div>
-  </section>
+      <p class="eyebrow">About</p>
+      <h1>Max DeSouza. Product UX designer in Toronto.</h1>
 
-  <section class="section full-width contact">
-    <div class="section-head">
-      <span class="section-num">02</span>
-      <h2 class="section-title">Contact</h2>
-    </div>
-    <div class="section-body">
-      <p class="lead">
-        Have something in mind? <br />
-        I'd love to hear about it.
+      <p class="body-lg">
+        I work on the parts of a product people don't notice until they break — file routing,
+        payment selection, transit handoffs. My training is in industrial design at OCAD; my
+        practice today is mostly screens, sometimes brand.
       </p>
-      <a href="mailto:you@example.com" class="email">you@example.com</a>
-      <ul class="elsewhere">
-        <li><a href="#">GitHub</a></li>
-        <li><a href="#">LinkedIn</a></li>
-        <li><a href="#">Twitter / X</a></li>
-      </ul>
-    </div>
-  </section>
 
-  <script src="../main.js"></script>
+      <p class="body">
+        I'm interested in interfaces that respect the time of the people using them.
+        Less to read, less to click, less to remember. I think a portfolio should follow
+        the same rule — so this one tries to.
+      </p>
+
+      <!-- Experience -->
+      <section class="me-section">
+        <p class="eyebrow">Experience</p>
+
+        <div class="exp-row">
+          <span class="exp-years">2024 — Now</span>
+          <div>
+            <div class="exp-role">Product UX Designer</div>
+            <div class="exp-org">Independent</div>
+            <p class="exp-note">Selected client work in payments and internal tooling.</p>
+          </div>
+        </div>
+
+        <div class="exp-row">
+          <span class="exp-years">2023</span>
+          <div>
+            <div class="exp-role">Design Intern</div>
+            <div class="exp-org">Cadillac Fairview</div>
+            <p class="exp-note">Brand UX on CF Welcomes; wayfinding pilots.</p>
+          </div>
+        </div>
+
+        <div class="exp-row">
+          <span class="exp-years">2020 — 2024</span>
+          <div>
+            <div class="exp-role">BDes, Industrial Design</div>
+            <div class="exp-org">OCAD University</div>
+            <p class="exp-note">Thesis: Cadence.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="me-section">
+        <p class="eyebrow">Skills</p>
+        <div class="skills-grid">
+          <div class="skills-group">
+            <div class="skills-group-name">Product</div>
+            <ul>
+              <li>Product UX</li>
+              <li>Interaction design</li>
+              <li>Prototyping (Figma, code)</li>
+              <li>Design systems</li>
+            </ul>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-name">Research</div>
+            <ul>
+              <li>Generative interviews</li>
+              <li>Concept testing</li>
+              <li>Usability studies</li>
+              <li>Synthesis</li>
+            </ul>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-name">Brand</div>
+            <ul>
+              <li>Identity</li>
+              <li>Wayfinding</li>
+              <li>Editorial layout</li>
+            </ul>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-name">Craft</div>
+            <ul>
+              <li>HTML / CSS</li>
+              <li>React (prototypes)</li>
+              <li>Motion</li>
+              <li>Typography</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="me-section">
+        <p class="eyebrow">Get in touch</p>
+        <p class="body-lg" style="margin-bottom: 1.5rem;">
+          Open to product UX roles, brand UX, and small studio collaborations.
+        </p>
+        <a href="mailto:hello@maxdesouza.design" class="contact-link">hello@maxdesouza.design</a>
+      </section>
+
+    </div>
+  </main>
+
   <footer class="footer">
     <span>© 2026 Max DeSouza</span>
     <span class="footer-mark">Built by hand.</span>
   </footer>
+
+  <script src="../main.js"></script>
 </body>
 </html>
