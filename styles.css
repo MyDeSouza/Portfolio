@@ -302,6 +302,15 @@ p, .body {
 .topbar.over-dark .mark-role { color: rgba(255, 255, 255, 0.6); }
 .topbar.over-dark .nav-label { color: rgba(255, 255, 255, 0.6); }
 
+/* Invert the nav pill + icons over dark */
+.topbar.over-dark .nav-pill         { background: #ffffff; }
+.topbar.over-dark .nav-indicator    { background: rgba(12, 17, 22, 0.14); }
+.topbar.over-dark .nav-item:active  { background: rgba(12, 17, 22, 0.18); }
+.topbar.over-dark .nav-icon         { filter: invert(1); }
+.topbar.over-dark .home-icon-wrap   { filter: invert(1); }
+.topbar.over-dark .nav-item svg circle,
+.topbar.over-dark .nav-item svg path { stroke: #0c1116; }
+
 [data-mode="project"] .topbar::before {
   background: rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(14px) saturate(140%);
@@ -313,6 +322,13 @@ p, .body {
 [data-mode="project"] .mark-name { color: #ffffff; }
 [data-mode="project"] .mark-role { color: rgba(255, 255, 255, 0.6); }
 [data-mode="project"] .nav-label { color: rgba(255, 255, 255, 0.6); }
+[data-mode="project"] .nav-pill        { background: #ffffff; }
+[data-mode="project"] .nav-indicator   { background: rgba(12, 17, 22, 0.14); }
+[data-mode="project"] .nav-item:active { background: rgba(12, 17, 22, 0.18); }
+[data-mode="project"] .nav-icon        { filter: invert(1); }
+[data-mode="project"] .home-icon-wrap  { filter: invert(1); }
+[data-mode="project"] .nav-item svg circle,
+[data-mode="project"] .nav-item svg path { stroke: #0c1116; }
 
 .mark {
   display: flex;
@@ -357,7 +373,7 @@ p, .body {
   border-radius: 999px;
   padding: 8px;
   position: relative; /* contains the sliding indicator */
-  transition: gap 0.35s ease, padding 0.35s ease;
+  transition: gap 0.35s ease, padding 0.35s ease, background-color var(--dur-2) var(--ease-in-out);
 }
 
 .nav-item {
@@ -389,7 +405,7 @@ p, .body {
   height: 17px;
   display: block;
   opacity: 0.4;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, filter var(--dur-2) var(--ease-in-out);
 }
 .home-icon-wrap {
   position: relative;
@@ -398,7 +414,7 @@ p, .body {
   height: 17px;
   overflow: hidden;
   opacity: 0.4;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, filter var(--dur-2) var(--ease-in-out);
 }
 .nav-item.active .nav-icon,
 .nav-item.active .home-icon-wrap,
@@ -507,14 +523,13 @@ p, .body {
    ========================================================= */
 .page-main {
   min-height: 100vh;
-  padding-top: var(--s-8); /* clear topbar */
 }
 
 /* Inner-page hero header */
 .page-header {
   max-width: var(--max);
   margin: 0 auto;
-  padding: var(--s-9) var(--gutter) var(--s-7);
+  padding: var(--s-6) var(--gutter) var(--s-5);
 }
 
 .page-header .eyebrow { margin-bottom: var(--s-4); }
