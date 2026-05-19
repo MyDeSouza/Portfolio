@@ -340,7 +340,7 @@ p, .body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(205, 206, 212, 0.72);
+  background: rgba(205, 206, 212, 0.45);
   border-radius: 999px;
   padding: 8px;
   position: relative; /* contains the sliding indicator */
