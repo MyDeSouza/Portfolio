@@ -420,9 +420,7 @@ p, .body {
 .nav-pill-wrapper.collapsed .nav-pill { gap: 0; padding: 8px; }
 .nav-pill-wrapper.collapsed .nav-item:not(.active) { width: 0; opacity: 0; }
 .nav-pill-wrapper.collapsed .nav-label { opacity: 0; }
-/* Hide indicator when collapsed — redundant to show selection on a single icon */
-.nav-pill-wrapper.collapsed .nav-indicator { opacity: 0; transition: none; }
-/* No circle behind it, so active icon should be white not black */
+/* No circle in collapsed state, so active icon stays white */
 .nav-pill-wrapper.collapsed .nav-item.active .nav-icon      { filter: none; }
 .nav-pill-wrapper.collapsed .nav-item.active .home-icon-wrap { filter: none; }
 

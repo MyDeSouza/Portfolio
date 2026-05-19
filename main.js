@@ -24,15 +24,36 @@
   }
 
   // ── Scroll collapse ─────────────────────────────────────────
-  var lastY   = window.scrollY;
-  var ticking = false;
+  var lastY       = window.scrollY;
+  var ticking     = false;
+  var expandTimer = null;
+
+  function showIndicator() {
+    if (!activeItem) return;
+    moveTo(activeItem, false);                     // snap to correct position
+    requestAnimationFrame(function () {
+      indicator.style.removeProperty('transition'); // unlock CSS fade
+      requestAnimationFrame(function () {
+        indicator.style.opacity = '1';             // fade in
+      });
+    });
+  }
 
   function updateCollapse() {
     var y = window.scrollY;
     if (y > lastY && y > 60) {
+      if (expandTimer) { clearTimeout(expandTimer); expandTimer = null; }
       wrapper.classList.add('collapsed');
-    } else if (y < lastY) {
+      indicator.style.transition = 'none';         // instant hide
+      indicator.style.opacity    = '0';
+    } else if (y < lastY && wrapper.classList.contains('collapsed')) {
       wrapper.classList.remove('collapsed');
+      // Wait for item-width transition (350ms) to finish before repositioning
+      expandTimer = setTimeout(function () {
+        expandTimer = null;
+        if (wrapper.classList.contains('collapsed')) return;
+        showIndicator();
+      }, 400);
     }
     lastY   = y;
     ticking = false;
