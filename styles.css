@@ -608,8 +608,8 @@ p, .body {
 .projects-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3px;
-  padding-bottom: var(--s-9);
+  gap: clamp(16px, 2vw, 24px);
+  padding: 0 var(--gutter) var(--s-9);
 }
 
 @media (max-width: 640px) {
@@ -633,13 +633,13 @@ p, .body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-faint);
-  padding: 0 var(--gutter);
 }
 
 .project-cover {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
+  border-radius: var(--r-xs);
   overflow: hidden;
   transition: filter var(--dur-2) var(--ease-out);
 }
