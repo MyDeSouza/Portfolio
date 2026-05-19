@@ -348,7 +348,8 @@ p, .body {
 /* Sliding indicator — JS positions this behind the active/hovered icon */
 .nav-indicator {
   position: absolute;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 50%;
   pointer-events: none;
   opacity: 0;
@@ -372,9 +373,6 @@ p, .body {
   opacity: 1;
   transition: filter var(--dur-2) var(--ease-in-out);
 }
-/* JS adds .active-shown to .nav-pill in sync with the indicator fade */
-.nav-pill.active-shown .nav-item.active .nav-icon,
-.nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: invert(1); }
 
 
 /* Home icon — slides up: exit top, teleport below (clipped), enter from bottom */
@@ -421,9 +419,6 @@ p, .body {
 .nav-pill-wrapper.collapsed .nav-pill { gap: 0; padding: 8px; }
 .nav-pill-wrapper.collapsed .nav-item:not(.active) { width: 0; opacity: 0; }
 .nav-pill-wrapper.collapsed .nav-label { opacity: 0; }
-/* No circle in collapsed state, so active icon stays white */
-.nav-pill-wrapper.collapsed .nav-item.active .nav-icon      { filter: none; }
-.nav-pill-wrapper.collapsed .nav-item.active .home-icon-wrap { filter: none; }
 
 /* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
 @media (max-width: 1366px) and (orientation: portrait) {

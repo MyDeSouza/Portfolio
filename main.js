@@ -4,8 +4,8 @@
   if (!wrapper || !pill) return;
 
   // ── Topbar over-dark detection ───────────────────────────
-  var topbar   = document.querySelector('.topbar');
-  var darkEls  = document.querySelectorAll('.project-cover, [data-dark]');
+  var topbar  = document.querySelector('.topbar');
+  var darkEls = document.querySelectorAll('.project-cover, [data-dark]');
 
   function checkDark() {
     if (!topbar || !darkEls.length) return;
@@ -23,39 +23,59 @@
     checkDark();
   }
 
-  // ── Scroll collapse ─────────────────────────────────────────
-  var lastY       = window.scrollY;
-  var ticking     = false;
-  var expandTimer = null;
+  // ── Sliding indicator ────────────────────────────────────────
+  var indicator = document.createElement('span');
+  indicator.className = 'nav-indicator';
+  pill.insertBefore(indicator, pill.firstChild);
 
+  var activeItem = pill.querySelector('.nav-item.active');
+  var navItems   = pill.querySelectorAll('.nav-item');
+
+  // Position-only update — never touches transition or opacity
+  function snapPosition(item) {
+    if (!item) return;
+    var pr = pill.getBoundingClientRect();
+    var ir = item.getBoundingClientRect();
+    indicator.style.left   = (ir.left - pr.left) + 'px';
+    indicator.style.top    = (ir.top  - pr.top)  + 'px';
+    indicator.style.width  = ir.width  + 'px';
+    indicator.style.height = ir.height + 'px';
+  }
+
+  // Fade in the indicator, tracking position during any ongoing pill animation
   function showIndicator() {
     if (!activeItem) return;
-    moveTo(activeItem, false);                      // snap to correct position
+    indicator.style.removeProperty('transition'); // ensure CSS fade is active
+    snapPosition(activeItem);
     requestAnimationFrame(function () {
-      indicator.style.removeProperty('transition'); // unlock CSS fade
       requestAnimationFrame(function () {
-        indicator.style.opacity = '1';              // fade in circle…
-        pill.classList.add('active-shown');         // …and invert icon together
+        indicator.style.opacity = '1'; // fade in
+
+        // Track position for the duration of the pill expand animation (350ms)
+        var start = performance.now();
+        function track(now) {
+          snapPosition(activeItem);
+          if (now - start < 380) requestAnimationFrame(track);
+        }
+        requestAnimationFrame(track);
       });
     });
   }
 
+  // ── Scroll collapse ─────────────────────────────────────────
+  var lastY   = window.scrollY;
+  var ticking = false;
+
   function updateCollapse() {
     var y = window.scrollY;
     if (y > lastY && y > 60) {
-      if (expandTimer) { clearTimeout(expandTimer); expandTimer = null; }
       wrapper.classList.add('collapsed');
-      indicator.style.transition = 'none';         // instant hide
+      indicator.style.transition = 'none'; // instant hide — no fade out
       indicator.style.opacity    = '0';
-      pill.classList.remove('active-shown');       // icon back to white
     } else if (y < lastY && wrapper.classList.contains('collapsed')) {
       wrapper.classList.remove('collapsed');
-      // Wait for item-width transition (350ms) to finish before repositioning
-      expandTimer = setTimeout(function () {
-        expandTimer = null;
-        if (wrapper.classList.contains('collapsed')) return;
-        showIndicator();
-      }, 400);
+      // Show immediately so the circle fades in as the pill expands
+      requestAnimationFrame(function () { showIndicator(); });
     }
     lastY   = y;
     ticking = false;
@@ -68,40 +88,12 @@
     }
   }, { passive: true });
 
-  // ── Sliding indicator ────────────────────────────────────────
-  var indicator  = document.createElement('span');
-  indicator.className = 'nav-indicator';
-  pill.insertBefore(indicator, pill.firstChild); // render behind items
-
-  var activeItem = pill.querySelector('.nav-item.active');
-  var navItems   = pill.querySelectorAll('.nav-item');
-
-  function moveTo(item, animate) {
-    if (!item) return;
-    var pr = pill.getBoundingClientRect();
-    var ir = item.getBoundingClientRect();
-    if (!animate) indicator.style.transition = 'none';
-    else          indicator.style.removeProperty('transition');
-    indicator.style.left   = (ir.left   - pr.left) + 'px';
-    indicator.style.top    = (ir.top    - pr.top)  + 'px';
-    indicator.style.width  = ir.width   + 'px';
-    indicator.style.height = ir.height  + 'px';
-  }
-
-  // Place at active item on load: position instantly, then fade in
+  // Initial page load — fade in after first paint
   if (activeItem) {
-    requestAnimationFrame(function () {
-      moveTo(activeItem, false);           // snap to position, transition:none
-      requestAnimationFrame(function () {
-        indicator.style.removeProperty('transition'); // unlock CSS transition
-        requestAnimationFrame(function () {
-          indicator.style.opacity = '1';   // now fade in
-        });
-      });
-    });
+    requestAnimationFrame(function () { showIndicator(); });
   }
 
   navItems.forEach(function (item) {
-    item.addEventListener('touchstart', function () { moveTo(item, true); }, { passive: true });
+    item.addEventListener('touchstart', function () { snapPosition(item); }, { passive: true });
   });
 }());
