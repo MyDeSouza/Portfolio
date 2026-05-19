@@ -274,13 +274,6 @@ p, .body {
 }
 
 /* ── Over dark / project mode: swap to dark frosted pill + white icons ── */
-.topbar.over-dark .mark-name,
-[data-mode="project"] .mark-name { color: #ffffff; }
-.topbar.over-dark .mark-role,
-[data-mode="project"] .mark-role { color: rgba(255, 255, 255, 0.6); }
-.topbar.over-dark .nav-label,
-[data-mode="project"] .nav-label { color: rgba(255, 255, 255, 0.6); }
-
 /* Pill flips to dark frosted */
 .topbar.over-dark .nav-pill,
 [data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.32); }
@@ -315,7 +308,6 @@ p, .body {
   letter-spacing: -0.01em;
   line-height: 1.1;
   color: var(--fg);
-  transition: color var(--dur-2) var(--ease-in-out);
 }
 .mark-role {
   font-family: var(--serif);
@@ -325,7 +317,6 @@ p, .body {
   letter-spacing: 0;
   text-transform: none;
   line-height: 1.2;
-  transition: color var(--dur-2) var(--ease-in-out);
 }
 
 /* ── Nav pill ─────────────────────────────────────────── */
