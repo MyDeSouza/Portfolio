@@ -351,6 +351,7 @@ p, .body {
   background: #ffffff;
   border-radius: 50%;
   pointer-events: none;
+  opacity: 0;
   transition: opacity var(--dur-2) var(--ease-out);
 }
 

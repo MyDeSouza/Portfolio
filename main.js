@@ -65,12 +65,15 @@
     indicator.style.height = ir.height  + 'px';
   }
 
-  // Place at active item on load with no animation, then unlock transitions
+  // Place at active item on load: position instantly, then fade in
   if (activeItem) {
     requestAnimationFrame(function () {
-      moveTo(activeItem, false);
+      moveTo(activeItem, false);           // snap to position, transition:none
       requestAnimationFrame(function () {
-        indicator.style.removeProperty('transition');
+        indicator.style.removeProperty('transition'); // unlock CSS transition
+        requestAnimationFrame(function () {
+          indicator.style.opacity = '1';   // now fade in
+        });
       });
     });
   }
