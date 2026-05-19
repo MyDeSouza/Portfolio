@@ -276,7 +276,7 @@ p, .body {
 /* ── Over dark / project mode: swap to dark frosted pill + white icons ── */
 /* Pill flips to dark frosted */
 .topbar.over-dark .nav-pill,
-[data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.22); }
+[data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.48); }
 
 /* Icons flip to white */
 .topbar.over-dark .nav-icon,
