@@ -348,12 +348,17 @@ p, .body {
 /* Sliding indicator — JS positions this behind the active/hovered icon */
 .nav-indicator {
   position: absolute;
-  background: rgba(255, 255, 255, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: #ffffff;
   border-radius: 50%;
   pointer-events: none;
   opacity: 0;
-  transition: opacity var(--dur-2) var(--ease-out);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Icon inverts to black in sync with the circle — class added by JS */
+.nav-pill.active-shown .nav-item.active .nav-icon,
+.nav-pill.active-shown .nav-item.active .home-icon-wrap {
+  filter: invert(1);
 }
 
 /* Icons — always full white; active icon inverted to black on white circle */
@@ -362,7 +367,7 @@ p, .body {
   height: 17px;
   display: block;
   opacity: 1;
-  transition: filter var(--dur-2) var(--ease-in-out);
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .home-icon-wrap {
   position: relative;
@@ -371,7 +376,7 @@ p, .body {
   height: 17px;
   overflow: hidden;
   opacity: 1;
-  transition: filter var(--dur-2) var(--ease-in-out);
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 

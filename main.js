@@ -49,7 +49,8 @@
     snapPosition(activeItem);
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        indicator.style.opacity = '1'; // fade in
+        indicator.style.opacity = '1';        // fade in circle…
+        pill.classList.add('active-shown');   // …icon inverts in sync
 
         // Track position for the duration of the pill expand animation (350ms)
         var start = performance.now();
@@ -72,6 +73,7 @@
       wrapper.classList.add('collapsed');
       indicator.style.transition = 'none'; // instant hide — no fade out
       indicator.style.opacity    = '0';
+      pill.classList.remove('active-shown'); // icon back to white
     } else if (y < lastY && wrapper.classList.contains('collapsed')) {
       wrapper.classList.remove('collapsed');
       // Show immediately so the circle fades in as the pill expands
