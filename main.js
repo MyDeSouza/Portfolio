@@ -31,12 +31,13 @@
   var activeItem = pill.querySelector('.nav-item.active');
   var navItems   = pill.querySelectorAll('.nav-item');
 
-  // Position-only — sets the horizontal centre; CSS handles size + vertical centre
+  // Position-only — sets both axes to the item's exact centre in pill-relative px
   function snapPosition(item) {
     if (!item) return;
     var pr = pill.getBoundingClientRect();
     var ir = item.getBoundingClientRect();
-    indicator.style.left = (ir.left - pr.left + ir.width / 2) + 'px';
+    indicator.style.left = (ir.left - pr.left + ir.width  / 2) + 'px';
+    indicator.style.top  = (ir.top  - pr.top  + ir.height / 2) + 'px';
   }
 
   // Fade in the indicator, tracking position during any ongoing pill animation

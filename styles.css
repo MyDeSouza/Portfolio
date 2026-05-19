@@ -345,10 +345,10 @@ p, .body {
 /* click flash only — indicator handles hover/active highlight */
 .nav-item:active { background: rgba(255, 255, 255, 0.28); }
 
-/* Sliding indicator — JS sets left to the item's centre; CSS centres + sizes */
+/* Sliding indicator — JS sets left+top to item centre px; CSS offsets by own half-size */
 .nav-indicator {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 0;
   transform: translate(-50%, -50%);
   width: 44px;   /* desktop nav-item (34px) + 5px each side */
