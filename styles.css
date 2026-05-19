@@ -606,12 +606,16 @@ p, .body {
    Projects index — card grid
    ========================================================= */
 .projects-grid {
-  max-width: var(--max);
-  margin: 0 auto;
-  padding: 0 var(--gutter) var(--s-9);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
-  gap: clamp(32px, 4vw, 56px);
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  padding-bottom: var(--s-9);
+}
+
+@media (max-width: 640px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .project-card {
@@ -629,18 +633,17 @@ p, .body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-faint);
+  padding: 0 var(--gutter);
 }
 
 .project-cover {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  border-radius: var(--r-xs);
   overflow: hidden;
-  border: 1px solid var(--border);
-  transition: box-shadow var(--dur-2) var(--ease-out);
+  transition: filter var(--dur-2) var(--ease-out);
 }
-.project-card:hover .project-cover { box-shadow: var(--shadow-2); }
+.project-card:hover .project-cover { filter: brightness(1.06); }
 
 .project-cover-reveal {
   position: absolute;
