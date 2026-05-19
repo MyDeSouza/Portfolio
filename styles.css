@@ -345,9 +345,14 @@ p, .body {
 /* click flash only — indicator handles hover/active highlight */
 .nav-item:active { background: rgba(255, 255, 255, 0.28); }
 
-/* Sliding indicator — JS positions this behind the active/hovered icon */
+/* Sliding indicator — JS sets left to the item's centre; CSS centres + sizes */
 .nav-indicator {
   position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 44px;   /* desktop nav-item (34px) + 5px each side */
+  height: 44px;
   background: #ffffff;
   border-radius: 50%;
   pointer-events: none;
@@ -454,7 +459,7 @@ p, .body {
   .nav-pill-wrapper.collapsed .nav-pill { padding: 10px; }
   /* Larger touch targets + squircle active highlight */
   .nav-item        { width: 44px; height: 44px; border-radius: 10px; }
-  .nav-indicator   { border-radius: 10px; }
+  .nav-indicator   { width: 54px; height: 54px; border-radius: 10px; }
   .nav-icon        { width: 20px; height: 20px; }
   .home-icon-wrap  { width: 20px; height: 20px; }
   .icon-scroll,
