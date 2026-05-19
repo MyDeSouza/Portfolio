@@ -32,14 +32,16 @@
   var navItems   = pill.querySelectorAll('.nav-item');
 
   // Position-only update — never touches transition or opacity
+  var INDICATOR_EXPAND = 5; // px extra on each side
   function snapPosition(item) {
     if (!item) return;
     var pr = pill.getBoundingClientRect();
     var ir = item.getBoundingClientRect();
-    indicator.style.left   = (ir.left - pr.left) + 'px';
-    indicator.style.top    = (ir.top  - pr.top)  + 'px';
-    indicator.style.width  = ir.width  + 'px';
-    indicator.style.height = ir.height + 'px';
+    var e  = INDICATOR_EXPAND;
+    indicator.style.left   = (ir.left - pr.left - e) + 'px';
+    indicator.style.top    = (ir.top  - pr.top  - e) + 'px';
+    indicator.style.width  = (ir.width  + e * 2) + 'px';
+    indicator.style.height = (ir.height + e * 2) + 'px';
   }
 
   // Fade in the indicator, tracking position during any ongoing pill animation
