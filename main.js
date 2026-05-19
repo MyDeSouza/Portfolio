@@ -31,7 +31,6 @@
   var activeItem = pill.querySelector('.nav-item.active');
   var navItems   = pill.querySelectorAll('.nav-item');
 
-  // Position-only — sets both axes to the item's exact centre in pill-relative px
   function snapPosition(item) {
     if (!item) return;
     var pr = pill.getBoundingClientRect();
@@ -40,17 +39,14 @@
     indicator.style.top  = (ir.top  - pr.top  + ir.height / 2) + 'px';
   }
 
-  // Fade in the indicator, tracking position during any ongoing pill animation
   function showIndicator() {
     if (!activeItem) return;
-    indicator.style.removeProperty('transition'); // ensure CSS fade is active
+    indicator.style.removeProperty('transition');
     snapPosition(activeItem);
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        indicator.style.opacity = '1';        // fade in circle…
-        pill.classList.add('active-shown');   // …icon inverts in sync
-
-        // Track position for the duration of the pill expand animation (350ms)
+        indicator.style.opacity = '1';
+        pill.classList.add('active-shown');
         var start = performance.now();
         function track(now) {
           snapPosition(activeItem);
@@ -61,21 +57,35 @@
     });
   }
 
-  // ── Scroll collapse ─────────────────────────────────────────
+  function hideIndicator() {
+    indicator.style.transition = 'none';
+    indicator.style.opacity    = '0';
+    pill.classList.remove('active-shown');
+  }
+
+  // ── Collapse helpers ─────────────────────────────────────────
+  var hoverExpanded = false;
+
+  function doCollapse() {
+    wrapper.classList.add('collapsed');
+    hideIndicator();
+  }
+
+  function doExpand() {
+    wrapper.classList.remove('collapsed');
+    requestAnimationFrame(function () { showIndicator(); });
+  }
+
+  // ── Scroll collapse ──────────────────────────────────────────
   var lastY   = window.scrollY;
   var ticking = false;
 
   function updateCollapse() {
     var y = window.scrollY;
-    if (y > lastY && y > 60) {
-      wrapper.classList.add('collapsed');
-      indicator.style.transition = 'none'; // instant hide — no fade out
-      indicator.style.opacity    = '0';
-      pill.classList.remove('active-shown'); // icon back to white
-    } else if (y < lastY && wrapper.classList.contains('collapsed')) {
-      wrapper.classList.remove('collapsed');
-      // Show immediately so the circle fades in as the pill expands
-      requestAnimationFrame(function () { showIndicator(); });
+    if (y > lastY && y > 60 && !hoverExpanded) {
+      doCollapse();
+    } else if (y < lastY && wrapper.classList.contains('collapsed') && !hoverExpanded) {
+      doExpand();
     }
     lastY   = y;
     ticking = false;
@@ -88,12 +98,38 @@
     }
   }, { passive: true });
 
-  // Initial page load — fade in after first paint
+  // ── Hover to expand / collapse (desktop) ─────────────────────
+  wrapper.addEventListener('mouseenter', function () {
+    if (wrapper.classList.contains('collapsed')) {
+      hoverExpanded = true;
+      doExpand();
+    }
+  });
+
+  wrapper.addEventListener('mouseleave', function () {
+    if (hoverExpanded) {
+      hoverExpanded = false;
+      doCollapse();
+    }
+  });
+
+  // ── Tap to expand collapsed nav, then navigate (mobile) ──────
+  navItems.forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      if (wrapper.classList.contains('collapsed')) {
+        e.preventDefault(); // first tap: expand only
+        doExpand();
+      }
+      // second tap: navigation proceeds normally
+    });
+
+    item.addEventListener('touchstart', function () {
+      snapPosition(item);
+    }, { passive: true });
+  });
+
+  // ── Initial page load ────────────────────────────────────────
   if (activeItem) {
     requestAnimationFrame(function () { showIndicator(); });
   }
-
-  navItems.forEach(function (item) {
-    item.addEventListener('touchstart', function () { snapPosition(item); }, { passive: true });
-  });
 }());
