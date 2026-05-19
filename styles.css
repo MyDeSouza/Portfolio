@@ -273,15 +273,33 @@ p, .body {
   text-transform: uppercase;
 }
 
-/* Over a dark/coloured section — text only */
-.topbar.over-dark .mark-name { color: #ffffff; }
-.topbar.over-dark .mark-role { color: rgba(255, 255, 255, 0.6); }
-.topbar.over-dark .nav-label { color: rgba(255, 255, 255, 0.6); }
-
-/* Project-mode pages — text only */
+/* ── Over dark / project mode: swap to dark frosted pill + white icons ── */
+.topbar.over-dark .mark-name,
 [data-mode="project"] .mark-name { color: #ffffff; }
+.topbar.over-dark .mark-role,
 [data-mode="project"] .mark-role { color: rgba(255, 255, 255, 0.6); }
+.topbar.over-dark .nav-label,
 [data-mode="project"] .nav-label { color: rgba(255, 255, 255, 0.6); }
+
+/* Pill flips to dark frosted */
+.topbar.over-dark .nav-pill,
+[data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.45); }
+
+/* Icons flip to white */
+.topbar.over-dark .nav-icon,
+.topbar.over-dark .home-icon-wrap,
+[data-mode="project"] .nav-icon,
+[data-mode="project"] .home-icon-wrap { filter: none; }
+
+/* Indicator flips to white */
+.topbar.over-dark .nav-indicator,
+[data-mode="project"] .nav-indicator { background: #ffffff; }
+
+/* Active icon inverts to black on white circle */
+.topbar.over-dark .nav-pill.active-shown .nav-item.active .nav-icon,
+.topbar.over-dark .nav-pill.active-shown .nav-item.active .home-icon-wrap,
+[data-mode="project"] .nav-pill.active-shown .nav-item.active .nav-icon,
+[data-mode="project"] .nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: invert(1); }
 
 .mark {
   display: flex;
@@ -322,7 +340,7 @@ p, .body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(20, 20, 18, 0.28);
+  background: rgba(255, 255, 255, 0.72);
   border-radius: 999px;
   padding: 8px;
   position: relative; /* contains the sliding indicator */
@@ -353,25 +371,25 @@ p, .body {
   transform: translate(-50%, -50%);
   width: 44px;   /* desktop nav-item (34px) + 5px each side */
   height: 44px;
-  background: #ffffff;
+  background: #0c1116;   /* dark circle on light pill */
   border-radius: 50%;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color var(--dur-2) var(--ease-in-out);
 }
 
-/* Icon inverts to black in sync with the circle — class added by JS */
+/* Default: active icon is white on the dark circle (cancel inversion) */
 .nav-pill.active-shown .nav-item.active .nav-icon,
-.nav-pill.active-shown .nav-item.active .home-icon-wrap {
-  filter: invert(1);
-}
+.nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: none; }
 
-/* Icons — always full white; active icon inverted to black on white circle */
+/* Icons — black by default on light pill */
 .nav-icon {
   width: 17px;
   height: 17px;
   display: block;
   opacity: 1;
+  filter: invert(1);
   transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .home-icon-wrap {
@@ -381,6 +399,7 @@ p, .body {
   height: 17px;
   overflow: hidden;
   opacity: 1;
+  filter: invert(1);
   transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
