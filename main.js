@@ -30,11 +30,12 @@
 
   function showIndicator() {
     if (!activeItem) return;
-    moveTo(activeItem, false);                     // snap to correct position
+    moveTo(activeItem, false);                      // snap to correct position
     requestAnimationFrame(function () {
       indicator.style.removeProperty('transition'); // unlock CSS fade
       requestAnimationFrame(function () {
-        indicator.style.opacity = '1';             // fade in
+        indicator.style.opacity = '1';              // fade in circle…
+        pill.classList.add('active-shown');         // …and invert icon together
       });
     });
   }
@@ -46,6 +47,7 @@
       wrapper.classList.add('collapsed');
       indicator.style.transition = 'none';         // instant hide
       indicator.style.opacity    = '0';
+      pill.classList.remove('active-shown');       // icon back to white
     } else if (y < lastY && wrapper.classList.contains('collapsed')) {
       wrapper.classList.remove('collapsed');
       // Wait for item-width transition (350ms) to finish before repositioning

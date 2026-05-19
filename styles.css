@@ -372,8 +372,9 @@ p, .body {
   opacity: 1;
   transition: filter var(--dur-2) var(--ease-in-out);
 }
-.nav-item.active .nav-icon,
-.nav-item.active .home-icon-wrap { filter: invert(1); }
+/* JS adds .active-shown to .nav-pill in sync with the indicator fade */
+.nav-pill.active-shown .nav-item.active .nav-icon,
+.nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: invert(1); }
 
 
 /* Home icon — slides up: exit top, teleport below (clipped), enter from bottom */
