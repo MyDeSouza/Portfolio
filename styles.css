@@ -649,11 +649,11 @@ p, .body {
 
 .project-card-meta {
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.14em;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--fg-faint);
+  color: var(--ink-4);
 }
 
 .project-cover {
