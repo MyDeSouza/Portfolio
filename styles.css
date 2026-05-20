@@ -308,7 +308,7 @@ p, .body {
   text-transform: none;
 }
 .mark-name {
-  font-family: var(--serif);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: -0.01em;
