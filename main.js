@@ -69,9 +69,10 @@
     var tTop  = ir.top  + (ir.height - size) / 2;
     var tLeft = ir.left + (ir.width  - size) / 2;
 
-    // Fade text out first
-    introText.style.transition = 'opacity 0.2s ease';
+    // Text rises and fades out
+    introText.style.transition = 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
     introText.style.opacity    = '0';
+    introText.style.transform  = 'translateY(-28px)';
 
     setTimeout(function () {
       intro.style.overflow = 'hidden';
@@ -102,7 +103,7 @@
           setTimeout(function () { intro.remove(); }, 280);
         }, 500);
       }, 720);
-    }, 220);
+    }, 320);
   }
 
   // 0.3s delay + 0.75s wipe = 1.05s fully visible; hold ~0.55s → shrink at 1.6s
