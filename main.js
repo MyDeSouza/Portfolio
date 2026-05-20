@@ -44,7 +44,7 @@
     introText.style.opacity    = '0';
     introText.style.transform  = 'translateY(-32px)';
 
-    // Frosted overlay fades out — delayed so glass lingers
+    // Frosted overlay fades out as text slides away
     setTimeout(function () {
       intro.style.transition = 'opacity 0.7s ease';
       intro.style.opacity    = '0';
@@ -52,7 +52,7 @@
         intro.remove();
         revealPage();
       }, 720);
-    }, 800);
+    }, 50);
   }, 1800);
 }());
 
