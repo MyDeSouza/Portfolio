@@ -508,8 +508,12 @@ p, .body {
 .page-header {
   max-width: var(--max);
   margin: 0 auto;
-  padding: var(--s-9) var(--gutter) var(--s-8);
+  padding: var(--s-9) var(--gutter) var(--s-9);
   text-align: center;
+}
+
+.page-header h1 {
+  font-size: clamp(32px, 3.6vw, 52px);
 }
 
 .page-header .eyebrow { margin-bottom: var(--s-4); }
