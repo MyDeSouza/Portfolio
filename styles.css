@@ -274,6 +274,12 @@ p, .body {
 }
 
 /* ── Over dark / project mode: swap to dark frosted pill + white icons ── */
+/* Mark text inverts to white */
+.topbar.over-dark .mark-name,
+[data-mode="project"] .mark-name { color: #ffffff; }
+.topbar.over-dark .mark-role,
+[data-mode="project"] .mark-role { color: rgba(255, 255, 255, 0.65); }
+
 /* Pill flips to dark frosted */
 .topbar.over-dark .nav-pill,
 [data-mode="project"] .nav-pill { background: rgba(20, 20, 18, 0.48); }
@@ -300,7 +306,16 @@ p, .body {
   gap: 0.1rem;
   text-decoration: none;
   text-transform: none;
+  padding: 5px 8px;
+  border-radius: var(--r-xs);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  background: rgba(247, 249, 252, 0.18);
+  transition: background var(--dur-2) var(--ease-in-out);
 }
+.topbar.over-dark .mark,
+[data-mode="project"] .mark { background: rgba(0, 0, 0, 0.18); }
+
 .mark-name {
   font-family: var(--serif);
   font-weight: 700;
@@ -308,6 +323,7 @@ p, .body {
   letter-spacing: -0.01em;
   line-height: 1.1;
   color: var(--fg);
+  transition: color var(--dur-2) var(--ease-in-out);
 }
 .mark-role {
   font-family: var(--serif);
@@ -317,6 +333,7 @@ p, .body {
   letter-spacing: 0;
   text-transform: none;
   line-height: 1.2;
+  transition: color var(--dur-2) var(--ease-in-out);
 }
 
 /* ── Nav pill ─────────────────────────────────────────── */
