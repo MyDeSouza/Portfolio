@@ -23,19 +23,74 @@
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
-  function finish() {
-    // Slide counter up, then fade the whole loader out
-    countEl.classList.add('loader-count-exit');
+  function revealPage() {
+    pageEls.forEach(function (el, i) {
+      setTimeout(function () {
+        el.style.opacity = '';
+        el.classList.add('page-reveal');
+      }, 80 + i * 90);
+    });
+  }
+
+  function shrinkToPill() {
+    var pill = document.querySelector('.nav-pill');
+    if (!pill) { revealPage(); return; }
+
+    var pr = pill.getBoundingClientRect();
+    var bar = loader.querySelector('.loader-bar');
+    if (bar) bar.style.opacity = '0';
+
+    // Switch from inset: 0 to explicit px so width/height/top/left are animatable
+    loader.style.top    = '0px';
+    loader.style.right  = 'auto';
+    loader.style.bottom = 'auto';
+    loader.style.left   = '0px';
+    loader.style.width  = window.innerWidth  + 'px';
+    loader.style.height = window.innerHeight + 'px';
+    loader.style.overflow = 'hidden';
+
+    void loader.offsetHeight; // force reflow before transition
+
+    var sp = 'cubic-bezier(0.4, 0, 0.2, 1)';
+    loader.style.transition = [
+      'top 0.55s '              + sp,
+      'left 0.55s '             + sp,
+      'width 0.55s '            + sp,
+      'height 0.55s '           + sp,
+      'border-radius 0.55s '    + sp,
+      'background-color 0.55s ' + sp,
+      'backdrop-filter 0.55s '  + sp,
+      '-webkit-backdrop-filter 0.55s ' + sp,
+    ].join(', ');
+
+    // Morph into the nav pill — match its exact position, size and visual style
+    loader.style.top                  = pr.top    + 'px';
+    loader.style.left                 = pr.left   + 'px';
+    loader.style.width                = pr.width  + 'px';
+    loader.style.height               = pr.height + 'px';
+    loader.style.borderRadius         = '999px';
+    loader.style.backgroundColor      = 'rgba(205,206,212,0.16)';
+    loader.style.backdropFilter       = 'blur(6px) saturate(120%)';
+    loader.style.webkitBackdropFilter = 'blur(6px) saturate(120%)';
+
+    // Fade out and reveal once morphed
     setTimeout(function () {
-      loader.classList.add('fade-out');
-      pageEls.forEach(function (el, i) {
-        setTimeout(function () {
-          el.style.opacity = '';
-          el.classList.add('page-reveal');
-        }, 100 + i * 90);
-      });
-      setTimeout(function () { loader.remove(); }, 750);
-    }, 380);
+      loader.style.transition = 'opacity 0.22s ease';
+      loader.style.opacity    = '0';
+      revealPage();
+      setTimeout(function () { loader.remove(); }, 260);
+    }, 600);
+  }
+
+  function finish() {
+    // Snap fully opaque so nothing shows through while counter exits
+    loader.style.transition           = '';
+    loader.style.backgroundColor      = '#ECEEF5';
+    loader.style.backdropFilter       = 'none';
+    loader.style.webkitBackdropFilter = 'none';
+
+    countEl.classList.add('loader-count-exit');
+    setTimeout(shrinkToPill, 420);
   }
 
   function tick(ts) {
