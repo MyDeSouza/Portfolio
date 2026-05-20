@@ -651,9 +651,9 @@ html[data-snap] {
 .projects-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3px;
+  gap: clamp(16px, 2vw, 24px);
   width: 100%;
-  padding: var(--s-5) 0;
+  padding: var(--s-5) var(--gutter);
 }
 
 @media (max-width: 640px) {
