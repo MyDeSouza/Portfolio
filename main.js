@@ -8,10 +8,10 @@
 
   // Each segment: from → to over dur ms, then pause ms before next
   var segments = [
-    { from: 0,  to: 22,  dur: 480,  pause: 220 },
+    { from: 0,  to: 22,  dur: 500,  pause: 220 },
     { from: 22, to: 46,  dur: 560,  pause: 200 },
-    { from: 46, to: 96,  dur: 720,  pause: 270 },
-    { from: 96, to: 100, dur: 260,  pause: 0   },
+    { from: 46, to: 72,  dur: 600,  pause: 250 },
+    { from: 72, to: 100, dur: 600,  pause: 0   },
   ];
 
   var segIdx     = 0;
@@ -19,8 +19,8 @@
   var pauseUntil = null;
 
   function easeOut(t) {
-    // Fast start, decelerates into the waypoint
-    return 1 - Math.pow(1 - t, 2.8);
+    // Smooth in and out — gentle approach to each waypoint
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
   function setVal(v) {
