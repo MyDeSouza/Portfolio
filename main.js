@@ -23,39 +23,37 @@
     });
   }
 
+  // Slowly frost background while text is still visible
   setTimeout(function () {
-    // Cancel the CSS animation (forwards fill was locking the transform),
-    // snapshot current state, then apply exit transition
+    intro.style.transition =
+      'background-color 0.8s ease, ' +
+      'backdrop-filter 0.8s ease, ' +
+      '-webkit-backdrop-filter 0.8s ease';
+    intro.style.backgroundColor      = 'rgba(236,238,245,0.55)';
+    intro.style.backdropFilter       = 'blur(14px)';
+    intro.style.webkitBackdropFilter = 'blur(14px)';
+  }, 1000);
+
+  // Text exits once frosting has had time to build
+  setTimeout(function () {
     introText.style.opacity   = '1';
     introText.style.transform = 'translateY(0)';
     introText.style.animation = 'none';
-    void introText.offsetHeight; // force reflow so transition sees the starting values
+    void introText.offsetHeight;
     introText.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     introText.style.opacity    = '0';
     introText.style.transform  = 'translateY(-32px)';
 
+    // Frosted overlay fades out after text is gone
     setTimeout(function () {
-      // 2. Background becomes frosted glass — wait for it to fully settle
-      intro.style.transition =
-        'background-color 0.4s ease, ' +
-        'backdrop-filter 0.4s ease, ' +
-        '-webkit-backdrop-filter 0.4s ease';
-      intro.style.backgroundColor      = 'rgba(236,238,245,0.5)';
-      intro.style.backdropFilter       = 'blur(14px)';
-      intro.style.webkitBackdropFilter = 'blur(14px)';
-
+      intro.style.transition = 'opacity 0.5s ease';
+      intro.style.opacity    = '0';
       setTimeout(function () {
-        // 3. Frosted fades out completely — only then reveal page
-        intro.style.transition = 'opacity 0.5s ease';
-        intro.style.opacity    = '0';
-
-        setTimeout(function () {
-          intro.remove();
-          revealPage();
-        }, 520);
-      }, 440);
+        intro.remove();
+        revealPage();
+      }, 520);
     }, 450);
-  }, 1600);
+  }, 1800);
 }());
 
 // ── Nav ──────────────────────────────────────────────────────
