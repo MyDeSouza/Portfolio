@@ -3,8 +3,9 @@
   var loader = document.getElementById('loader');
   if (!loader) return;
 
-  var numEl   = loader.querySelector('.loader-num');
-  var barFill = loader.querySelector('.loader-bar-fill');
+  var numEl    = loader.querySelector('.loader-num');
+  var barFill  = loader.querySelector('.loader-bar-fill');
+  var countEl  = loader.querySelector('.loader-count');
 
   // Each segment: from → to over dur ms, then pause ms before next
   var segments = [
@@ -12,6 +13,13 @@
     { from: 22, to: 46,  dur: 560,  pause: 200 },
     { from: 46, to: 72,  dur: 600,  pause: 250 },
     { from: 72, to: 100, dur: 600,  pause: 0   },
+  ];
+
+  // Background + counter reveal at each waypoint pause (indexed by segment just completed)
+  var revealSteps = [
+    { bg: 'rgba(236,238,245,0.76)', cnt: '0.80' },  // after 22
+    { bg: 'rgba(236,238,245,0.50)', cnt: '0.55' },  // after 46
+    { bg: 'rgba(236,238,245,0.22)', cnt: '0.28' },  // after 72
   ];
 
   var segIdx     = 0;
@@ -24,13 +32,19 @@
   }
 
   function setVal(v) {
-    numEl.textContent        = Math.round(v);
-    barFill.style.height     = v + '%';
+    numEl.textContent    = Math.round(v);
+    barFill.style.height = v + '%';
   }
 
   function finish() {
-    loader.classList.add('fade-out');
-    setTimeout(function () { loader.remove(); }, 750);
+    // Frosted state: near-transparent overlay, counter gone
+    loader.style.backgroundColor = 'rgba(236,238,245,0.10)';
+    countEl.style.opacity        = '0';
+    // Brief frosted moment, then fade the whole loader out
+    setTimeout(function () {
+      loader.classList.add('fade-out');
+      setTimeout(function () { loader.remove(); }, 750);
+    }, 360);
   }
 
   function tick(ts) {
@@ -57,6 +71,12 @@
     segIdx++;
 
     if (seg.pause > 0) {
+      // Apply reveal step as the numbers freeze
+      var step = revealSteps[segIdx - 1];
+      if (step) {
+        loader.style.backgroundColor = step.bg;
+        countEl.style.opacity        = step.cnt;
+      }
       pauseUntil = ts + seg.pause;
       requestAnimationFrame(tick);
     } else {
