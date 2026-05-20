@@ -624,6 +624,43 @@ p, .body {
 }
 
 /* =========================================================
+   Scroll-snap (projects page)
+   ========================================================= */
+html[data-snap] {
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 56px; /* accounts for sticky topbar */
+}
+
+.snap-section {
+  scroll-snap-align: start;
+}
+
+.snap-header {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.snap-grid {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.projects-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  width: 100%;
+  padding: var(--s-5) 0;
+}
+
+@media (max-width: 640px) {
+  .projects-pair { grid-template-columns: 1fr; }
+}
+
+/* =========================================================
    Projects index — card grid
    ========================================================= */
 .projects-grid {
