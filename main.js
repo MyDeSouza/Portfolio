@@ -23,18 +23,7 @@
     });
   }
 
-  // Slowly frost background while text is still visible (text fully in at ~1.5s)
-  setTimeout(function () {
-    intro.style.transition =
-      'background-color 1s ease, ' +
-      'backdrop-filter 1s ease, ' +
-      '-webkit-backdrop-filter 1s ease';
-    intro.style.backgroundColor      = 'rgba(236,238,245,0.45)';
-    intro.style.backdropFilter       = 'blur(22px)';
-    intro.style.webkitBackdropFilter = 'blur(22px)';
-  }, 1600);
-
-  // Text exits
+  // Text exits, then page loads in
   setTimeout(function () {
     introText.style.opacity   = '1';
     introText.style.transform = 'translateY(0)';
@@ -44,15 +33,10 @@
     introText.style.opacity    = '0';
     introText.style.transform  = 'translateY(-32px)';
 
-    // Frosted overlay fades out as text slides away
     setTimeout(function () {
-      intro.style.transition = 'opacity 0.7s ease';
-      intro.style.opacity    = '0';
-      setTimeout(function () {
-        intro.remove();
-        revealPage();
-      }, 720);
-    }, 50);
+      intro.remove();
+      revealPage();
+    }, 520);
   }, 1800);
 }());
 
