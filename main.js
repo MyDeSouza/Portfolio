@@ -27,25 +27,36 @@
   intro.style.height = window.innerHeight + 'px';
 
   function revealPage() {
-    // Nav pill scales up out of the circle
+    // Pill slides out from the circle — clip-path expands from active item rightward
     if (navWrapper) {
       navWrapper.style.opacity = '';
-      var pill = navWrapper.querySelector('.nav-pill');
-      if (pill) pill.classList.add('pill-expand');
+      var pill       = navWrapper.querySelector('.nav-pill');
+      var activeItem = navWrapper.querySelector('.nav-item.active');
+      if (pill && activeItem) {
+        var ar    = activeItem.getBoundingClientRect();
+        var pr    = pill.getBoundingClientRect();
+        var rClip = Math.round(pr.right  - ar.right);
+        var vClip = Math.round((pr.height - ar.height) / 2);
+        // Start clipped to just the active item (matches the circle)
+        pill.style.clipPath = 'inset(' + vClip + 'px ' + rClip + 'px ' + vClip + 'px 0 round 999px)';
+        void pill.offsetHeight;
+        pill.style.transition = 'clip-path 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+        pill.style.clipPath   = 'inset(0 0 0 0 round 999px)';
+      }
     }
-    // Mark fades in slightly after
+    // Mark fades in after pill is open
     if (mark) {
       setTimeout(function () {
         mark.style.opacity = '';
         mark.classList.add('page-reveal');
-      }, 220);
+      }, 400);
     }
     // Page content staggers in
     pageEls.forEach(function (el, i) {
       setTimeout(function () {
         el.style.opacity = '';
         el.classList.add('page-reveal');
-      }, 150 + i * 100);
+      }, 200 + i * 100);
     });
   }
 
@@ -81,12 +92,15 @@
       intro.style.height       = size  + 'px';
       intro.style.borderRadius = '50%';
 
-      // Fade circle out, reveal page
+      // Start pill expanding first, circle stays present on top
       setTimeout(function () {
-        intro.style.transition = 'opacity 0.2s ease';
-        intro.style.opacity    = '0';
         revealPage();
-        setTimeout(function () { intro.remove(); }, 250);
+        // Circle fades after pill has slid out (~500ms into the 550ms expansion)
+        setTimeout(function () {
+          intro.style.transition = 'opacity 0.25s ease';
+          intro.style.opacity    = '0';
+          setTimeout(function () { intro.remove(); }, 280);
+        }, 500);
       }, 720);
     }, 220);
   }
