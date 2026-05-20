@@ -10,9 +10,7 @@
   // Hide all page elements except the main heading — revealed after loader exits
   var pageEls = [
     document.querySelector('.topbar'),
-    document.querySelector('.eyebrow'),
     document.querySelector('.body-lg'),
-    document.querySelector('.home-ctas'),
     document.querySelector('.footer'),
   ].filter(Boolean);
 
