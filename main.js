@@ -23,16 +23,32 @@
     });
   }
 
-  // Text sinks back down (reverse of entry) then intro disappears and page reveals
   setTimeout(function () {
-    introText.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+    // 1. Text slides up and fades out
+    introText.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     introText.style.opacity    = '0';
-    introText.style.transform  = 'translateY(32px)';
+    introText.style.transform  = 'translateY(-32px)';
 
     setTimeout(function () {
-      intro.remove();
-      revealPage();
-    }, 380);
+      // 2. Background bleeds to frosted glass
+      intro.style.transition =
+        'background-color 0.35s ease, ' +
+        'backdrop-filter 0.35s ease, ' +
+        '-webkit-backdrop-filter 0.35s ease';
+      intro.style.backgroundColor      = 'rgba(236,238,245,0.5)';
+      intro.style.backdropFilter       = 'blur(14px)';
+      intro.style.webkitBackdropFilter = 'blur(14px)';
+
+      setTimeout(function () {
+        // 3. Frosted screen fades out, page reveals underneath
+        intro.style.transition = 'opacity 0.5s ease';
+        intro.style.opacity    = '0';
+        setTimeout(function () {
+          intro.remove();
+          revealPage();
+        }, 300);
+      }, 380);
+    }, 320);
   }, 1600);
 }());
 
