@@ -69,10 +69,11 @@
     var tTop  = ir.top  + (ir.height - size) / 2;
     var tLeft = ir.left + (ir.width  - size) / 2;
 
-    // Text rises and fades out
-    introText.style.transition = 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+    // Wipe text out from bottom up
+    var sp = 'cubic-bezier(0.16, 1, 0.3, 1)';
+    introText.style.transition = 'clip-path 0.35s ' + sp + ', opacity 0.35s ' + sp;
+    introText.style.clipPath   = 'inset(0 0 100% 0)';
     introText.style.opacity    = '0';
-    introText.style.transform  = 'translateY(-28px)';
 
     setTimeout(function () {
       intro.style.overflow = 'hidden';
