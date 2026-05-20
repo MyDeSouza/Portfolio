@@ -314,8 +314,7 @@ p, .body {
   letter-spacing: -0.01em;
   line-height: 1.1;
   color: var(--fg);
-  text-shadow: 0 1px 8px rgba(240, 241, 245, 0.8);
-  transition: opacity 0.15s ease, text-shadow var(--dur-2) var(--ease-in-out);
+  transition: opacity 0.15s ease;
 }
 .mark-role {
   font-family: var(--serif);
@@ -325,16 +324,7 @@ p, .body {
   letter-spacing: 0;
   text-transform: none;
   line-height: 1.2;
-  text-shadow: 0 1px 6px rgba(240, 241, 245, 0.7);
-  transition: opacity 0.15s ease, text-shadow var(--dur-2) var(--ease-in-out);
-}
-.topbar.over-dark .mark-name,
-[data-mode="project"] .mark-name {
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
-}
-.topbar.over-dark .mark-role,
-[data-mode="project"] .mark-role {
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.15s ease;
 }
 
 /* ── Nav pill ─────────────────────────────────────────── */
