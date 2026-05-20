@@ -24,7 +24,12 @@
   }
 
   setTimeout(function () {
-    // 1. Text slides up and fades — wait for it to fully finish
+    // Cancel the CSS animation (forwards fill was locking the transform),
+    // snapshot current state, then apply exit transition
+    introText.style.opacity   = '1';
+    introText.style.transform = 'translateY(0)';
+    introText.style.animation = 'none';
+    void introText.offsetHeight; // force reflow so transition sees the starting values
     introText.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     introText.style.opacity    = '0';
     introText.style.transform  = 'translateY(-32px)';
