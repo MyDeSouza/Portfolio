@@ -93,6 +93,40 @@
     <span class="footer-mark">Built by hand.</span>
   </footer>
 
+  <script>
+  (function () {
+    var h1   = document.querySelector('.page-header h1');
+    var grid = document.querySelector('.projects-grid');
+    if (!h1 || !grid) return;
+
+    var easeOut   = 'cubic-bezier(0.16, 1, 0.3, 1)';
+    var easeInOut = 'cubic-bezier(0.65, 0, 0.35, 1)';
+
+    // Measure natural position, then jump h1 to vertical centre
+    var rect   = h1.getBoundingClientRect();
+    var offset = Math.round(window.innerHeight / 2 - (rect.top + rect.height / 2));
+    h1.style.transform  = 'translateY(' + offset + 'px)';
+    h1.style.willChange = 'transform';
+
+    // Hold grid below fold
+    grid.style.opacity         = '0';
+    grid.style.transform       = 'translateY(72px) scale(0.97)';
+    grid.style.transformOrigin = 'top center';
+
+    // After pause: slide h1 to its natural position
+    setTimeout(function () {
+      h1.style.transition = 'transform 0.9s ' + easeInOut;
+      h1.style.transform  = 'translateY(0)';
+
+      // Cards rise up shortly after
+      setTimeout(function () {
+        grid.style.transition = 'opacity 0.65s ' + easeOut + ', transform 0.75s ' + easeOut;
+        grid.style.opacity    = '1';
+        grid.style.transform  = 'translateY(0) scale(1)';
+      }, 320);
+    }, 700);
+  }());
+  </script>
   <script src="../main.js"></script>
 </body>
 </html>
