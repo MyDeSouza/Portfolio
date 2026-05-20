@@ -5,112 +5,35 @@
 
   var introText = intro.querySelector('.intro-text');
 
-  // Nav pill expands from circle; everything else fades in
-  var navWrapper = document.querySelector('.nav-pill-wrapper');
-  var mark       = document.querySelector('.mark');
-  var pageEls    = [
+  var pageEls = [
+    document.querySelector('.topbar'),
     document.querySelector('.h-display'),
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
   ].filter(Boolean);
 
-  if (navWrapper) navWrapper.style.opacity = '0';
-  if (mark)       mark.style.opacity       = '0';
   pageEls.forEach(function (el) { el.style.opacity = '0'; });
 
-  // Pin to explicit px immediately — avoids a layout snap when transitioning from inset:0
-  intro.style.top    = '0px';
-  intro.style.left   = '0px';
-  intro.style.right  = 'auto';
-  intro.style.bottom = 'auto';
-  intro.style.width  = window.innerWidth  + 'px';
-  intro.style.height = window.innerHeight + 'px';
-
   function revealPage() {
-    // Pill slides out from the circle — clip-path expands from active item rightward
-    if (navWrapper) {
-      navWrapper.style.opacity = '';
-      var pill       = navWrapper.querySelector('.nav-pill');
-      var activeItem = navWrapper.querySelector('.nav-item.active');
-      if (pill && activeItem) {
-        var ar    = activeItem.getBoundingClientRect();
-        var pr    = pill.getBoundingClientRect();
-        var rClip = Math.round(pr.right  - ar.right);
-        var vClip = Math.round((pr.height - ar.height) / 2);
-        // Start clipped to just the active item (matches the circle)
-        pill.style.clipPath = 'inset(' + vClip + 'px ' + rClip + 'px ' + vClip + 'px 0 round 999px)';
-        void pill.offsetHeight;
-        pill.style.transition = 'clip-path 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
-        pill.style.clipPath   = 'inset(0 0 0 0 round 999px)';
-      }
-    }
-    // Mark fades in after pill is open
-    if (mark) {
-      setTimeout(function () {
-        mark.style.opacity = '';
-        mark.classList.add('page-reveal');
-      }, 400);
-    }
-    // Page content staggers in
     pageEls.forEach(function (el, i) {
       setTimeout(function () {
         el.style.opacity = '';
         el.classList.add('page-reveal');
-      }, 200 + i * 100);
+      }, 80 + i * 100);
     });
   }
 
-  function shrinkToCircle() {
-    var activeItem = document.querySelector('.nav-pill .nav-item.active');
-    if (!activeItem) { revealPage(); return; }
-
-    var ir   = activeItem.getBoundingClientRect();
-    var size = 44;
-    var tTop  = ir.top  + (ir.height - size) / 2;
-    var tLeft = ir.left + (ir.width  - size) / 2;
-
-    // Wipe text out from bottom up
-    var sp = 'cubic-bezier(0.16, 1, 0.3, 1)';
-    introText.style.transition = 'clip-path 0.35s ' + sp + ', opacity 0.35s ' + sp;
-    introText.style.clipPath   = 'inset(0 0 100% 0)';
+  // Text sinks back down (reverse of entry) then intro disappears and page reveals
+  setTimeout(function () {
+    introText.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
     introText.style.opacity    = '0';
+    introText.style.transform  = 'translateY(32px)';
 
     setTimeout(function () {
-      intro.style.overflow = 'hidden';
-      void intro.offsetHeight;
-
-      var sp = 'cubic-bezier(0.16, 1, 0.3, 1)';
-      intro.style.transition = [
-        'top 0.7s '              + sp,
-        'left 0.7s '             + sp,
-        'width 0.7s '            + sp,
-        'height 0.7s '           + sp,
-        'border-radius 0.7s '    + sp,
-        'background-color 0.7s ' + sp,
-      ].join(', ');
-
-      intro.style.top             = tTop  + 'px';
-      intro.style.left            = tLeft + 'px';
-      intro.style.width           = size  + 'px';
-      intro.style.height          = size  + 'px';
-      intro.style.borderRadius    = '50%';
-      intro.style.backgroundColor = '#0c1116';
-
-      // Start pill expanding first, circle stays present on top
-      setTimeout(function () {
-        revealPage();
-        // Circle fades after pill has slid out (~500ms into the 550ms expansion)
-        setTimeout(function () {
-          intro.style.transition = 'opacity 0.25s ease';
-          intro.style.opacity    = '0';
-          setTimeout(function () { intro.remove(); }, 280);
-        }, 500);
-      }, 720);
-    }, 320);
-  }
-
-  // 0.3s delay + 0.75s wipe = 1.05s fully visible; hold ~0.55s → shrink at 1.6s
-  setTimeout(shrinkToCircle, 1600);
+      intro.remove();
+      revealPage();
+    }, 380);
+  }, 1600);
 }());
 
 // ── Nav ──────────────────────────────────────────────────────
