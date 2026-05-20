@@ -7,6 +7,17 @@
   var barFill  = loader.querySelector('.loader-bar-fill');
   var countEl  = loader.querySelector('.loader-count');
 
+  // Hide all page elements except the main heading — revealed after loader exits
+  var pageEls = [
+    document.querySelector('.topbar'),
+    document.querySelector('.eyebrow'),
+    document.querySelector('.body-lg'),
+    document.querySelector('.home-ctas'),
+    document.querySelector('.footer'),
+  ].filter(Boolean);
+
+  pageEls.forEach(function (el) { el.style.opacity = '0'; });
+
   // Each segment: from → to over dur ms, then pause ms before next
   var segments = [
     { from: 0,  to: 22,  dur: 500,  pause: 220 },
@@ -15,11 +26,11 @@
     { from: 72, to: 100, dur: 600,  pause: 0   },
   ];
 
-  // Background + counter reveal at each waypoint pause (indexed by segment just completed)
+  // bg opacity + blur + counter opacity at each waypoint pause
   var revealSteps = [
-    { bg: 'rgba(236,238,245,0.76)', cnt: '0.80' },  // after 22
-    { bg: 'rgba(236,238,245,0.50)', cnt: '0.55' },  // after 46
-    { bg: 'rgba(236,238,245,0.22)', cnt: '0.28' },  // after 72
+    { bg: 'rgba(236,238,245,0.72)', blur: '14px', cnt: '0.80' },
+    { bg: 'rgba(236,238,245,0.48)', blur: '7px',  cnt: '0.55' },
+    { bg: 'rgba(236,238,245,0.20)', blur: '2px',  cnt: '0.28' },
   ];
 
   var segIdx     = 0;
@@ -37,12 +48,23 @@
   }
 
   function finish() {
-    // Frosted state: near-transparent overlay, counter gone
-    loader.style.backgroundColor = 'rgba(236,238,245,0.10)';
-    countEl.style.opacity        = '0';
-    // Brief frosted moment, then fade the whole loader out
+    // Frosted: clear blur, near-transparent bg, counter gone
+    loader.style.backgroundColor      = 'rgba(236,238,245,0.10)';
+    loader.style.backdropFilter       = 'blur(0px)';
+    loader.style.webkitBackdropFilter = 'blur(0px)';
+    countEl.style.opacity             = '0';
+
     setTimeout(function () {
       loader.classList.add('fade-out');
+
+      // Staggered reveal of page elements as loader fades
+      pageEls.forEach(function (el, i) {
+        setTimeout(function () {
+          el.style.opacity = '';
+          el.classList.add('page-reveal');
+        }, 100 + i * 90);
+      });
+
       setTimeout(function () { loader.remove(); }, 750);
     }, 360);
   }
@@ -71,11 +93,12 @@
     segIdx++;
 
     if (seg.pause > 0) {
-      // Apply reveal step as the numbers freeze
       var step = revealSteps[segIdx - 1];
       if (step) {
-        loader.style.backgroundColor = step.bg;
-        countEl.style.opacity        = step.cnt;
+        loader.style.backgroundColor      = step.bg;
+        loader.style.backdropFilter       = 'blur(' + step.blur + ')';
+        loader.style.webkitBackdropFilter = 'blur(' + step.blur + ')';
+        countEl.style.opacity             = step.cnt;
       }
       pauseUntil = ts + seg.pause;
       requestAnimationFrame(tick);
