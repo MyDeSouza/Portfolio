@@ -15,6 +15,14 @@
 
   pageEls.forEach(function (el) { el.style.opacity = '0'; });
 
+  // Pin to explicit px immediately — avoids a layout snap when transitioning from inset:0
+  intro.style.top    = '0px';
+  intro.style.left   = '0px';
+  intro.style.right  = 'auto';
+  intro.style.bottom = 'auto';
+  intro.style.width  = window.innerWidth  + 'px';
+  intro.style.height = window.innerHeight + 'px';
+
   function revealPage() {
     pageEls.forEach(function (el, i) {
       setTimeout(function () {
@@ -38,15 +46,7 @@
     introText.style.opacity    = '0';
 
     setTimeout(function () {
-      // Switch inset: 0 to explicit px dimensions so they're animatable
-      intro.style.top    = '0px';
-      intro.style.right  = 'auto';
-      intro.style.bottom = 'auto';
-      intro.style.left   = '0px';
-      intro.style.width  = window.innerWidth  + 'px';
-      intro.style.height = window.innerHeight + 'px';
       intro.style.overflow = 'hidden';
-
       void intro.offsetHeight;
 
       var sp = 'cubic-bezier(0.16, 1, 0.3, 1)';
