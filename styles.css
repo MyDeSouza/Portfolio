@@ -1151,3 +1151,12 @@ p, .body {
 .page-reveal {
   animation: pageReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+@keyframes pillExpand {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.pill-expand {
+  animation: pillExpand 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

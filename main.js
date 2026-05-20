@@ -5,14 +5,17 @@
 
   var introText = intro.querySelector('.intro-text');
 
-  // Hide page elements until intro exits
-  var pageEls = [
-    document.querySelector('.topbar'),
+  // Nav pill expands from circle; everything else fades in
+  var navWrapper = document.querySelector('.nav-pill-wrapper');
+  var mark       = document.querySelector('.mark');
+  var pageEls    = [
     document.querySelector('.h-display'),
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
   ].filter(Boolean);
 
+  if (navWrapper) navWrapper.style.opacity = '0';
+  if (mark)       mark.style.opacity       = '0';
   pageEls.forEach(function (el) { el.style.opacity = '0'; });
 
   // Pin to explicit px immediately — avoids a layout snap when transitioning from inset:0
@@ -24,11 +27,25 @@
   intro.style.height = window.innerHeight + 'px';
 
   function revealPage() {
+    // Nav pill scales up out of the circle
+    if (navWrapper) {
+      navWrapper.style.opacity = '';
+      var pill = navWrapper.querySelector('.nav-pill');
+      if (pill) pill.classList.add('pill-expand');
+    }
+    // Mark fades in slightly after
+    if (mark) {
+      setTimeout(function () {
+        mark.style.opacity = '';
+        mark.classList.add('page-reveal');
+      }, 220);
+    }
+    // Page content staggers in
     pageEls.forEach(function (el, i) {
       setTimeout(function () {
         el.style.opacity = '';
         el.classList.add('page-reveal');
-      }, 80 + i * 100);
+      }, 150 + i * 100);
     });
   }
 
