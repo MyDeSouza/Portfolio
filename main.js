@@ -23,7 +23,7 @@
     });
   }
 
-  // Slowly frost background while text is still visible
+  // Slowly frost background while text is still visible (text fully in at ~1.5s)
   setTimeout(function () {
     intro.style.transition =
       'background-color 0.8s ease, ' +
@@ -32,7 +32,7 @@
     intro.style.backgroundColor      = 'rgba(236,238,245,0.55)';
     intro.style.backdropFilter       = 'blur(14px)';
     intro.style.webkitBackdropFilter = 'blur(14px)';
-  }, 1000);
+  }, 1600);
 
   // Text exits once frosting has had time to build
   setTimeout(function () {
@@ -53,7 +53,7 @@
         revealPage();
       }, 520);
     }, 450);
-  }, 1800);
+  }, 2400);
 }());
 
 // ── Nav ──────────────────────────────────────────────────────
