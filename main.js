@@ -7,6 +7,10 @@
   var topbar  = document.querySelector('.topbar');
   var darkEls = document.querySelectorAll('.project-cover, [data-dark]');
 
+  var mark        = document.querySelector('.mark');
+  var markFadeTimer = null;
+  var lastDark    = null;
+
   function checkDark() {
     if (!topbar || !darkEls.length) return;
     var h = topbar.offsetHeight;
@@ -15,7 +19,20 @@
       var r = el.getBoundingClientRect();
       if (r.top < h && r.bottom > 0) isDark = true;
     });
-    topbar.classList.toggle('over-dark', isDark);
+    if (isDark === lastDark) return; // no change
+    lastDark = isDark;
+
+    // Cross-fade: hide mark → swap class → show mark
+    if (mark) {
+      mark.style.opacity = '0';
+      clearTimeout(markFadeTimer);
+      markFadeTimer = setTimeout(function () {
+        topbar.classList.toggle('over-dark', isDark);
+        mark.style.opacity = '1';
+      }, 150);
+    } else {
+      topbar.classList.toggle('over-dark', isDark);
+    }
   }
 
   if (darkEls.length) {

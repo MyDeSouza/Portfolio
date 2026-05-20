@@ -315,8 +315,7 @@ p, .body {
   line-height: 1.1;
   color: var(--fg);
   text-shadow: 0 1px 8px rgba(247, 249, 252, 0.8);
-  transition: color var(--dur-2) var(--ease-in-out),
-              text-shadow var(--dur-2) var(--ease-in-out);
+  transition: opacity 0.15s ease, text-shadow var(--dur-2) var(--ease-in-out);
 }
 .mark-role {
   font-family: var(--serif);
@@ -327,8 +326,7 @@ p, .body {
   text-transform: none;
   line-height: 1.2;
   text-shadow: 0 1px 6px rgba(247, 249, 252, 0.7);
-  transition: color var(--dur-2) var(--ease-in-out),
-              text-shadow var(--dur-2) var(--ease-in-out);
+  transition: opacity 0.15s ease, text-shadow var(--dur-2) var(--ease-in-out);
 }
 .topbar.over-dark .mark-name,
 [data-mode="project"] .mark-name {
