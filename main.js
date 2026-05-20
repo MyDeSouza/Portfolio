@@ -26,14 +26,18 @@
   }
 
   function finish() {
-    loader.classList.add('fade-out');
-    pageEls.forEach(function (el, i) {
-      setTimeout(function () {
-        el.style.opacity = '';
-        el.classList.add('page-reveal');
-      }, 100 + i * 90);
-    });
-    setTimeout(function () { loader.remove(); }, 750);
+    // Slide counter up, then fade the whole loader out
+    countEl.classList.add('loader-count-exit');
+    setTimeout(function () {
+      loader.classList.add('fade-out');
+      pageEls.forEach(function (el, i) {
+        setTimeout(function () {
+          el.style.opacity = '';
+          el.classList.add('page-reveal');
+        }, 100 + i * 90);
+      });
+      setTimeout(function () { loader.remove(); }, 750);
+    }, 380);
   }
 
   function tick(ts) {
@@ -44,13 +48,12 @@
     numEl.textContent    = Math.round(e * 100);
     barFill.style.height = (e * 100) + '%';
 
-    // Blur 20px → 0, bg 0.88 → 0.10, counter fades in last 30%
+    // Blur 20px → 0, bg 0.88 → 0.10
     var blur = (20 * (1 - e)).toFixed(1);
     var bg   = (0.88 - 0.78 * e).toFixed(3);
     loader.style.backgroundColor      = 'rgba(236,238,245,' + bg + ')';
     loader.style.backdropFilter       = 'blur(' + blur + 'px)';
     loader.style.webkitBackdropFilter = 'blur(' + blur + 'px)';
-    countEl.style.opacity = e < 0.7 ? '1' : String(((1 - e) / 0.3).toFixed(3));
 
     if (t < 1) { requestAnimationFrame(tick); } else { finish(); }
   }
