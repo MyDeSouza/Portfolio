@@ -26,34 +26,34 @@
   // Slowly frost background while text is still visible (text fully in at ~1.5s)
   setTimeout(function () {
     intro.style.transition =
-      'background-color 0.8s ease, ' +
-      'backdrop-filter 0.8s ease, ' +
-      '-webkit-backdrop-filter 0.8s ease';
-    intro.style.backgroundColor      = 'rgba(236,238,245,0.55)';
-    intro.style.backdropFilter       = 'blur(14px)';
-    intro.style.webkitBackdropFilter = 'blur(14px)';
+      'background-color 1s ease, ' +
+      'backdrop-filter 1s ease, ' +
+      '-webkit-backdrop-filter 1s ease';
+    intro.style.backgroundColor      = 'rgba(236,238,245,0.45)';
+    intro.style.backdropFilter       = 'blur(22px)';
+    intro.style.webkitBackdropFilter = 'blur(22px)';
   }, 1600);
 
-  // Text exits once frosting has had time to build
+  // Text exits
   setTimeout(function () {
     introText.style.opacity   = '1';
     introText.style.transform = 'translateY(0)';
     introText.style.animation = 'none';
     void introText.offsetHeight;
-    introText.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    introText.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     introText.style.opacity    = '0';
     introText.style.transform  = 'translateY(-32px)';
 
-    // Frosted overlay fades out after text is gone
+    // Frosted overlay fades out — delayed so glass lingers
     setTimeout(function () {
-      intro.style.transition = 'opacity 0.5s ease';
+      intro.style.transition = 'opacity 0.7s ease';
       intro.style.opacity    = '0';
       setTimeout(function () {
         intro.remove();
         revealPage();
-      }, 520);
-    }, 450);
-  }, 2000);
+      }, 720);
+    }, 800);
+  }, 1800);
 }());
 
 // ── Nav ──────────────────────────────────────────────────────
