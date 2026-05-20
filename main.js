@@ -19,7 +19,7 @@
       setTimeout(function () {
         el.style.opacity = '';
         el.classList.add('page-reveal');
-      }, 80 + i * 100);
+      }, i * 60);
     });
   }
 
