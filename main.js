@@ -18,98 +18,43 @@
 
   pageEls.forEach(function (el) { el.style.opacity = '0'; });
 
-  // Each segment: from → to over dur ms, then pause ms before next
-  var segments = [
-    { from: 0,  to: 22,  dur: 500,  pause: 220 },
-    { from: 22, to: 46,  dur: 560,  pause: 200 },
-    { from: 46, to: 72,  dur: 600,  pause: 250 },
-    { from: 72, to: 100, dur: 600,  pause: 0   },
-  ];
+  var duration = 2800;
+  var start    = null;
 
-  // bg opacity + blur + counter opacity at each waypoint pause
-  var revealSteps = [
-    { bg: 'rgba(236,238,245,0.72)', blur: '14px', cnt: '0.80' },
-    { bg: 'rgba(236,238,245,0.48)', blur: '7px',  cnt: '0.55' },
-    { bg: 'rgba(236,238,245,0.20)', blur: '2px',  cnt: '0.28' },
-  ];
-
-  var segIdx     = 0;
-  var segStart   = null;
-  var pauseUntil = null;
-
-  function easeOut(t) {
-    // Smooth in and out — gentle approach to each waypoint
+  function ease(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
-  function setVal(v) {
-    numEl.textContent    = Math.round(v);
-    barFill.style.height = v + '%';
-  }
-
   function finish() {
-    // Frosted: clear blur, near-transparent bg, counter gone
-    loader.style.backgroundColor      = 'rgba(236,238,245,0.10)';
-    loader.style.backdropFilter       = 'blur(0px)';
-    loader.style.webkitBackdropFilter = 'blur(0px)';
-    countEl.style.opacity             = '0';
-
-    setTimeout(function () {
-      loader.classList.add('fade-out');
-
-      // Staggered reveal of page elements as loader fades
-      pageEls.forEach(function (el, i) {
-        setTimeout(function () {
-          el.style.opacity = '';
-          el.classList.add('page-reveal');
-        }, 100 + i * 90);
-      });
-
-      setTimeout(function () { loader.remove(); }, 750);
-    }, 360);
+    loader.classList.add('fade-out');
+    pageEls.forEach(function (el, i) {
+      setTimeout(function () {
+        el.style.opacity = '';
+        el.classList.add('page-reveal');
+      }, 100 + i * 90);
+    });
+    setTimeout(function () { loader.remove(); }, 750);
   }
 
   function tick(ts) {
-    if (segIdx >= segments.length) { finish(); return; }
+    if (start === null) start = ts;
+    var t = Math.min((ts - start) / duration, 1);
+    var e = ease(t);
 
-    if (pauseUntil !== null) {
-      if (ts < pauseUntil) { requestAnimationFrame(tick); return; }
-      pauseUntil = null;
-      segStart   = ts;
-    }
+    numEl.textContent    = Math.round(e * 100);
+    barFill.style.height = (e * 100) + '%';
 
-    if (segStart === null) segStart = ts;
+    // Blur 20px → 0, bg 0.88 → 0.10, counter fades in last 30%
+    var blur = (20 * (1 - e)).toFixed(1);
+    var bg   = (0.88 - 0.78 * e).toFixed(3);
+    loader.style.backgroundColor      = 'rgba(236,238,245,' + bg + ')';
+    loader.style.backdropFilter       = 'blur(' + blur + 'px)';
+    loader.style.webkitBackdropFilter = 'blur(' + blur + 'px)';
+    countEl.style.opacity = e < 0.7 ? '1' : String(((1 - e) / 0.3).toFixed(3));
 
-    var seg = segments[segIdx];
-    var t   = Math.min((ts - segStart) / seg.dur, 1);
-    setVal(seg.from + (seg.to - seg.from) * easeOut(t));
-
-    if (t < 1) {
-      requestAnimationFrame(tick);
-      return;
-    }
-
-    setVal(seg.to);
-    segIdx++;
-
-    if (seg.pause > 0) {
-      var step = revealSteps[segIdx - 1];
-      if (step) {
-        loader.style.backgroundColor      = step.bg;
-        loader.style.backdropFilter       = 'blur(' + step.blur + ')';
-        loader.style.webkitBackdropFilter = 'blur(' + step.blur + ')';
-        countEl.style.opacity             = step.cnt;
-      }
-      pauseUntil = ts + seg.pause;
-      requestAnimationFrame(tick);
-    } else {
-      if (segIdx >= segments.length) { finish(); return; }
-      segStart = ts;
-      requestAnimationFrame(tick);
-    }
+    if (t < 1) { requestAnimationFrame(tick); } else { finish(); }
   }
 
-  setVal(0);
   requestAnimationFrame(tick);
 }());
 
