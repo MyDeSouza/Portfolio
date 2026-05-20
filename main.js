@@ -1,3 +1,83 @@
+// ── Intro screen ────────────────────────────────────────────
+(function () {
+  var intro = document.getElementById('intro');
+  if (!intro) return;
+
+  var introText = intro.querySelector('.intro-text');
+
+  // Hide page elements until intro exits
+  var pageEls = [
+    document.querySelector('.topbar'),
+    document.querySelector('.h-display'),
+    document.querySelector('.body-lg'),
+    document.querySelector('.footer'),
+  ].filter(Boolean);
+
+  pageEls.forEach(function (el) { el.style.opacity = '0'; });
+
+  function revealPage() {
+    pageEls.forEach(function (el, i) {
+      setTimeout(function () {
+        el.style.opacity = '';
+        el.classList.add('page-reveal');
+      }, 80 + i * 100);
+    });
+  }
+
+  function shrinkToCircle() {
+    var activeItem = document.querySelector('.nav-pill .nav-item.active');
+    if (!activeItem) { revealPage(); return; }
+
+    var ir   = activeItem.getBoundingClientRect();
+    var size = 44;
+    var tTop  = ir.top  + (ir.height - size) / 2;
+    var tLeft = ir.left + (ir.width  - size) / 2;
+
+    // Fade text out first
+    introText.style.transition = 'opacity 0.2s ease';
+    introText.style.opacity    = '0';
+
+    setTimeout(function () {
+      // Switch inset: 0 to explicit px dimensions so they're animatable
+      intro.style.top    = '0px';
+      intro.style.right  = 'auto';
+      intro.style.bottom = 'auto';
+      intro.style.left   = '0px';
+      intro.style.width  = window.innerWidth  + 'px';
+      intro.style.height = window.innerHeight + 'px';
+      intro.style.overflow = 'hidden';
+
+      void intro.offsetHeight;
+
+      var sp = 'cubic-bezier(0.4, 0, 0.2, 1)';
+      intro.style.transition = [
+        'top 0.55s '           + sp,
+        'left 0.55s '          + sp,
+        'width 0.55s '         + sp,
+        'height 0.55s '        + sp,
+        'border-radius 0.55s ' + sp,
+      ].join(', ');
+
+      intro.style.top          = tTop  + 'px';
+      intro.style.left         = tLeft + 'px';
+      intro.style.width        = size  + 'px';
+      intro.style.height       = size  + 'px';
+      intro.style.borderRadius = '50%';
+
+      // Fade circle out, reveal page
+      setTimeout(function () {
+        intro.style.transition = 'opacity 0.2s ease';
+        intro.style.opacity    = '0';
+        revealPage();
+        setTimeout(function () { intro.remove(); }, 250);
+      }, 600);
+    }, 220);
+  }
+
+  // 0.3s delay + 0.75s wipe = 1.05s fully visible; hold ~0.55s → shrink at 1.6s
+  setTimeout(shrinkToCircle, 1600);
+}());
+
 // ── Nav ──────────────────────────────────────────────────────
 (function () {
   var wrapper = document.querySelector('.nav-pill-wrapper');
