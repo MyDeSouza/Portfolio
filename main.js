@@ -49,13 +49,13 @@
 
       void intro.offsetHeight;
 
-      var sp = 'cubic-bezier(0.4, 0, 0.2, 1)';
+      var sp = 'cubic-bezier(0.16, 1, 0.3, 1)';
       intro.style.transition = [
-        'top 0.55s '           + sp,
-        'left 0.55s '          + sp,
-        'width 0.55s '         + sp,
-        'height 0.55s '        + sp,
-        'border-radius 0.55s ' + sp,
+        'top 0.7s '           + sp,
+        'left 0.7s '          + sp,
+        'width 0.7s '         + sp,
+        'height 0.7s '        + sp,
+        'border-radius 0.7s ' + sp,
       ].join(', ');
 
       intro.style.top          = tTop  + 'px';
@@ -70,7 +70,7 @@
         intro.style.opacity    = '0';
         revealPage();
         setTimeout(function () { intro.remove(); }, 250);
-      }, 600);
+      }, 720);
     }, 220);
   }
 
