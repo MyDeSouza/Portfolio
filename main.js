@@ -1,3 +1,76 @@
+// ── Loading screen ──────────────────────────────────────────
+(function () {
+  var loader = document.getElementById('loader');
+  if (!loader) return;
+
+  var numEl   = loader.querySelector('.loader-num');
+  var barFill = loader.querySelector('.loader-bar-fill');
+
+  // Each segment: from → to over dur ms, then pause ms before next
+  var segments = [
+    { from: 0,  to: 22,  dur: 480,  pause: 220 },
+    { from: 22, to: 46,  dur: 560,  pause: 200 },
+    { from: 46, to: 96,  dur: 720,  pause: 270 },
+    { from: 96, to: 100, dur: 260,  pause: 0   },
+  ];
+
+  var segIdx     = 0;
+  var segStart   = null;
+  var pauseUntil = null;
+
+  function easeOut(t) {
+    // Fast start, decelerates into the waypoint
+    return 1 - Math.pow(1 - t, 2.8);
+  }
+
+  function setVal(v) {
+    numEl.textContent        = Math.round(v);
+    barFill.style.height     = v + '%';
+  }
+
+  function finish() {
+    loader.classList.add('fade-out');
+    setTimeout(function () { loader.remove(); }, 750);
+  }
+
+  function tick(ts) {
+    if (segIdx >= segments.length) { finish(); return; }
+
+    if (pauseUntil !== null) {
+      if (ts < pauseUntil) { requestAnimationFrame(tick); return; }
+      pauseUntil = null;
+      segStart   = ts;
+    }
+
+    if (segStart === null) segStart = ts;
+
+    var seg = segments[segIdx];
+    var t   = Math.min((ts - segStart) / seg.dur, 1);
+    setVal(seg.from + (seg.to - seg.from) * easeOut(t));
+
+    if (t < 1) {
+      requestAnimationFrame(tick);
+      return;
+    }
+
+    setVal(seg.to);
+    segIdx++;
+
+    if (seg.pause > 0) {
+      pauseUntil = ts + seg.pause;
+      requestAnimationFrame(tick);
+    } else {
+      if (segIdx >= segments.length) { finish(); return; }
+      segStart = ts;
+      requestAnimationFrame(tick);
+    }
+  }
+
+  setVal(0);
+  requestAnimationFrame(tick);
+}());
+
+// ── Nav ──────────────────────────────────────────────────────
 (function () {
   var wrapper = document.querySelector('.nav-pill-wrapper');
   var pill    = document.querySelector('.nav-pill');
