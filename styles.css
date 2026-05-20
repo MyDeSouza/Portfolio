@@ -7,7 +7,7 @@ html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 
 :root {
   /* ── Neutrals — cool grey, slight blue undertone ── */
-  --paper:        #F5F6FA;
+  --paper:        #ECEEF5;
   --surface:      #ffffff;
   --ink:          #0c1116;
   --ink-2:        #3a414d;
