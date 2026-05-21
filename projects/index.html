@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
+
+  <div id="page-intro" aria-hidden="true">
+    <span class="intro-text">Discover my work</span>
+  </div>
+
   <header class="topbar">
     <a href="/" class="mark">
       <span class="mark-name">Max DeSouza</span>
@@ -90,36 +95,41 @@
 
   <script>
   (function () {
-    var h1   = document.querySelector('.page-header h1');
-    var grid = document.querySelector('.projects-grid');
-    if (!h1 || !grid) return;
+    var intro     = document.getElementById('page-intro');
+    var introText = intro.querySelector('.intro-text');
 
-    var easeOut   = 'cubic-bezier(0.16, 1, 0.3, 1)';
-    var easeInOut = 'cubic-bezier(0.65, 0, 0.35, 1)';
+    var pageEls = [
+      document.querySelector('.topbar'),
+      document.querySelector('.page-header h1'),
+      document.querySelector('.projects-grid'),
+      document.querySelector('.footer'),
+    ].filter(Boolean);
 
-    // Measure natural position, then jump h1 to vertical centre
-    var rect   = h1.getBoundingClientRect();
-    var offset = Math.round(window.innerHeight / 2 - (rect.top + rect.height / 2));
-    h1.style.transform  = 'translateY(' + offset + 'px)';
-    h1.style.willChange = 'transform';
+    pageEls.forEach(function (el) { el.style.opacity = '0'; });
 
-    // Hold grid below fold
-    grid.style.opacity         = '0';
-    grid.style.transform       = 'translateY(72px) scale(0.88)';
-    grid.style.transformOrigin = 'top center';
+    function revealPage() {
+      pageEls.forEach(function (el, i) {
+        setTimeout(function () {
+          el.style.opacity = '';
+          el.classList.add('page-reveal');
+        }, i * 60);
+      });
+    }
 
-    // After pause: slide h1 to its natural position
     setTimeout(function () {
-      h1.style.transition = 'transform 0.9s ' + easeInOut;
-      h1.style.transform  = 'translateY(0)';
+      introText.style.opacity   = '1';
+      introText.style.transform = 'translateY(0)';
+      introText.style.animation = 'none';
+      void introText.offsetHeight;
+      introText.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      introText.style.opacity    = '0';
+      introText.style.transform  = 'translateY(-32px)';
 
-      // Cards rise up shortly after
       setTimeout(function () {
-        grid.style.transition = 'opacity 0.65s ' + easeOut + ', transform 0.75s ' + easeOut;
-        grid.style.opacity    = '1';
-        grid.style.transform  = 'translateY(0) scale(1)';
+        intro.remove();
+        revealPage();
       }, 520);
-    }, 700);
+    }, 1800);
   }());
   </script>
   <script src="../main.js"></script>
