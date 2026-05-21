@@ -357,7 +357,15 @@ p, .body {
   border-radius: 50%;
   position: relative;
   overflow: hidden;
-  transition: width 0.35s ease, opacity 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease,
+              background-color 0.25s ease,
+              border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-item:hover {
+  width: var(--hover-w, 60px);
+  background: #0c1116;
+  border-radius: 12px;
 }
 /* click flash only — indicator handles hover/active highlight */
 .nav-item:active { background: rgba(255, 255, 255, 0.28); }
@@ -389,7 +397,9 @@ p, .body {
   display: block;
   opacity: 1;
   filter: invert(1);
-  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.18s ease,
+              transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .home-icon-wrap {
   position: relative;
@@ -399,7 +409,45 @@ p, .body {
   overflow: hidden;
   opacity: 1;
   filter: invert(1);
-  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.18s ease,
+              transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-item:hover .nav-icon,
+.nav-item:hover .home-icon-wrap {
+  opacity: 0;
+  transform: translateY(-8px);
+  filter: none;
+}
+
+/* Hover label — injected by JS */
+.nav-item-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.2s ease 0.06s, transform 0.2s ease 0.06s;
+  pointer-events: none;
+}
+.nav-item:hover .nav-item-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade the active indicator while any item is hovered */
+.nav-pill:has(.nav-item:hover) .nav-indicator {
+  opacity: 0;
+  transition: opacity 0.15s ease;
 }
 
 
@@ -433,15 +481,8 @@ p, .body {
   100% { transform: translateY(110%); }
 }
 
-/* Per-page label beneath the pill */
-.nav-label {
-  font-family: var(--mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  transition: opacity 0.3s ease, color var(--dur-2) var(--ease-in-out);
-}
+/* Per-page label — hidden, replaced by per-icon hover labels */
+.nav-label { display: none; }
 
 /* Collapse on scroll-down — JS adds .collapsed to .nav-pill-wrapper */
 .nav-pill-wrapper.collapsed .nav-pill { gap: 0; padding: 8px; }

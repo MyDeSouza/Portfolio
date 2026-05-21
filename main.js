@@ -251,6 +251,24 @@
     }
   }
 
+
+  // ── Per-icon hover labels ────────────────────────────────────
+  // Measure each label's width and inject span; CSS handles the animation.
+  var measurer = document.createElement('span');
+  measurer.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:11px;font-weight:500;letter-spacing:0.05em;font-family:inherit;';
+  document.body.appendChild(measurer);
+  navItems.forEach(function (item) {
+    var text = item.getAttribute('aria-label') || '';
+    measurer.textContent = text;
+    var w = measurer.offsetWidth + 24; // 12px padding each side
+    item.style.setProperty('--hover-w', Math.max(34, w) + 'px');
+    var lbl = document.createElement('span');
+    lbl.className = 'nav-item-label';
+    lbl.textContent = text;
+    item.appendChild(lbl);
+  });
+  document.body.removeChild(measurer);
+
   // ── Scroll collapse ──────────────────────────────────────────
   var lastY   = window.scrollY;
   var ticking = false;
