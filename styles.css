@@ -364,8 +364,15 @@ p, .body {
 }
 .nav-item:hover {
   width: var(--hover-w, 60px);
+  border-radius: 17px; /* half of 34px height = true pill */
+}
+/* Active: dark pill (circle morphs into pill) */
+.nav-item.active:hover {
   background: #0c1116;
-  border-radius: 12px;
+}
+/* Non-active: no background — just text appears */
+.nav-item:not(.active):hover {
+  background: transparent;
 }
 /* click flash only — indicator handles hover/active highlight */
 .nav-item:active { background: rgba(255, 255, 255, 0.28); }
@@ -432,20 +439,26 @@ p, .body {
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: var(--fg); /* dark on light backdrop (non-active default) */
   white-space: nowrap;
   opacity: 0;
   transform: translateY(5px);
   transition: opacity 0.2s ease 0.06s, transform 0.2s ease 0.06s;
   pointer-events: none;
 }
+/* Active item label is always white (dark pill bg) */
+.nav-item.active .nav-item-label { color: #ffffff; }
+/* Dark backdrop: non-active label also flips to white */
+.topbar.over-dark .nav-item:not(.active) .nav-item-label,
+[data-mode="project"] .nav-item:not(.active) .nav-item-label { color: #ffffff; }
+
 .nav-item:hover .nav-item-label {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Fade the active indicator while any item is hovered */
-.nav-pill:has(.nav-item:hover) .nav-indicator {
+/* Fade the indicator only when a non-active item is hovered */
+.nav-pill:has(.nav-item:not(.active):hover) .nav-indicator {
   opacity: 0;
   transition: opacity 0.15s ease;
 }
