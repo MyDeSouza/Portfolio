@@ -278,24 +278,29 @@
 
     activeItem.addEventListener('mouseenter', function () {
       stopNonActiveTracking();
-      var hoverW = parseFloat(getComputedStyle(activeItem).getPropertyValue('--hover-w')) || 60;
-      var ratio  = (hoverW + 10) / 44; // grow symmetrically via scaleX
-      // rAF: same frame as CSS width/transform transition
+      var pr       = pill.getBoundingClientRect();
+      var ir       = activeItem.getBoundingClientRect();
+      var itemLeft = ir.left - pr.left;
+      origIndLeft  = itemLeft + ir.width / 2;
+      var hoverW   = parseFloat(getComputedStyle(activeItem).getPropertyValue('--hover-w')) || 60;
+      var newLeft  = itemLeft + hoverW / 2;
+      // rAF: start JS transition the same frame the CSS width transition fires
       requestAnimationFrame(function () {
         indicator.style.transition =
-          'transform ' + pillEase +
+          'width ' + pillEase + ', left ' + pillEase +
           ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
           ', background-color var(--dur-2) var(--ease-in-out)';
-        indicator.style.transform = 'translate(-50%, -50%) scaleX(' + ratio.toFixed(4) + ')';
+        indicator.style.width = (hoverW + 10) + 'px';
+        indicator.style.left  = newLeft + 'px';
       });
     });
 
     activeItem.addEventListener('mouseleave', function () {
-      indicator.style.transition =
-        'transform ' + pillEase +
-        ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
+      indicator.style.transition  =
+        'width ' + pillEase + ', left ' + pillEase + ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
         ', background-color var(--dur-2) var(--ease-in-out)';
-      indicator.style.transform = 'translate(-50%, -50%) scaleX(1)';
+      indicator.style.width        = '44px';
+      if (origIndLeft !== null) indicator.style.left = origIndLeft + 'px';
     });
   }
 
@@ -318,9 +323,9 @@
       if (item === activeItem) return;
       item.addEventListener('mouseenter', function () {
         if (nonActiveRAF) return;
-        // Snap to clean circle state immediately
+        // Snap to clean circle immediately — no mid-animation conflict
         indicator.style.transition = 'none';
-        indicator.style.transform  = 'translate(-50%, -50%) scaleX(1)';
+        indicator.style.width      = '44px';
         snapPosition(activeItem);
         requestAnimationFrame(function () {
           // Only opacity/bg have transitions; left snaps every rAF frame

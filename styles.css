@@ -357,17 +357,14 @@ p, .body {
   border-radius: 50%;
   position: relative;
   overflow: hidden;
-  transition: width     0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity   0.3s ease,
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease,
               background-color 0.25s ease,
-              border-radius    0.4s cubic-bezier(0.16, 1, 0.3, 1);
+              border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nav-item:hover {
   width: var(--hover-w, 60px);
-  /* shift left by half the growth so expansion is visually centred */
-  transform: translateX(calc((34px - var(--hover-w, 60px)) / 2));
-  border-radius: 17px;
+  border-radius: 17px; /* half of 34px height = true pill */
 }
 /* Active: indicator handles the dark bg — no extra layer */
 .nav-item.active:hover  { background: transparent; }
