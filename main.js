@@ -277,20 +277,22 @@
     var origIndLeft = null;
 
     activeItem.addEventListener('mouseenter', function () {
-      // stop non-active tracking so it does not override pill animation
       stopNonActiveTracking();
-      var pr      = pill.getBoundingClientRect();
-      var ir      = activeItem.getBoundingClientRect();
-      var itemLeft = ir.left - pr.left;          // left edge of item in pill
-      origIndLeft  = itemLeft + ir.width / 2;    // natural centre (unexpanded)
+      var pr       = pill.getBoundingClientRect();
+      var ir       = activeItem.getBoundingClientRect();
+      var itemLeft = ir.left - pr.left;
+      origIndLeft  = itemLeft + ir.width / 2;
       var hoverW   = parseFloat(getComputedStyle(activeItem).getPropertyValue('--hover-w')) || 60;
-      var newLeft  = itemLeft + hoverW / 2;      // centre of expanded item
-
-      indicator.style.transition  =
-        'width ' + pillEase + ', left ' + pillEase + ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
-        ', background-color var(--dur-2) var(--ease-in-out)';
-      indicator.style.width        = (hoverW + 10) + 'px';
-      indicator.style.left         = newLeft + 'px';
+      var newLeft  = itemLeft + hoverW / 2;
+      // rAF: start JS transition the same frame the CSS width transition fires
+      requestAnimationFrame(function () {
+        indicator.style.transition =
+          'width ' + pillEase + ', left ' + pillEase +
+          ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
+          ', background-color var(--dur-2) var(--ease-in-out)';
+        indicator.style.width = (hoverW + 10) + 'px';
+        indicator.style.left  = newLeft + 'px';
+      });
     });
 
     activeItem.addEventListener('mouseleave', function () {
@@ -321,20 +323,23 @@
       if (item === activeItem) return;
       item.addEventListener('mouseenter', function () {
         if (nonActiveRAF) return;
-        // No positional transition while tracking
-        indicator.style.transition =
-          'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
-          ', background-color var(--dur-2) var(--ease-in-out)';
-        // Ensure indicator is in circle state
-        indicator.style.width        = '44px';
-        function loop() {
-          snapPosition(activeItem);
+        // Snap to clean circle immediately — no mid-animation conflict
+        indicator.style.transition = 'none';
+        indicator.style.width      = '44px';
+        snapPosition(activeItem);
+        requestAnimationFrame(function () {
+          // Only opacity/bg have transitions; left snaps every rAF frame
+          indicator.style.transition =
+            'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
+            ', background-color var(--dur-2) var(--ease-in-out)';
+          function loop() {
+            snapPosition(activeItem);
+            nonActiveRAF = requestAnimationFrame(loop);
+          }
           nonActiveRAF = requestAnimationFrame(loop);
-        }
-        nonActiveRAF = requestAnimationFrame(loop);
+        });
       });
       item.addEventListener('mouseleave', function () {
-        // Wait for CSS width transition to finish before stopping
         setTimeout(function () {
           stopNonActiveTracking();
           snapPosition(activeItem);
