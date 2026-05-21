@@ -159,10 +159,8 @@
   var markName   = document.querySelector('.mark-name');
   var dsOuter    = null;
   var dsNatW     = 0;
-  var natFontSize = null;
 
   if (markName) {
-    natFontSize = getComputedStyle(markName).fontSize; // e.g. "19.2px"
 
     markName.textContent = '';
     markName.appendChild(document.createTextNode('Max'));
@@ -223,15 +221,16 @@
 
   // ── Collapse helpers ─────────────────────────────────────────
   var hoverExpanded = false;
-  var collapseEase  = '0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-  var expandEase    = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+  var collapseEase  = '0.55s cubic-bezier(0.4, 0, 0.2, 1)';
+  var expandEase    = '0.55s cubic-bezier(0.16, 1, 0.3, 1)';
 
   function doCollapse() {
     wrapper.classList.add('collapsed');
     hideIndicator();
-    if (markName && natFontSize) {
-      markName.style.transition = 'font-size ' + collapseEase;
-      markName.style.fontSize   = (parseFloat(natFontSize) * 0.82) + 'px';
+    if (markName) {
+      markName.style.transformOrigin = 'left center';
+      markName.style.transition     = 'transform ' + collapseEase;
+      markName.style.transform      = 'scale(0.82)';
     }
     if (dsOuter && dsNatW) {
       dsOuter.style.transition = 'width ' + collapseEase;
@@ -242,9 +241,9 @@
   function doExpand() {
     wrapper.classList.remove('collapsed');
     requestAnimationFrame(function () { showIndicator(); });
-    if (markName && natFontSize) {
-      markName.style.transition = 'font-size ' + expandEase;
-      markName.style.fontSize   = natFontSize;
+    if (markName) {
+      markName.style.transition = 'transform ' + expandEase;
+      markName.style.transform  = 'scale(1)';
     }
     if (dsOuter && dsNatW) {
       dsOuter.style.transition = 'width ' + expandEase;
