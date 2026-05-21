@@ -12,6 +12,18 @@
     document.querySelector('.footer'),
   ].filter(Boolean);
 
+  // Show intro on first visit or refresh; skip on in-session page navigation.
+  var navEntry = performance.getEntriesByType('navigation')[0];
+  var isReload = navEntry && navEntry.type === 'reload';
+  var seenIntro = sessionStorage.getItem('intro-seen');
+
+  if (!isReload && seenIntro) {
+    intro.remove();
+    return;
+  }
+
+  sessionStorage.setItem('intro-seen', '1');
+
   pageEls.forEach(function (el) { el.style.opacity = '0'; });
 
   function revealPage() {
@@ -63,10 +75,11 @@
       if (r.top < h && r.bottom > 0) isDark = true;
     });
     if (isDark === lastDark) return; // no change
+    var firstCheck = lastDark === null;
     lastDark = isDark;
 
-    // Cross-fade: hide mark → swap class → show mark
-    if (mark) {
+    // Cross-fade on scroll transitions; apply instantly on first check to avoid flicker
+    if (mark && !firstCheck) {
       mark.style.opacity = '0';
       clearTimeout(markFadeTimer);
       markFadeTimer = setTimeout(function () {
