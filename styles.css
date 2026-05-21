@@ -508,7 +508,7 @@ p, .body {
 .page-header {
   max-width: var(--max);
   margin: 0 auto;
-  padding: var(--s-9) clamp(12px, 1.5vw, 20px) var(--s-9);
+  padding: var(--s-9) var(--gutter) var(--s-9);
   text-align: center;
 }
 
@@ -585,8 +585,6 @@ p, .body {
   flex-direction: column;
   justify-content: center;
   padding: var(--s-9) var(--gutter);
-  max-width: var(--max);
-  margin: 0 auto;
 }
 
 .home-hero .eyebrow {
@@ -629,8 +627,8 @@ p, .body {
 .projects-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(12px, 1.5vw, 20px);
-  padding: 0 clamp(12px, 1.5vw, 20px) var(--s-9);
+  gap: clamp(16px, 2vw, 24px);
+  padding: 0 var(--gutter) var(--s-9);
 }
 
 @media (max-width: 640px) {
