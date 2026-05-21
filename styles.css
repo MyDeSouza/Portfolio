@@ -366,14 +366,10 @@ p, .body {
   width: var(--hover-w, 60px);
   border-radius: 17px; /* half of 34px height = true pill */
 }
-/* Active: dark pill (circle morphs into pill) */
-.nav-item.active:hover {
-  background: #0c1116;
-}
+/* Active: indicator handles the dark bg — no extra layer */
+.nav-item.active:hover  { background: transparent; }
 /* Non-active: no background — just text appears */
-.nav-item:not(.active):hover {
-  background: transparent;
-}
+.nav-item:not(.active):hover { background: transparent; }
 /* click flash only — indicator handles hover/active highlight */
 .nav-item:active { background: rgba(255, 255, 255, 0.28); }
 
