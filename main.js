@@ -31,6 +31,19 @@
     var easeInOut = 'cubic-bezier(0.65, 0, 0.35, 1)';
     var hDisplay  = document.querySelector('.h-display');
     var bodyLg    = document.querySelector('.body-lg');
+    var markName  = document.querySelector('.mark-name');
+
+    // Greet on reveal, then fade back to just the name
+    if (markName) {
+      markName.textContent = "Hi, I'm Max DeSouza";
+      setTimeout(function () {
+        markName.style.opacity = '0';
+        setTimeout(function () {
+          markName.textContent = 'Max DeSouza';
+          markName.style.opacity = '1';
+        }, 200);
+      }, 2500);
+    }
 
     // Topbar and footer: standard staggered reveal
     pageEls.forEach(function (el) {
