@@ -272,8 +272,8 @@
 
   // ── Active-item: morph indicator circle → pill on hover ─────
   if (activeItem) {
-    var pillEaseIn  = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-    var pillEaseOut = '0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+    var pillEase    = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+    
     var origIndLeft = null;
 
     activeItem.addEventListener('mouseenter', function () {
@@ -287,23 +287,17 @@
       var newLeft  = itemLeft + hoverW / 2;      // centre of expanded item
 
       indicator.style.transition  =
-        'width ' + pillEaseIn + ', left ' + pillEaseIn +
-        ', border-radius ' + pillEaseIn +
-        ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
+        'width ' + pillEase + ', left ' + pillEase + ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
         ', background-color var(--dur-2) var(--ease-in-out)';
       indicator.style.width        = (hoverW + 10) + 'px';
       indicator.style.left         = newLeft + 'px';
-      indicator.style.borderRadius = '22px';
     });
 
     activeItem.addEventListener('mouseleave', function () {
       indicator.style.transition  =
-        'width ' + pillEaseOut + ', left ' + pillEaseOut +
-        ', border-radius ' + pillEaseOut +
-        ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
+        'width ' + pillEase + ', left ' + pillEase + ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
         ', background-color var(--dur-2) var(--ease-in-out)';
       indicator.style.width        = '44px';
-      indicator.style.borderRadius = '50%';
       if (origIndLeft !== null) indicator.style.left = origIndLeft + 'px';
     });
   }
@@ -333,7 +327,6 @@
           ', background-color var(--dur-2) var(--ease-in-out)';
         // Ensure indicator is in circle state
         indicator.style.width        = '44px';
-        indicator.style.borderRadius = '50%';
         function loop() {
           snapPosition(activeItem);
           nonActiveRAF = requestAnimationFrame(loop);

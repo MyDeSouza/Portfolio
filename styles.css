@@ -382,7 +382,7 @@ p, .body {
   width: 44px;   /* desktop nav-item (34px) + 5px each side */
   height: 44px;
   background: #0c1116;   /* dark circle on light pill */
-  border-radius: 50%;
+  border-radius: 999px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
