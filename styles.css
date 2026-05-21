@@ -1173,7 +1173,8 @@ p, .body {
   z-index: 9999;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-right: var(--gutter);
 }
 
 .intro-text {
