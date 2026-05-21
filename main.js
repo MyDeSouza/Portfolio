@@ -277,6 +277,8 @@
     var origIndLeft = null;
 
     activeItem.addEventListener('mouseenter', function () {
+      // stop non-active tracking so it does not override pill animation
+      stopNonActiveTracking();
       var pr      = pill.getBoundingClientRect();
       var ir      = activeItem.getBoundingClientRect();
       var itemLeft = ir.left - pr.left;          // left edge of item in pill
@@ -289,7 +291,7 @@
         ', border-radius ' + pillEaseIn +
         ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
         ', background-color var(--dur-2) var(--ease-in-out)';
-      indicator.style.width        = hoverW + 'px';
+      indicator.style.width        = (hoverW + 10) + 'px';
       indicator.style.left         = newLeft + 'px';
       indicator.style.borderRadius = '22px';
     });
@@ -303,6 +305,48 @@
       indicator.style.width        = '44px';
       indicator.style.borderRadius = '50%';
       if (origIndLeft !== null) indicator.style.left = origIndLeft + 'px';
+    });
+  }
+
+
+  // ── Non-active hover: track indicator to active item during layout shifts ──
+  // When a non-active item to the left expands, it pushes the active item right.
+  // A rAF loop snaps the indicator to the active item every frame (no lag).
+  var nonActiveRAF    = null;
+
+  function stopNonActiveTracking() {
+    if (nonActiveRAF) {
+      cancelAnimationFrame(nonActiveRAF);
+      nonActiveRAF = null;
+    }
+    indicator.style.removeProperty('transition');
+  }
+
+  if (activeItem) {
+    navItems.forEach(function (item) {
+      if (item === activeItem) return;
+      item.addEventListener('mouseenter', function () {
+        if (nonActiveRAF) return;
+        // No positional transition while tracking
+        indicator.style.transition =
+          'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
+          ', background-color var(--dur-2) var(--ease-in-out)';
+        // Ensure indicator is in circle state
+        indicator.style.width        = '44px';
+        indicator.style.borderRadius = '50%';
+        function loop() {
+          snapPosition(activeItem);
+          nonActiveRAF = requestAnimationFrame(loop);
+        }
+        nonActiveRAF = requestAnimationFrame(loop);
+      });
+      item.addEventListener('mouseleave', function () {
+        // Wait for CSS width transition to finish before stopping
+        setTimeout(function () {
+          stopNonActiveTracking();
+          snapPosition(activeItem);
+        }, 420);
+      });
     });
   }
 
