@@ -34,14 +34,14 @@
     var markName  = document.querySelector('.mark-name');
 
     // Greet on reveal, then slide "Hi, I'm " off to the left.
-    // The nav IIFE already split mark-name into "Max" + dsOuter span,
-    // so insert the prefix before that existing content.
+    // nav IIFE already split mark-name into "Max" + dsOuter span;
+    // insert prefix before that existing content.
     if (markName) {
       var prefixOuter = document.createElement('span');
       prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
       var prefixInner = document.createElement('span');
       prefixInner.style.display = 'inline-block';
-      prefixInner.textContent   = "Hi, I’m "; // right-curly apostrophe + space
+      prefixInner.textContent   = 'Hi, I’m '; //   = non-breaking space, survives overflow:hidden
       prefixOuter.appendChild(prefixInner);
       markName.insertBefore(prefixOuter, markName.firstChild);
 
@@ -65,7 +65,6 @@
     });
 
     if (hDisplay) {
-      // Cancel CSS fadeUp, measure natural position, offset to vertical centre
       hDisplay.style.animation = 'none';
       void hDisplay.offsetHeight;
       var rect   = hDisplay.getBoundingClientRect();
@@ -135,11 +134,10 @@
       var r = el.getBoundingClientRect();
       if (r.top < h && r.bottom > 0) isDark = true;
     });
-    if (isDark === lastDark) return; // no change
+    if (isDark === lastDark) return;
     var firstCheck = lastDark === null;
     lastDark = isDark;
 
-    // Cross-fade on scroll transitions; apply instantly on first check to avoid flicker
     if (mark && !firstCheck) {
       mark.style.opacity = '0';
       clearTimeout(markFadeTimer);
@@ -158,13 +156,14 @@
   }
 
   // ── Mark-name DeSouza split ──────────────────────────────────
-  // Splits "Max DeSouza" so "DeSouza" can wipe right-to-left on collapse
-  // and reveal left-to-right on expand. Also dims both on collapse.
-  var markName = document.querySelector('.mark-name');
-  var dsOuter  = null;
-  var dsNatW   = 0;
+  var markName   = document.querySelector('.mark-name');
+  var dsOuter    = null;
+  var dsNatW     = 0;
+  var natFontSize = null;
 
   if (markName) {
+    natFontSize = getComputedStyle(markName).fontSize; // e.g. "19.2px"
+
     markName.textContent = '';
     markName.appendChild(document.createTextNode('Max'));
 
@@ -172,7 +171,7 @@
     dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
     var dsInner = document.createElement('span');
     dsInner.style.display = 'inline-block';
-    dsInner.textContent   = ' DeSouza'; // non-breaking space prevents collapse
+    dsInner.textContent   = ' DeSouza'; // non-breaking space keeps gap
     dsOuter.appendChild(dsInner);
     markName.appendChild(dsOuter);
 
@@ -224,18 +223,18 @@
 
   // ── Collapse helpers ─────────────────────────────────────────
   var hoverExpanded = false;
-  var nameEase      = '0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-  var nameEaseOut   = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+  var collapseEase  = '0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+  var expandEase    = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
 
   function doCollapse() {
     wrapper.classList.add('collapsed');
     hideIndicator();
-    if (markName) {
-      markName.style.transition = 'opacity ' + nameEase;
-      markName.style.opacity    = '0.64';
+    if (markName && natFontSize) {
+      markName.style.transition = 'font-size ' + collapseEase;
+      markName.style.fontSize   = (parseFloat(natFontSize) * 0.82) + 'px';
     }
     if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width ' + nameEase;
+      dsOuter.style.transition = 'width ' + collapseEase;
       dsOuter.style.width      = '0';
     }
   }
@@ -243,12 +242,12 @@
   function doExpand() {
     wrapper.classList.remove('collapsed');
     requestAnimationFrame(function () { showIndicator(); });
-    if (markName) {
-      markName.style.transition = 'opacity ' + nameEaseOut;
-      markName.style.opacity    = '1';
+    if (markName && natFontSize) {
+      markName.style.transition = 'font-size ' + expandEase;
+      markName.style.fontSize   = natFontSize;
     }
     if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width ' + nameEaseOut;
+      dsOuter.style.transition = 'width ' + expandEase;
       dsOuter.style.width      = dsNatW + 'px';
     }
   }
@@ -294,10 +293,9 @@
   navItems.forEach(function (item) {
     item.addEventListener('click', function (e) {
       if (wrapper.classList.contains('collapsed')) {
-        e.preventDefault(); // first tap: expand only
+        e.preventDefault();
         doExpand();
       }
-      // second tap: navigation proceeds normally
     });
 
     item.addEventListener('touchstart', function () {
