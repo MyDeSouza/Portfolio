@@ -338,7 +338,7 @@ p, .body {
 .nav-pill {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   background: rgba(205, 206, 212, 0.16);
   border-radius: 999px;
   padding: 8px;
