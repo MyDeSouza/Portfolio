@@ -41,7 +41,7 @@
       prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
       var prefixInner = document.createElement('span');
       prefixInner.style.display = 'inline-block';
-      prefixInner.textContent   = "Hi, I’m "; // curly apostrophe + non-breaking space
+      prefixInner.textContent   = "Hi, I’m "; // right-curly apostrophe + space
       prefixOuter.appendChild(prefixInner);
       markName.insertBefore(prefixOuter, markName.firstChild);
 
@@ -159,7 +159,7 @@
 
   // ── Mark-name DeSouza split ──────────────────────────────────
   // Splits "Max DeSouza" so "DeSouza" can wipe right-to-left on collapse
-  // and reveal left-to-right on expand.
+  // and reveal left-to-right on expand. Also dims both on collapse.
   var markName = document.querySelector('.mark-name');
   var dsOuter  = null;
   var dsNatW   = 0;
@@ -172,7 +172,7 @@
     dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
     var dsInner = document.createElement('span');
     dsInner.style.display = 'inline-block';
-    dsInner.textContent   = ' DeSouza';
+    dsInner.textContent   = ' DeSouza'; // non-breaking space prevents collapse
     dsOuter.appendChild(dsInner);
     markName.appendChild(dsOuter);
 
@@ -224,12 +224,18 @@
 
   // ── Collapse helpers ─────────────────────────────────────────
   var hoverExpanded = false;
+  var nameEase      = '0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+  var nameEaseOut   = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
 
   function doCollapse() {
     wrapper.classList.add('collapsed');
     hideIndicator();
+    if (markName) {
+      markName.style.transition = 'opacity ' + nameEase;
+      markName.style.opacity    = '0.64';
+    }
     if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+      dsOuter.style.transition = 'width ' + nameEase;
       dsOuter.style.width      = '0';
     }
   }
@@ -237,8 +243,12 @@
   function doExpand() {
     wrapper.classList.remove('collapsed');
     requestAnimationFrame(function () { showIndicator(); });
+    if (markName) {
+      markName.style.transition = 'opacity ' + nameEaseOut;
+      markName.style.opacity    = '1';
+    }
     if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      dsOuter.style.transition = 'width ' + nameEaseOut;
       dsOuter.style.width      = dsNatW + 'px';
     }
   }
