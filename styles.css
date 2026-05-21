@@ -419,7 +419,6 @@ p, .body {
 .nav-item:hover .nav-icon,
 .nav-item:hover .home-icon-wrap {
   opacity: 0;
-  transform: translateY(-8px);
   filter: none;
 }
 
@@ -435,11 +434,11 @@ p, .body {
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--fg); /* dark on light backdrop (non-active default) */
+  color: var(--fg);
   white-space: nowrap;
   opacity: 0;
-  transform: translateY(5px);
-  transition: opacity 0.2s ease 0.06s, transform 0.2s ease 0.06s;
+  /* On leave: disappear instantly so pill collapses clean */
+  transition: opacity 0.08s ease;
   pointer-events: none;
 }
 /* Active item label is always white (dark pill bg) */
@@ -450,7 +449,8 @@ p, .body {
 
 .nav-item:hover .nav-item-label {
   opacity: 1;
-  transform: translateY(0);
+  /* On enter: wait for pill to fully expand before showing text */
+  transition: opacity 0.12s ease 0.32s;
 }
 
 /* Fade the indicator only when a non-active item is hovered */
