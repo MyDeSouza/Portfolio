@@ -27,12 +27,48 @@
   pageEls.forEach(function (el) { el.style.opacity = '0'; });
 
   function revealPage() {
-    pageEls.forEach(function (el, i) {
-      setTimeout(function () {
-        el.style.opacity = '';
-        el.classList.add('page-reveal');
-      }, i * 60);
+    var easeOut   = 'cubic-bezier(0.16, 1, 0.3, 1)';
+    var easeInOut = 'cubic-bezier(0.65, 0, 0.35, 1)';
+    var hDisplay  = document.querySelector('.h-display');
+    var bodyLg    = document.querySelector('.body-lg');
+
+    // Topbar and footer: standard staggered reveal
+    pageEls.forEach(function (el) {
+      if (el === hDisplay || el === bodyLg) return;
+      el.style.opacity = '';
+      el.classList.add('page-reveal');
     });
+
+    if (hDisplay) {
+      // Cancel CSS fadeUp, measure natural position, offset to vertical centre
+      hDisplay.style.animation = 'none';
+      void hDisplay.offsetHeight;
+      var rect   = hDisplay.getBoundingClientRect();
+      var offset = Math.round(window.innerHeight / 2 - (rect.top + rect.height / 2));
+      hDisplay.style.transform = 'translateY(' + offset + 'px)';
+      hDisplay.style.opacity   = '1';
+    }
+
+    if (bodyLg) {
+      bodyLg.style.animation = 'none';
+      bodyLg.style.transform = 'translateY(24px)';
+      bodyLg.style.opacity   = '0';
+    }
+
+    setTimeout(function () {
+      if (hDisplay) {
+        hDisplay.style.transition = 'transform 0.9s ' + easeInOut;
+        hDisplay.style.transform  = 'translateY(0)';
+      }
+
+      setTimeout(function () {
+        if (bodyLg) {
+          bodyLg.style.transition = 'opacity 0.65s ' + easeOut + ', transform 0.75s ' + easeOut;
+          bodyLg.style.opacity    = '1';
+          bodyLg.style.transform  = 'translateY(0)';
+        }
+      }, 520);
+    }, 700);
   }
 
   // Text exits, then page loads in
