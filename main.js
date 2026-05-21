@@ -33,17 +33,17 @@
     var bodyLg    = document.querySelector('.body-lg');
     var markName  = document.querySelector('.mark-name');
 
-    // Greet on reveal, then slide "Hi, I'm " off to the left
+    // Greet on reveal, then slide "Hi, I'm " off to the left.
+    // The nav IIFE already split mark-name into "Max" + dsOuter span,
+    // so insert the prefix before that existing content.
     if (markName) {
       var prefixOuter = document.createElement('span');
       prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
       var prefixInner = document.createElement('span');
       prefixInner.style.display = 'inline-block';
-      prefixInner.textContent   = "Hi, I’m";
+      prefixInner.textContent   = "Hi, I’m "; // curly apostrophe + non-breaking space
       prefixOuter.appendChild(prefixInner);
-      markName.textContent = ‘’;
-      markName.appendChild(prefixOuter);
-      markName.appendChild(document.createTextNode(‘ Max DeSouza’));
+      markName.insertBefore(prefixOuter, markName.firstChild);
 
       requestAnimationFrame(function () {
         prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
@@ -157,6 +157,31 @@
     checkDark();
   }
 
+  // ── Mark-name DeSouza split ──────────────────────────────────
+  // Splits "Max DeSouza" so "DeSouza" can wipe right-to-left on collapse
+  // and reveal left-to-right on expand.
+  var markName = document.querySelector('.mark-name');
+  var dsOuter  = null;
+  var dsNatW   = 0;
+
+  if (markName) {
+    markName.textContent = '';
+    markName.appendChild(document.createTextNode('Max'));
+
+    dsOuter = document.createElement('span');
+    dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
+    var dsInner = document.createElement('span');
+    dsInner.style.display = 'inline-block';
+    dsInner.textContent   = ' DeSouza';
+    dsOuter.appendChild(dsInner);
+    markName.appendChild(dsOuter);
+
+    requestAnimationFrame(function () {
+      dsNatW = dsOuter.offsetWidth;
+      dsOuter.style.width = dsNatW + 'px';
+    });
+  }
+
   // ── Sliding indicator ────────────────────────────────────────
   var indicator = document.createElement('span');
   indicator.className = 'nav-indicator';
@@ -203,11 +228,19 @@
   function doCollapse() {
     wrapper.classList.add('collapsed');
     hideIndicator();
+    if (dsOuter && dsNatW) {
+      dsOuter.style.transition = 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+      dsOuter.style.width      = '0';
+    }
   }
 
   function doExpand() {
     wrapper.classList.remove('collapsed');
     requestAnimationFrame(function () { showIndicator(); });
+    if (dsOuter && dsNatW) {
+      dsOuter.style.transition = 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      dsOuter.style.width      = dsNatW + 'px';
+    }
   }
 
   // ── Scroll collapse ──────────────────────────────────────────
