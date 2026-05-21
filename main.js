@@ -33,16 +33,28 @@
     var bodyLg    = document.querySelector('.body-lg');
     var markName  = document.querySelector('.mark-name');
 
-    // Greet on reveal, then fade back to just the name
+    // Greet on reveal, then slide "Hi, I'm " off to the left
     if (markName) {
-      markName.textContent = "Hi, I'm Max DeSouza";
-      setTimeout(function () {
-        markName.style.opacity = '0';
+      var prefixOuter = document.createElement('span');
+      prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
+      var prefixInner = document.createElement('span');
+      prefixInner.style.display = 'inline-block';
+      prefixInner.textContent   = "Hi, I’m ";
+      prefixOuter.appendChild(prefixInner);
+      markName.textContent = '';
+      markName.appendChild(prefixOuter);
+      markName.appendChild(document.createTextNode('Max DeSouza'));
+
+      requestAnimationFrame(function () {
+        prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
         setTimeout(function () {
-          markName.textContent = 'Max DeSouza';
-          markName.style.opacity = '1';
-        }, 200);
-      }, 2500);
+          var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+          prefixOuter.style.transition = 'width ' + ease;
+          prefixInner.style.transition = 'transform ' + ease;
+          prefixOuter.style.width      = '0';
+          prefixInner.style.transform  = 'translateX(-100%)';
+        }, 2500);
+      });
     }
 
     // Topbar and footer: standard staggered reveal
