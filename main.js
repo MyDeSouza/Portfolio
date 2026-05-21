@@ -39,11 +39,11 @@
       prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
       var prefixInner = document.createElement('span');
       prefixInner.style.display = 'inline-block';
-      prefixInner.textContent   = "Hi, I’m ";
+      prefixInner.textContent   = "Hi, I’m";
       prefixOuter.appendChild(prefixInner);
-      markName.textContent = '';
+      markName.textContent = ‘’;
       markName.appendChild(prefixOuter);
-      markName.appendChild(document.createTextNode('Max DeSouza'));
+      markName.appendChild(document.createTextNode(‘ Max DeSouza’));
 
       requestAnimationFrame(function () {
         prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
