@@ -100,40 +100,71 @@
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'translateY(' + translateY + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
-      // Phase 2 – hold 2.5 s, then slide to topbar
+      // Phase 2 – hold, then slide mark to topbar while nav + hero appear
       setTimeout(function () {
+        // Nav fades in as mark slides from big to small
+        if (navWrapper) {
+          navWrapper.style.transition = 'opacity 0.55s ease';
+          navWrapper.style.opacity    = '1';
+        }
+
+        // Phase 3: slide mark to natural topbar position
         markEl.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
         markEl.style.transform  = 'translateY(0) scale(1)';
 
-        // Phase 3 – clear state, slide 'Hi, I’m' off, reveal page
+        // Hero text slides in from centre simultaneously
+        var hDisplay = document.querySelector('.h-display');
+        if (hDisplay) {
+          var rect   = hDisplay.getBoundingClientRect();
+          var offset = Math.round(window.innerHeight / 2 - (rect.top + rect.height / 2));
+          hDisplay.style.transform = 'translateY(' + offset + 'px)';
+          hDisplay.style.opacity   = '1';
+          setTimeout(function () {
+            hDisplay.style.transition = 'transform 0.9s cubic-bezier(0.65, 0, 0.35, 1)';
+            hDisplay.style.transform  = 'translateY(0)';
+          }, 80);
+        }
+
+        // After mark lands: hold at small, then slide 'Hi, I’m' off
         setTimeout(function () {
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '';
 
-          // Reveal nav now mark is in position
-          if (navWrapper) {
-            navWrapper.style.transition = 'opacity 0.4s ease';
-            navWrapper.style.opacity    = '1';
-          }
-
           requestAnimationFrame(function () {
             prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
+
+            // Hold at small mark for 1.5 s
             setTimeout(function () {
               var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
               prefixOuter.style.transition = 'width ' + ease;
               prefixInner.style.transition = 'transform ' + ease;
               prefixOuter.style.width      = '0';
               prefixInner.style.transform  = 'translateX(-100%)';
-              setTimeout(revealPage, 480);
-            }, 400);
+
+              // Subtitle + footer appear after greeting is gone
+              setTimeout(function () {
+                var bodyLg = document.querySelector('.body-lg');
+                var footer = document.querySelector('.footer');
+                if (bodyLg) {
+                  bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
+                  bodyLg.style.opacity    = '1';
+                  bodyLg.style.transform  = 'translateY(0)';
+                }
+                if (footer) {
+                  footer.style.opacity = '';
+                  footer.classList.add('page-reveal');
+                }
+              }, 480);
+            }, 1500);
           });
-        }, 620);
+        }, 650);
       }, 700 + 1500); // fade-in (700 ms) + hold (1500 ms)
     });
   });
 }());
+
 
 
 // ── Nav ──────────────────────────────────────────────────────
