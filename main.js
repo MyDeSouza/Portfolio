@@ -72,7 +72,8 @@
     var prefixOuter = document.createElement('span');
     prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
     var prefixInner = document.createElement('span');
-    prefixInner.style.display = 'inline-block';
+    prefixInner.style.display    = 'inline-block';
+    prefixInner.style.fontWeight = '300';
     prefixInner.textContent   = 'Hi, I’m '; // curly apostrophe + non-breaking space
     prefixOuter.appendChild(prefixInner);
     markName.insertBefore(prefixOuter, markName.firstChild);
