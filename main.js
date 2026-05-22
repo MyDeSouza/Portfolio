@@ -83,28 +83,31 @@
 
     // ── Starting transform: match old intro size, vertically centred ──
     var markRect     = markEl.getBoundingClientRect();
-    var markCenterY  = markRect.top + markRect.height / 2;
+    var markCenterX  = markRect.left + markRect.width  / 2;
+    var markCenterY  = markRect.top  + markRect.height / 2;
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
     var introSize    = Math.min(Math.max(32, window.innerWidth * 0.05), 64);
     var scaleStart   = introSize / markFontSize;
-    var translateY   = window.innerHeight / 2 - markCenterY;
+    var riseOffset   = 72;
+    var tx = window.innerWidth  / 2 - markCenterX;
+    var ty = window.innerHeight / 2 - markCenterY;
 
-    var riseOffset = 72;
-    markEl.style.transformOrigin = '0 50%';
-    markEl.style.transform       = 'translateY(' + (translateY + riseOffset) + 'px) scale(' + scaleStart.toFixed(4) + ')';
+    // transform-origin: centre — element centre flies from viewport centre to mark position
+    markEl.style.transformOrigin = '50% 50%';
+    markEl.style.transform       = 'translateX(' + tx + 'px) translateY(' + (ty + riseOffset) + 'px) scale(' + scaleStart.toFixed(4) + ')';
     markEl.style.opacity         = '0';
 
     // Phase 1 – fade in at large / centred position
     requestAnimationFrame(function () {
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
-      markEl.style.transform  = 'translateY(' + translateY + 'px) scale(' + scaleStart.toFixed(4) + ')';
+      markEl.style.transform  = 'translateX(' + tx + 'px) translateY(' + ty + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
       // Phase 2 – hold, then slide mark to topbar while nav + hero appear
       setTimeout(function () {
         // Phase 3: slide mark to topbar first
         markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
-        markEl.style.transform  = 'translateY(0) scale(1)';
+        markEl.style.transform  = 'translateX(0) translateY(0) scale(1)';
 
         // Nav fades in after mark is mid-transition
         setTimeout(function () {
