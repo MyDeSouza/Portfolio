@@ -144,6 +144,9 @@
           markEl.style.opacity         = '';
           markName.style.transition    = '';
           markName.style.fontWeight    = '';
+          // Ramp prefix weight 400→600 while holding at small position
+          prefixInner.style.transition = 'font-weight 0.4s ease';
+          prefixInner.style.fontWeight = '600';
 
           requestAnimationFrame(function () {
             prefixOuter.style.width = prefixOuter.offsetWidth + 'px';

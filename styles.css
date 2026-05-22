@@ -118,7 +118,7 @@ img { max-width: 100%; display: block; }
 .h-display {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(36px, 6vw, 76px);
+  font-size: clamp(28px, 4.5vw, 64px);
   line-height: 1.12;
   letter-spacing: -0.025em;
   color: var(--fg);
