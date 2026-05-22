@@ -95,20 +95,38 @@
     }, 700);
   }
 
-  // Text exits, then page loads in
+  // Text slides to mark position, then page loads in
   setTimeout(function () {
     introText.style.opacity   = '1';
     introText.style.transform = 'translateY(0)';
     introText.style.animation = 'none';
     void introText.offsetHeight;
-    introText.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    introText.style.opacity    = '0';
-    introText.style.transform  = 'translateY(-32px)';
+
+    var introRect = introText.getBoundingClientRect();
+    var markEl    = document.querySelector('.mark-name');
+    var markRect  = markEl ? markEl.getBoundingClientRect() : null;
+
+    if (markRect) {
+      var dx    = markRect.left - introRect.left;
+      var dy    = markRect.top  - introRect.top;
+      var ratio = parseFloat(getComputedStyle(markEl).fontSize) /
+                  parseFloat(getComputedStyle(introText).fontSize);
+
+      introText.style.transformOrigin = '0 0';
+      introText.style.transition =
+        'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease 0.35s';
+      introText.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + ratio.toFixed(4) + ')';
+      introText.style.opacity   = '0';
+    } else {
+      introText.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      introText.style.opacity    = '0';
+      introText.style.transform  = 'translateY(-32px)';
+    }
 
     setTimeout(function () {
       intro.remove();
       revealPage();
-    }, 520);
+    }, 600);
   }, 1800);
 }());
 
