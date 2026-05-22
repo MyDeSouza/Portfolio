@@ -109,7 +109,7 @@
         }
 
         // Phase 3: slide mark to natural topbar position
-        markEl.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
+        markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
         markEl.style.transform  = 'translateY(0) scale(1)';
 
         // Hero text slides in from centre simultaneously
@@ -159,7 +159,7 @@
               }, 480);
             }, 1500);
           });
-        }, 650);
+        }, 900);
       }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
     });
   });
