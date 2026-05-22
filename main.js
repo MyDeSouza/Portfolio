@@ -114,12 +114,15 @@
     var markRect  = markEl ? markEl.getBoundingClientRect() : null;
 
     if (markRect) {
-      var dx    = markRect.left - introRect.left;
-      var dy    = markRect.top  - introRect.top;
-      var ratio = parseFloat(getComputedStyle(markEl).fontSize) /
-                  parseFloat(getComputedStyle(introText).fontSize);
+      var dx         = markRect.left - introRect.left;
+      var introCY    = introRect.top  + introRect.height  / 2;
+      var markCY     = markRect.top   + markRect.height   / 2;
+      var dy         = markCY - introCY;
+      var ratio      = parseFloat(getComputedStyle(markEl).fontSize) /
+                       parseFloat(getComputedStyle(introText).fontSize);
 
-      introText.style.transformOrigin = '0 0';
+      // transform-origin left-centre: left edge stays at gutter, centres align
+      introText.style.transformOrigin = '0 50%';
       introText.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
       introText.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + ratio.toFixed(4) + ')';
     } else {
