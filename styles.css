@@ -1163,36 +1163,6 @@ p, .body {
   letter-spacing: 0;
 }
 
-/* =========================================================
-   Intro screen
-   ========================================================= */
-#intro {
-  position: fixed;
-  inset: 0;
-  background: #ECEEF5;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: var(--gutter);
-}
-
-.intro-text {
-  font-family: var(--font-body);
-  font-size: clamp(24px, 3.5vw, 48px);
-  font-weight: 700;
-  line-height: 1.1;
-  color: #0c1116;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(32px);
-  animation: introRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-}
-
-@keyframes introRise {
-  to { opacity: 1; transform: translateY(0); }
-}
 
 @keyframes pageReveal {
   from { opacity: 0; transform: translateY(24px); }

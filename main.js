@@ -1,26 +1,17 @@
-// ── Intro screen ────────────────────────────────────────────
+// ── Mark entry animation + page reveal ───────────────────────
 (function () {
-  var intro = document.getElementById('intro');
-  if (!intro) return;
-
-  var introText = intro.querySelector('.intro-text');
-
   var pageEls = [
-    document.querySelector('.topbar'),
     document.querySelector('.h-display'),
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
   ].filter(Boolean);
 
-  // Show intro on first visit or refresh; skip on in-session page navigation.
-  var navEntry = performance.getEntriesByType('navigation')[0];
-  var isReload = navEntry && navEntry.type === 'reload';
+  // Skip on in-session navigation; play on first visit or refresh.
+  var navEntry  = performance.getEntriesByType('navigation')[0];
+  var isReload  = navEntry && navEntry.type === 'reload';
   var seenIntro = sessionStorage.getItem('intro-seen');
 
-  if (!isReload && seenIntro) {
-    intro.remove();
-    return;
-  }
+  if (!isReload && seenIntro) return;
 
   sessionStorage.setItem('intro-seen', '1');
 
@@ -31,44 +22,11 @@
     var easeInOut = 'cubic-bezier(0.65, 0, 0.35, 1)';
     var hDisplay  = document.querySelector('.h-display');
     var bodyLg    = document.querySelector('.body-lg');
-    var markName  = document.querySelector('.mark-name');
 
-    // Greet on reveal, then slide "Hi, I'm " off to the left.
-    // nav IIFE already split mark-name into "Max" + dsOuter span;
-    // insert prefix before that existing content.
-    if (markName) {
-      var prefixOuter = document.createElement('span');
-      prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
-      var prefixInner = document.createElement('span');
-      prefixInner.style.display = 'inline-block';
-      prefixInner.textContent   = 'Hi, I’m '; //   = non-breaking space, survives overflow:hidden
-      prefixOuter.appendChild(prefixInner);
-      markName.insertBefore(prefixOuter, markName.firstChild);
-
-      requestAnimationFrame(function () {
-        prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
-        setTimeout(function () {
-          var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-          prefixOuter.style.transition = 'width ' + ease;
-          prefixInner.style.transition = 'transform ' + ease;
-          prefixOuter.style.width      = '0';
-          prefixInner.style.transform  = 'translateX(-100%)';
-        }, 2500);
-      });
-    }
-
-    // Topbar: show instantly so mark appears the moment the intro text arrives
-    // Footer: standard page-reveal
-    var topbarEl = document.querySelector('.topbar');
     pageEls.forEach(function (el) {
       if (el === hDisplay || el === bodyLg) return;
-      if (el === topbarEl) {
-        el.style.opacity  = '1';
-        el.style.animation = 'none';
-      } else {
-        el.style.opacity = '';
-        el.classList.add('page-reveal');
-      }
+      el.style.opacity = '';
+      el.classList.add('page-reveal');
     });
 
     if (hDisplay) {
@@ -91,7 +49,6 @@
         hDisplay.style.transition = 'transform 0.9s ' + easeInOut;
         hDisplay.style.transform  = 'translateY(0)';
       }
-
       setTimeout(function () {
         if (bodyLg) {
           bodyLg.style.transition = 'opacity 0.65s ' + easeOut + ', transform 0.75s ' + easeOut;
@@ -102,40 +59,57 @@
     }, 700);
   }
 
-  // Text slides to mark position, then page loads in
-  setTimeout(function () {
-    introText.style.opacity   = '1';
-    introText.style.transform = 'translateY(0)';
-    introText.style.animation = 'none';
-    void introText.offsetHeight;
+  // Wait one rAF so the nav IIFE's synchronous mark-name setup has run.
+  requestAnimationFrame(function () {
+    var markEl   = document.querySelector('.mark');
+    var markName = document.querySelector('.mark-name');
+    if (!markEl || !markName) { revealPage(); return; }
 
-    var introRect = introText.getBoundingClientRect();
-    var markEl    = document.querySelector('.mark-name');
-    var markRect  = markEl ? markEl.getBoundingClientRect() : null;
+    // ── Greeting ───────────────────────────────────────────────
+    var prefixOuter = document.createElement('span');
+    prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
+    var prefixInner = document.createElement('span');
+    prefixInner.style.display = 'inline-block';
+    prefixInner.textContent   = 'Hi, I’m '; // curly apostrophe + non-breaking space
+    prefixOuter.appendChild(prefixInner);
+    markName.insertBefore(prefixOuter, markName.firstChild);
 
-    if (markRect) {
-      var dx         = markRect.left - introRect.left;
-      var introCY    = introRect.top  + introRect.height  / 2;
-      var markCY     = markRect.top   + markRect.height   / 2;
-      var dy         = markCY - introCY;
-      var ratio      = parseFloat(getComputedStyle(markEl).fontSize) /
-                       parseFloat(getComputedStyle(introText).fontSize);
+    // ── Starting transform: match old intro size, vertically centred ──
+    var markRect     = markEl.getBoundingClientRect();
+    var markCenterY  = markRect.top + markRect.height / 2;
+    var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
+    var introSize    = Math.min(Math.max(24, window.innerWidth * 0.035), 48);
+    var scaleStart   = introSize / markFontSize;
+    var translateY   = window.innerHeight / 2 - markCenterY;
 
-      // transform-origin left-centre: left edge stays at gutter, centres align
-      introText.style.transformOrigin = '0 50%';
-      introText.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
-      introText.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + ratio.toFixed(4) + ')';
-    } else {
-      introText.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      introText.style.opacity    = '0';
-      introText.style.transform  = 'translateY(-32px)';
-    }
+    markEl.style.transformOrigin = '0 50%';
+    markEl.style.transform       = 'translateY(' + translateY + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
-    setTimeout(function () {
-      intro.remove();
-      revealPage();
-    }, 600);
-  }, 1800);
+    // ── Animate to natural position ────────────────────────────
+    requestAnimationFrame(function () {
+      markEl.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
+      markEl.style.transform  = 'translateY(0) scale(1)';
+
+      // After mark settles: slide 'Hi, I'm' off left, then reveal page
+      setTimeout(function () {
+        markEl.style.transition      = '';
+        markEl.style.transform       = '';
+        markEl.style.transformOrigin = '';
+
+        requestAnimationFrame(function () {
+          prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
+          setTimeout(function () {
+            var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+            prefixOuter.style.transition = 'width ' + ease;
+            prefixInner.style.transition = 'transform ' + ease;
+            prefixOuter.style.width      = '0';
+            prefixInner.style.transform  = 'translateX(-100%)';
+            setTimeout(revealPage, 480);
+          }, 600);
+        });
+      }, 620);
+    });
+  });
 }());
 
 // ── Nav ──────────────────────────────────────────────────────
@@ -187,7 +161,6 @@
   var dsNatW     = 0;
 
   if (markName) {
-
     markName.textContent = '';
     markName.appendChild(document.createTextNode('Max'));
 
@@ -195,7 +168,7 @@
     dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
     var dsInner = document.createElement('span');
     dsInner.style.display = 'inline-block';
-    dsInner.textContent   = ' DeSouza'; // non-breaking space keeps gap
+    dsInner.textContent   = ' DeSouza';
     dsOuter.appendChild(dsInner);
     markName.appendChild(dsOuter);
 
@@ -277,16 +250,14 @@
     }
   }
 
-
   // ── Per-icon hover labels ────────────────────────────────────
-  // Measure each label's width and inject span; CSS handles the animation.
   var measurer = document.createElement('span');
   measurer.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:11px;font-weight:500;letter-spacing:0.05em;font-family:inherit;';
   document.body.appendChild(measurer);
   navItems.forEach(function (item) {
     var text = item.getAttribute('aria-label') || '';
     measurer.textContent = text;
-    var w = measurer.offsetWidth + 24; // 12px padding each side
+    var w = measurer.offsetWidth + 24;
     item.style.setProperty('--hover-w', Math.max(34, w) + 'px');
     var lbl = document.createElement('span');
     lbl.className = 'nav-item-label';
@@ -295,11 +266,9 @@
   });
   document.body.removeChild(measurer);
 
-
   // ── Active-item: morph indicator circle → pill on hover ─────
   if (activeItem) {
     var pillEase    = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-    
     var origIndLeft = null;
 
     activeItem.addEventListener('mouseenter', function () {
@@ -310,7 +279,6 @@
       origIndLeft  = itemLeft + ir.width / 2;
       var hoverW   = parseFloat(getComputedStyle(activeItem).getPropertyValue('--hover-w')) || 60;
       var newLeft  = itemLeft + hoverW / 2;
-      // rAF: start JS transition the same frame the CSS width transition fires
       requestAnimationFrame(function () {
         indicator.style.transition =
           'width ' + pillEase + ', left ' + pillEase +
@@ -322,19 +290,17 @@
     });
 
     activeItem.addEventListener('mouseleave', function () {
-      indicator.style.transition  =
-        'width ' + pillEase + ', left ' + pillEase + ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
+      indicator.style.transition =
+        'width ' + pillEase + ', left ' + pillEase +
+        ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
         ', background-color var(--dur-2) var(--ease-in-out)';
-      indicator.style.width        = '44px';
+      indicator.style.width = '44px';
       if (origIndLeft !== null) indicator.style.left = origIndLeft + 'px';
     });
   }
 
-
-  // ── Non-active hover: track indicator to active item during layout shifts ──
-  // When a non-active item to the left expands, it pushes the active item right.
-  // A rAF loop snaps the indicator to the active item every frame (no lag).
-  var nonActiveRAF    = null;
+  // ── Non-active hover: track indicator during layout shifts ───
+  var nonActiveRAF = null;
 
   function stopNonActiveTracking() {
     if (nonActiveRAF) {
@@ -349,12 +315,10 @@
       if (item === activeItem) return;
       item.addEventListener('mouseenter', function () {
         if (nonActiveRAF) return;
-        // Snap to clean circle immediately — no mid-animation conflict
         indicator.style.transition = 'none';
         indicator.style.width      = '44px';
         snapPosition(activeItem);
         requestAnimationFrame(function () {
-          // Only opacity/bg have transitions; left snaps every rAF frame
           indicator.style.transition =
             'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
             ', background-color var(--dur-2) var(--ease-in-out)';
@@ -419,7 +383,6 @@
         doExpand();
       }
     });
-
     item.addEventListener('touchstart', function () {
       snapPosition(item);
     }, { passive: true });
