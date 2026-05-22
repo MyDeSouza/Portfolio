@@ -306,6 +306,7 @@ p, .body {
   gap: 0.1rem;
   text-decoration: none;
   text-transform: none;
+  width: fit-content;
 }
 .mark-name {
   font-family: var(--font-body);
