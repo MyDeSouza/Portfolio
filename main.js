@@ -15,7 +15,10 @@
 
   sessionStorage.setItem('intro-seen', '1');
 
-  pageEls.forEach(function (el) { el.style.opacity = '0'; });
+  pageEls.forEach(function (el) {
+    el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
+    el.style.opacity   = '0';
+  });
 
   function revealPage() {
     var easeOut   = 'cubic-bezier(0.16, 1, 0.3, 1)';
