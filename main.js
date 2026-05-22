@@ -89,7 +89,8 @@
     var markCenterY  = markRect.top  + markRect.height / 2;
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
     var introSize    = Math.min(Math.max(32, window.innerWidth * 0.05), 64);
-    var scaleStart   = introSize / markFontSize;
+    var scaleStart   = Math.min(introSize / markFontSize,
+                       (window.innerWidth - 32) / markRect.width); // 16px margin each side
     var riseOffset   = 72;
     var tx = window.innerWidth  / 2 - markCenterX;
     var ty = window.innerHeight / 2 - markCenterY;
@@ -144,9 +145,7 @@
           markEl.style.opacity         = '';
           markName.style.transition    = '';
           markName.style.fontWeight    = '';
-          // Ramp prefix weight 400→600 while holding at small position
-          prefixInner.style.transition = 'font-weight 0.4s ease';
-          prefixInner.style.fontWeight = '600';
+
 
           requestAnimationFrame(function () {
             prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
