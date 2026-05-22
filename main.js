@@ -161,7 +161,7 @@
                   footer.classList.add('page-reveal');
                 }
               }, 480);
-            }, 1500);
+            }, 2800);
           });
         }, 900);
       }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
