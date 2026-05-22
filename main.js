@@ -89,7 +89,7 @@
     var scaleStart   = introSize / markFontSize;
     var translateY   = window.innerHeight / 2 - markCenterY;
 
-    var riseOffset = 32;
+    var riseOffset = 72;
     markEl.style.transformOrigin = '0 50%';
     markEl.style.transform       = 'translateY(' + (translateY + riseOffset) + 'px) scale(' + scaleStart.toFixed(4) + ')';
     markEl.style.opacity         = '0';
@@ -160,7 +160,7 @@
             }, 1500);
           });
         }, 650);
-      }, 700 + 1500); // fade-in (700 ms) + hold (1500 ms)
+      }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
     });
   });
 }());
