@@ -90,9 +90,10 @@
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
     var introSize    = Math.min(Math.max(32, window.innerWidth * 0.05), 64);
     var scaleStart   = Math.min(introSize / markFontSize,
-                       (window.innerWidth - 32) / markRect.width); // 16px margin each side
+                       (viewW - 48) / markRect.width); // 24px margin each side
     var riseOffset   = 72;
-    var tx = window.innerWidth  / 2 - markCenterX;
+    var viewW = document.documentElement.clientWidth; // excludes scrollbar gutter
+    var tx = viewW / 2 - markCenterX;
     var ty = window.innerHeight / 2 - markCenterY;
 
     // transform-origin: centre — element centre flies from viewport centre to mark position
