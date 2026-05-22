@@ -74,6 +74,10 @@
     prefixOuter.appendChild(prefixInner);
     markName.insertBefore(prefixOuter, markName.firstChild);
 
+    // Hide nav until mark is in position
+    var navWrapper = document.querySelector('.nav-pill-wrapper');
+    if (navWrapper) navWrapper.style.opacity = '0';
+
     // ── Starting transform: match old intro size, vertically centred ──
     var markRect     = markEl.getBoundingClientRect();
     var markCenterY  = markRect.top + markRect.height / 2;
@@ -103,6 +107,12 @@
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '';
 
+          // Reveal nav now mark is in position
+          if (navWrapper) {
+            navWrapper.style.transition = 'opacity 0.4s ease';
+            navWrapper.style.opacity    = '1';
+          }
+
           requestAnimationFrame(function () {
             prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
             setTimeout(function () {
@@ -115,7 +125,7 @@
             }, 400);
           });
         }, 620);
-      }, 700 + 2500); // fade-in (700 ms) + hold (2500 ms)
+      }, 700 + 1500); // fade-in (700 ms) + hold (1500 ms)
     });
   });
 }());
