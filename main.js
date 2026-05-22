@@ -85,7 +85,7 @@
     var markRect     = markEl.getBoundingClientRect();
     var markCenterY  = markRect.top + markRect.height / 2;
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
-    var introSize    = Math.min(Math.max(24, window.innerWidth * 0.035), 48);
+    var introSize    = Math.min(Math.max(48, window.innerWidth * 0.09), 112);
     var scaleStart   = introSize / markFontSize;
     var translateY   = window.innerHeight / 2 - markCenterY;
 
