@@ -238,7 +238,7 @@
     dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
     var dsInner = document.createElement('span');
     dsInner.style.display = 'inline-block';
-    dsInner.textContent   = ' DeSouza';
+    dsInner.textContent   = ' DeSouza ';
     dsOuter.appendChild(dsInner);
     markName.appendChild(dsOuter);
 
