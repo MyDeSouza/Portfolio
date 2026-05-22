@@ -57,11 +57,18 @@
       });
     }
 
-    // Topbar and footer: standard staggered reveal
+    // Topbar: show instantly so mark appears the moment the intro text arrives
+    // Footer: standard page-reveal
+    var topbarEl = document.querySelector('.topbar');
     pageEls.forEach(function (el) {
       if (el === hDisplay || el === bodyLg) return;
-      el.style.opacity = '';
-      el.classList.add('page-reveal');
+      if (el === topbarEl) {
+        el.style.opacity  = '1';
+        el.style.animation = 'none';
+      } else {
+        el.style.opacity = '';
+        el.classList.add('page-reveal');
+      }
     });
 
     if (hDisplay) {
@@ -113,10 +120,8 @@
                   parseFloat(getComputedStyle(introText).fontSize);
 
       introText.style.transformOrigin = '0 0';
-      introText.style.transition =
-        'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease 0.35s';
+      introText.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
       introText.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + ratio.toFixed(4) + ')';
-      introText.style.opacity   = '0';
     } else {
       introText.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
       introText.style.opacity    = '0';
