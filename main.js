@@ -77,6 +77,7 @@
     prefixInner.textContent   = 'Hi, I’m '; // curly apostrophe + non-breaking space
     prefixOuter.appendChild(prefixInner);
     markName.insertBefore(prefixOuter, markName.firstChild);
+    markName.style.fontWeight = '400'; // start light; animates to 700 in Phase 3
 
     // Hide nav until mark is in position
     var navWrapper = document.querySelector('.nav-pill-wrapper');
@@ -106,9 +107,11 @@
 
       // Phase 2 – hold, then slide mark to topbar while nav + hero appear
       setTimeout(function () {
-        // Phase 3: slide mark to topbar first
-        markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
-        markEl.style.transform  = 'translateX(0) translateY(0) scale(1)';
+        // Phase 3: slide mark to topbar, font-weight animates 400→700 simultaneously
+        markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
+        markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
+        markName.style.transition = 'font-weight 0.85s ease';
+        markName.style.fontWeight = '700';
 
         // Nav fades in after mark is mid-transition
         setTimeout(function () {
@@ -139,6 +142,8 @@
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '';
+          markName.style.transition    = '';
+          markName.style.fontWeight    = '';
 
           requestAnimationFrame(function () {
             prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
