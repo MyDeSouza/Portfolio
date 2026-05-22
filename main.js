@@ -118,13 +118,13 @@
         setTimeout(function () {
           var hDisplay = document.querySelector('.h-display');
           if (hDisplay) {
-            var rect   = hDisplay.getBoundingClientRect();
-            var offset = Math.round(window.innerHeight / 2 - (rect.top + rect.height / 2));
-            hDisplay.style.transform = 'translateY(' + offset + 'px)';
-            hDisplay.style.opacity   = '1';
+            hDisplay.style.transform = 'translateY(48px)';
+            hDisplay.style.opacity   = '0';
             setTimeout(function () {
-              hDisplay.style.transition = 'transform 0.9s cubic-bezier(0.65, 0, 0.35, 1)';
-              hDisplay.style.transform  = 'translateY(0)';
+              hDisplay.style.transition =
+                'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+              hDisplay.style.opacity   = '1';
+              hDisplay.style.transform = 'translateY(0)';
             }, 60);
           }
         }, 550);
