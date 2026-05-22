@@ -84,33 +84,42 @@
 
     markEl.style.transformOrigin = '0 50%';
     markEl.style.transform       = 'translateY(' + translateY + 'px) scale(' + scaleStart.toFixed(4) + ')';
+    markEl.style.opacity         = '0';
 
-    // ── Animate to natural position ────────────────────────────
+    // Phase 1 – fade in at large / centred position
     requestAnimationFrame(function () {
-      markEl.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
-      markEl.style.transform  = 'translateY(0) scale(1)';
+      markEl.style.transition = 'opacity 0.7s ease';
+      markEl.style.opacity    = '1';
 
-      // After mark settles: slide 'Hi, I'm' off left, then reveal page
+      // Phase 2 – hold 2.5 s, then slide to topbar
       setTimeout(function () {
-        markEl.style.transition      = '';
-        markEl.style.transform       = '';
-        markEl.style.transformOrigin = '';
+        markEl.style.transition = 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
+        markEl.style.transform  = 'translateY(0) scale(1)';
 
-        requestAnimationFrame(function () {
-          prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
-          setTimeout(function () {
-            var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-            prefixOuter.style.transition = 'width ' + ease;
-            prefixInner.style.transition = 'transform ' + ease;
-            prefixOuter.style.width      = '0';
-            prefixInner.style.transform  = 'translateX(-100%)';
-            setTimeout(revealPage, 480);
-          }, 600);
-        });
-      }, 620);
+        // Phase 3 – clear state, slide 'Hi, I’m' off, reveal page
+        setTimeout(function () {
+          markEl.style.transition      = '';
+          markEl.style.transform       = '';
+          markEl.style.transformOrigin = '';
+          markEl.style.opacity         = '';
+
+          requestAnimationFrame(function () {
+            prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
+            setTimeout(function () {
+              var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+              prefixOuter.style.transition = 'width ' + ease;
+              prefixInner.style.transition = 'transform ' + ease;
+              prefixOuter.style.width      = '0';
+              prefixInner.style.transform  = 'translateX(-100%)';
+              setTimeout(revealPage, 480);
+            }, 400);
+          });
+        }, 620);
+      }, 700 + 2500); // fade-in (700 ms) + hold (2500 ms)
     });
   });
 }());
+
 
 // ── Nav ──────────────────────────────────────────────────────
 (function () {
