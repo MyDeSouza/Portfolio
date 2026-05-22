@@ -102,28 +102,32 @@
 
       // Phase 2 – hold, then slide mark to topbar while nav + hero appear
       setTimeout(function () {
-        // Nav fades in as mark slides from big to small
-        if (navWrapper) {
-          navWrapper.style.transition = 'opacity 0.55s ease';
-          navWrapper.style.opacity    = '1';
-        }
-
-        // Phase 3: slide mark to natural topbar position
+        // Phase 3: slide mark to topbar first
         markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
         markEl.style.transform  = 'translateY(0) scale(1)';
 
-        // Hero text slides in from centre simultaneously
-        var hDisplay = document.querySelector('.h-display');
-        if (hDisplay) {
-          var rect   = hDisplay.getBoundingClientRect();
-          var offset = Math.round(window.innerHeight / 2 - (rect.top + rect.height / 2));
-          hDisplay.style.transform = 'translateY(' + offset + 'px)';
-          hDisplay.style.opacity   = '1';
-          setTimeout(function () {
-            hDisplay.style.transition = 'transform 0.9s cubic-bezier(0.65, 0, 0.35, 1)';
-            hDisplay.style.transform  = 'translateY(0)';
-          }, 80);
-        }
+        // Nav fades in after mark is mid-transition
+        setTimeout(function () {
+          if (navWrapper) {
+            navWrapper.style.transition = 'opacity 0.5s ease';
+            navWrapper.style.opacity    = '1';
+          }
+        }, 350);
+
+        // Hero text slides in slightly after nav
+        setTimeout(function () {
+          var hDisplay = document.querySelector('.h-display');
+          if (hDisplay) {
+            var rect   = hDisplay.getBoundingClientRect();
+            var offset = Math.round(window.innerHeight / 2 - (rect.top + rect.height / 2));
+            hDisplay.style.transform = 'translateY(' + offset + 'px)';
+            hDisplay.style.opacity   = '1';
+            setTimeout(function () {
+              hDisplay.style.transition = 'transform 0.9s cubic-bezier(0.65, 0, 0.35, 1)';
+              hDisplay.style.transform  = 'translateY(0)';
+            }, 60);
+          }
+        }, 550);
 
         // After mark lands: hold at small, then slide 'Hi, I’m' off
         setTimeout(function () {
