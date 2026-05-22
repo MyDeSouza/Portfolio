@@ -94,6 +94,7 @@ html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 }
 
 body {
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-body);
