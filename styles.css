@@ -648,6 +648,7 @@ p, .body {
 }
 
 .home-hero .h-display {
+  width: 100%;
   margin-bottom: var(--s-6);
   opacity: 0;
   animation: fadeUp var(--dur-4) var(--ease-out) 0.2s forwards;
