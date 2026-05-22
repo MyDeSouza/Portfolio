@@ -86,14 +86,16 @@
     var scaleStart   = introSize / markFontSize;
     var translateY   = window.innerHeight / 2 - markCenterY;
 
+    var riseOffset = 32;
     markEl.style.transformOrigin = '0 50%';
-    markEl.style.transform       = 'translateY(' + translateY + 'px) scale(' + scaleStart.toFixed(4) + ')';
+    markEl.style.transform       = 'translateY(' + (translateY + riseOffset) + 'px) scale(' + scaleStart.toFixed(4) + ')';
     markEl.style.opacity         = '0';
 
     // Phase 1 – fade in at large / centred position
     requestAnimationFrame(function () {
-      markEl.style.transition = 'opacity 0.7s ease';
+      markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
+      markEl.style.transform  = 'translateY(' + translateY + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
       // Phase 2 – hold 2.5 s, then slide to topbar
       setTimeout(function () {
