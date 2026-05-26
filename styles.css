@@ -637,6 +637,7 @@ p, .body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: flex-start;
   align-items: center;
   text-align: left;
   padding: var(--s-9) var(--gutter) var(--s-8);
