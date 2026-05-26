@@ -129,19 +129,15 @@
               var dx = markRect.left - cornerMargin;
               var dy = markRect.top  - cornerMargin;
 
-              overlay.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.35s ease 0.6s';
+              overlay.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease 0.55s';
               overlay.style.transform  = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + scaleEnd.toFixed(4) + ')';
               overlay.style.opacity    = '0';
 
+              // Real mark snaps in only after overlay is fully gone
               setTimeout(function () {
-                markEl.style.transition = 'opacity 0.4s ease';
-                markEl.style.opacity    = '1';
-                setTimeout(function () {
-                  markEl.style.transition = '';
-                  markEl.style.opacity    = '';
-                  if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-                }, 400);
-              }, 500);
+                markEl.style.opacity = '1';
+                if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+              }, 900);
 
               setTimeout(function () {
                 var hDisplay = document.querySelector('.h-display');
