@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v5');
+  var seenIntro = sessionStorage.getItem('intro-seen-v6');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v5', '1');
+  sessionStorage.setItem('intro-seen-v6', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
