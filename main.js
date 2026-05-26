@@ -89,7 +89,7 @@
     var markCenterX  = markRect.left + markRect.width  / 2;
     var markCenterY  = markRect.top  + markRect.height / 2;
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
-    var introSize    = Math.min(Math.max(32, window.innerWidth * 0.05), 64);
+    var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
     var scaleStart   = Math.min(introSize / markFontSize,
                        (window.innerWidth - 32) / markRect.width); // 16px margin each side
     var riseOffset   = 72;
