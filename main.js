@@ -110,84 +110,102 @@
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'translateX(' + tx + 'px) translateY(' + ty + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
-      // Phase 2 – hold, then slide mark to topbar while nav + hero appear
+      // Phase 2 – hold, slide off Hi,I’m + nav in, then hand off to scroll
       setTimeout(function () {
-        // Phase 3: slide mark to topbar; font-weight stays light until Hi leaves
-        markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
-        markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
+        markEl.style.transition = ‘’;
 
-        // Nav fades in after mark is mid-transition
-        setTimeout(function () {
-          if (navWrapper) {
-            navWrapper.style.transition = 'opacity 0.5s ease';
-            navWrapper.style.opacity    = '1';
-          }
-        }, 350);
+        requestAnimationFrame(function () {
+          prefixOuter.style.height = prefixOuter.offsetHeight + ‘px’;
 
-        // Hero text slides in slightly after nav
-        setTimeout(function () {
-          var hDisplay = document.querySelector('.h-display');
-          if (hDisplay) {
-            hDisplay.style.transform = 'translateY(48px)';
-            hDisplay.style.opacity   = '0';
+          // Hold briefly then slide off greeting + reveal nav
+          setTimeout(function () {
+            if (navWrapper) {
+              navWrapper.style.transition = ‘opacity 0.5s ease’;
+              navWrapper.style.opacity    = ‘1’;
+            }
+            var ease = ‘0.45s cubic-bezier(0.4, 0, 0.2, 1)’;
+            prefixOuter.style.transition = ‘height ‘ + ease;
+            prefixInner.style.transition = ‘transform ‘ + ease;
+            prefixOuter.style.height     = ‘0’;
+            prefixInner.style.transform  = ‘translateY(-100%)’;
+
+            // Activate scroll-driven reveal once greeting is gone
             setTimeout(function () {
-              hDisplay.style.transition =
-                'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-              hDisplay.style.opacity   = '1';
-              hDisplay.style.transform = 'translateY(0)';
-            }, 60);
-          }
-        }, 550);
+              var hDisplay = document.querySelector(‘.h-display’);
+              var bodyLg   = document.querySelector(‘.body-lg’);
+              var footer   = document.querySelector(‘.footer’);
 
-        // After mark lands: hold at small, then slide 'Hi, I’m' off
-        setTimeout(function () {
-          markEl.style.transition      = '';
-          markEl.style.transform       = '';
-          markEl.style.transformOrigin = '';
-          markEl.style.opacity         = '';
-          markName.style.transition    = '';
-          markName.style.fontWeight    = '400'; // stays light until Hi, I'm slides off
+              // Hero starts hidden; scroll reveals it
+              if (hDisplay) {
+                hDisplay.style.transition = ‘none’;
+                hDisplay.style.opacity    = ‘0’;
+                hDisplay.style.transform  = ‘translateY(60px)’;
+              }
 
+              var scrollThreshold = Math.min(window.innerHeight, 700);
+              var scrollDone = false;
 
-          requestAnimationFrame(function () {
-            prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
+              function onScrollIntro() {
+                if (scrollDone) return;
+                var p = Math.min(window.scrollY / scrollThreshold, 1);
 
-            // Hold at small mark for 1.5 s
-            setTimeout(function () {
-              var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-              prefixOuter.style.transition = 'height ' + ease;
-              prefixInner.style.transition = 'transform ' + ease;
-              prefixOuter.style.height     = '0';
-              prefixInner.style.transform  = 'translateY(-100%)';
+                // Mark travels from intro position to natural topbar position
+                var txCur    = tx         * (1 - p);
+                var tyCur    = ty         * (1 - p);
+                var scaleCur = scaleStart + (1 - scaleStart) * p;
+                markEl.style.transition      = ‘none’;
+                markEl.style.transformOrigin = ‘50% 50%’;
+                markEl.style.transform       = ‘translateX(‘ + txCur.toFixed(2) + ‘px) translateY(‘ + tyCur.toFixed(2) + ‘px) scale(‘ + scaleCur.toFixed(4) + ‘)’;
 
-              // After Hi, I'm is gone, step up to bold
-              setTimeout(function () {
-                markName.style.transition = 'font-weight 0.35s ease';
-                markName.style.fontWeight = '500';
-                setTimeout(function () {
-                  markName.style.transition = '';
-                  markName.style.fontWeight = '';
-                }, 350);
-              }, 450);
-
-              // Subtitle + footer appear after greeting is gone
-              setTimeout(function () {
-                var bodyLg = document.querySelector('.body-lg');
-                var footer = document.querySelector('.footer');
-                if (bodyLg) {
-                  bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
-                  bodyLg.style.opacity    = '1';
-                  bodyLg.style.transform  = 'translateY(0)';
+                // Hero reveals proportionally
+                if (hDisplay) {
+                  hDisplay.style.transition = ‘none’;
+                  hDisplay.style.opacity    = String(p);
+                  hDisplay.style.transform  = ‘translateY(‘ + (60 * (1 - p)).toFixed(2) + ‘px)’;
                 }
-                if (footer) {
-                  footer.style.opacity = '';
-                  footer.classList.add('page-reveal');
+
+                if (p >= 1) {
+                  scrollDone = true;
+                  window.removeEventListener(‘scroll’, onScrollIntro);
+
+                  // Snap mark into natural topbar state
+                  markEl.style.transition      = ‘’;
+                  markEl.style.transform       = ‘’;
+                  markEl.style.transformOrigin = ‘’;
+                  markEl.style.opacity         = ‘’;
+                  markName.style.transition    = ‘font-weight 0.35s ease’;
+                  markName.style.fontWeight    = ‘500’;
+                  setTimeout(function () {
+                    markName.style.transition = ‘’;
+                    markName.style.fontWeight = ‘’;
+                  }, 350);
+
+                  // Fully reveal hero
+                  if (hDisplay) {
+                    hDisplay.style.transition = ‘’;
+                    hDisplay.style.opacity    = ‘’;
+                    hDisplay.style.transform  = ‘’;
+                  }
+
+                  // Subtitle + footer appear
+                  if (bodyLg) {
+                    bodyLg.style.transition = ‘opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)’;
+                    bodyLg.style.opacity    = ‘1’;
+                    bodyLg.style.transform  = ‘translateY(0)’;
+                  }
+                  if (footer) {
+                    footer.style.opacity = ‘’;
+                    footer.classList.add(‘page-reveal’);
+                  }
                 }
-              }, 480);
-            }, 2800);
-          });
-        }, 900);
-      }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
+              }
+
+              window.addEventListener(‘scroll’, onScrollIntro, { passive: true });
+              onScrollIntro(); // apply immediately if already scrolled
+            }, 500);
+          }, 800); // hold with greeting visible
+        });
+      }, 700 + 800); // fade-in (700ms) + hold (800ms)
     });
   });
 }());
