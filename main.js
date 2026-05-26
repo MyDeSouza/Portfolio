@@ -83,7 +83,7 @@
     if (navWrapper) navWrapper.style.opacity = ‘0’;
 
     // ── Compute transform so markEl sits at top-left corner ───
-    var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
+    var introSize    = Math.min(Math.max(140, window.innerWidth * 0.22), 320);
     var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
     prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + ‘em’;
 
@@ -169,6 +169,7 @@
                   footer.style.opacity = ‘’;
                   footer.classList.add(‘page-reveal’);
                 }
+                window.dispatchEvent(new CustomEvent(‘intro-done’));
               }, 900);
             }, 500);
           });
@@ -459,4 +460,9 @@
   if (activeItem) {
     requestAnimationFrame(function () { showIndicator(); });
   }
+
+  // Re-show indicator after intro animation cleans up
+  window.addEventListener('intro-done', function () {
+    requestAnimationFrame(function () { if (activeItem) showIndicator(); });
+  });
 }());
