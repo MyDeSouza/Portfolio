@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v4');
+  var seenIntro = sessionStorage.getItem('intro-seen-v5');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v4', '1');
+  sessionStorage.setItem('intro-seen-v5', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -62,122 +62,135 @@
     }, 700);
   }
 
-  // One element: markEl starts large at top-left, Hi,I’m collapses, then shrinks to topbar
+  // Wait one rAF so the nav IIFE's synchronous mark-name setup has run.
   requestAnimationFrame(function () {
-    var markEl   = document.querySelector(‘.mark’);
-    var markName = document.querySelector(‘.mark-name’);
+    var markEl   = document.querySelector('.mark');
+    var markName = document.querySelector('.mark-name');
     if (!markEl || !markName) { revealPage(); return; }
 
-    // ── Insert Hi, I’m prefix ──────────────────────────────────
-    var prefixOuter = document.createElement(‘span’);
-    prefixOuter.style.cssText = ‘display:block;overflow:hidden;white-space:nowrap;’;
-    var prefixInner = document.createElement(‘span’);
-    prefixInner.style.display    = ‘inline-block’;
-    prefixInner.style.fontWeight = ‘400’;
-    prefixInner.textContent      = ‘Hi, I’m’;
+    // ── Greeting ───────────────────────────────────────────────
+    var prefixOuter = document.createElement('span');
+    prefixOuter.style.cssText = 'display:block;overflow:hidden;white-space:nowrap;';
+    var prefixInner = document.createElement('span');
+    prefixInner.style.display    = 'inline-block';
+    prefixInner.style.fontWeight = '400';
+    prefixInner.textContent   = 'Hi, I’m '; // curly apostrophe + non-breaking space
     prefixOuter.appendChild(prefixInner);
     markName.insertBefore(prefixOuter, markName.firstChild);
-    markName.style.fontWeight = ‘600’;
+    markName.style.fontWeight = '600'; // name starts heavier; prefix overrides to 400
 
-    var navWrapper   = document.querySelector(‘.nav-pill-wrapper’);
-    if (navWrapper) navWrapper.style.opacity = ‘0’;
+    // Hide nav until mark is in position
+    var navWrapper = document.querySelector('.nav-pill-wrapper');
+    if (navWrapper) navWrapper.style.opacity = '0';
 
-    // ── Compute transform so markEl sits at top-left corner ───
-    var introSize    = Math.min(Math.max(140, window.innerWidth * 0.22), 320);
-    var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
-    prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + ‘em’;
-
-    // Read rect after font-size is applied
+    // ── Starting transform: match old intro size, bottom-left corner ──
     var markRect     = markEl.getBoundingClientRect();
+    var markCenterX  = markRect.left + markRect.width  / 2;
+    var markCenterY  = markRect.top  + markRect.height / 2;
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
+    var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
+    var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
+    prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + 'em';
     var scaleStart   = Math.min(introSize / markFontSize,
-                       (window.innerWidth - 32) / markRect.width);
+                       (window.innerWidth - 32) / markRect.width); // 16px margin each side
+    var riseOffset   = 72;
     var cornerMargin = 48;
-    var scaledW = markRect.width  * scaleStart;
-    var scaledH = markRect.height * scaleStart;
-    var tx = cornerMargin + scaledW / 2 - (markRect.left + markRect.width  / 2);
-    var ty = cornerMargin + scaledH / 2 - (markRect.top  + markRect.height / 2);
+    var scaledW      = markRect.width  * scaleStart;
+    var scaledH      = markRect.height * scaleStart;
+    var tx = cornerMargin + scaledW / 2 - markCenterX;
+    var ty = cornerMargin + scaledH / 2 - markCenterY;
 
-    markEl.style.position      = ‘relative’;
-    markEl.style.zIndex        = ‘999’;
-    markEl.style.transformOrigin = ‘50% 50%’;
-    markEl.style.transform     = ‘translateX(‘ + tx + ‘px) translateY(‘ + (ty + 48) + ‘px) scale(‘ + scaleStart.toFixed(4) + ‘)’;
-    markEl.style.opacity       = ‘0’;
+    // transform-origin: centre — element centre flies from viewport centre to mark position
+    markEl.style.transformOrigin = '50% 50%';
+    markEl.style.transform       = 'translateX(' + tx + 'px) translateY(' + (ty + riseOffset) + 'px) scale(' + scaleStart.toFixed(4) + ')';
+    markEl.style.opacity         = '0';
 
-    // Phase 1 – fade in + rise
+    // Phase 1 – fade in at large / bottom-left position, nav appears simultaneously
     requestAnimationFrame(function () {
-      markEl.style.transition = ‘opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)’;
-      markEl.style.opacity    = ‘1’;
-      markEl.style.transform  = ‘translateX(‘ + tx + ‘px) translateY(‘ + ty + ‘px) scale(‘ + scaleStart.toFixed(4) + ‘)’;
+      markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+      markEl.style.opacity    = '1';
+      markEl.style.transform  = 'translateX(' + tx + 'px) translateY(' + ty + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
       if (navWrapper) {
-        navWrapper.style.transition = ‘opacity 0.7s ease’;
-        navWrapper.style.opacity    = ‘1’;
+        navWrapper.style.transition = 'opacity 0.7s ease';
+        navWrapper.style.opacity    = '1';
       }
 
-      // Phase 2 – hold, Hi,I’m collapses, then markEl shrinks to topbar
+      // Phase 2 – hold, then slide mark to topbar while hero appears
       setTimeout(function () {
-        markEl.style.transition = ‘’;
+        // Phase 3: slide mark to topbar; font-weight stays light until Hi leaves
+        markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
+        markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
 
-        requestAnimationFrame(function () {
-          prefixOuter.style.height = prefixOuter.offsetHeight + ‘px’;
+        // Hero text slides in after mark starts flying
+        setTimeout(function () {
+          var hDisplay = document.querySelector('.h-display');
+          if (hDisplay) {
+            hDisplay.style.transform = 'translateY(48px)';
+            hDisplay.style.opacity   = '0';
+            setTimeout(function () {
+              hDisplay.style.transition =
+                'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+              hDisplay.style.opacity   = '1';
+              hDisplay.style.transform = 'translateY(0)';
+            }, 60);
+          }
+        }, 550);
+
+        // After mark lands: hold at small, then slide 'Hi, I’m' off
+        setTimeout(function () {
+          markEl.style.transition      = '';
+          markEl.style.transform       = '';
+          markEl.style.transformOrigin = '';
+          markEl.style.opacity         = '';
+          markName.style.transition    = '';
+          markName.style.fontWeight    = '400'; // stays light until Hi, I'm slides off
+
 
           requestAnimationFrame(function () {
-            var ease = ‘0.45s cubic-bezier(0.4, 0, 0.2, 1)’;
-            prefixOuter.style.transition = ‘height ‘ + ease;
-            prefixInner.style.transition = ‘transform ‘ + ease;
-            prefixOuter.style.height     = ‘0’;
-            prefixInner.style.transform  = ‘translateY(-100%)’;
+            prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
 
-            // Phase 3 – markEl shrinks back to its natural topbar position
+            // Hold at small mark for 1.5 s
             setTimeout(function () {
-              markEl.style.transition = ‘transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)’;
-              markEl.style.transform  = ‘translateX(0) translateY(0) scale(1)’;
+              var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+              prefixOuter.style.transition = 'height ' + ease;
+              prefixInner.style.transition = 'transform ' + ease;
+              prefixOuter.style.height     = '0';
+              prefixInner.style.transform  = 'translateY(-100%)';
 
+              // After Hi, I'm is gone, step up to bold
               setTimeout(function () {
-                var hDisplay = document.querySelector(‘.h-display’);
-                if (hDisplay) {
-                  hDisplay.style.transform = ‘translateY(48px)’;
-                  hDisplay.style.opacity   = ‘0’;
-                  setTimeout(function () {
-                    hDisplay.style.transition = ‘opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)’;
-                    hDisplay.style.opacity   = ‘1’;
-                    hDisplay.style.transform = ‘translateY(0)’;
-                  }, 60);
-                }
-              }, 400);
+                markName.style.transition = 'font-weight 0.35s ease';
+                markName.style.fontWeight = '500';
+                setTimeout(function () {
+                  markName.style.transition = '';
+                  markName.style.fontWeight = '';
+                }, 350);
+              }, 450);
 
-              // Clean up after mark lands
+              // Subtitle + footer appear after greeting is gone
               setTimeout(function () {
-                markEl.style.transition      = ‘’;
-                markEl.style.transform       = ‘’;
-                markEl.style.transformOrigin = ‘’;
-                markEl.style.position        = ‘’;
-                markEl.style.zIndex          = ‘’;
-                markEl.style.opacity         = ‘’;
-                markName.style.fontWeight    = ‘’;
-                if (prefixOuter.parentNode) prefixOuter.parentNode.removeChild(prefixOuter);
-
-                var bodyLg = document.querySelector(‘.body-lg’);
-                var footer = document.querySelector(‘.footer’);
+                var bodyLg = document.querySelector('.body-lg');
+                var footer = document.querySelector('.footer');
                 if (bodyLg) {
-                  bodyLg.style.transition = ‘opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)’;
-                  bodyLg.style.opacity    = ‘1’;
-                  bodyLg.style.transform  = ‘translateY(0)’;
+                  bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
+                  bodyLg.style.opacity    = '1';
+                  bodyLg.style.transform  = 'translateY(0)';
                 }
                 if (footer) {
-                  footer.style.opacity = ‘’;
-                  footer.classList.add(‘page-reveal’);
+                  footer.style.opacity = '';
+                  footer.classList.add('page-reveal');
                 }
-                window.dispatchEvent(new CustomEvent(‘intro-done’));
-              }, 900);
-            }, 500);
+                window.dispatchEvent(new CustomEvent('intro-done'));
+              }, 480);
+            }, 2800);
           });
-        });
-      }, 700 + 800);
+        }, 900);
+      }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
     });
   });
 }());
+
 
 
 // ── Nav ──────────────────────────────────────────────────────
@@ -461,7 +474,6 @@
     requestAnimationFrame(function () { showIndicator(); });
   }
 
-  // Re-show indicator after intro animation cleans up
   window.addEventListener('intro-done', function () {
     requestAnimationFrame(function () { if (activeItem) showIndicator(); });
   });
