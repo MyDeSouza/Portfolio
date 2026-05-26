@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen');
+  var seenIntro = sessionStorage.getItem('intro-seen-v2');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen', '1');
+  sessionStorage.setItem('intro-seen-v2', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -144,6 +144,7 @@
 
               var scrollThreshold = Math.min(window.innerHeight, 700);
               var scrollDone = false;
+              window.__introScrolling = true;
 
               function onScrollIntro() {
                 if (scrollDone) return;
@@ -166,6 +167,8 @@
 
                 if (p >= 1) {
                   scrollDone = true;
+                  window.__introScrolling = false;
+                  window.dispatchEvent(new CustomEvent(‘intro-scroll-done’));
                   window.removeEventListener(‘scroll’, onScrollIntro);
 
                   // Snap mark into natural topbar state
@@ -444,7 +447,7 @@
 
   function updateCollapse() {
     var y = window.scrollY;
-    if (y > lastY && y > 60 && !hoverExpanded) {
+    if (y > lastY && y > 60 && !hoverExpanded && !window.__introScrolling) {
       doCollapse();
     } else if (y < lastY && wrapper.classList.contains('collapsed') && !hoverExpanded) {
       doExpand();
@@ -452,6 +455,11 @@
     lastY   = y;
     ticking = false;
   }
+
+  window.addEventListener('intro-scroll-done', function () {
+    if (wrapper.classList.contains('collapsed')) doExpand();
+    else requestAnimationFrame(function () { if (activeItem) showIndicator(); });
+  });
 
   window.addEventListener('scroll', function () {
     if (!ticking) {
