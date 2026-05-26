@@ -108,11 +108,9 @@
 
       // Phase 2 – hold, then slide mark to topbar while nav + hero appear
       setTimeout(function () {
-        // Phase 3: slide mark to topbar, font-weight animates 400→700 simultaneously
+        // Phase 3: slide mark to topbar; font-weight stays light until Hi leaves
         markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
         markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
-        markName.style.transition = 'font-weight 0.85s ease';
-        markName.style.fontWeight = '700';
 
         // Nav fades in after mark is mid-transition
         setTimeout(function () {
@@ -144,7 +142,7 @@
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '';
           markName.style.transition    = '';
-          markName.style.fontWeight    = '';
+          markName.style.fontWeight    = '400'; // stays light until Hi, I'm slides off
 
 
           requestAnimationFrame(function () {
@@ -157,6 +155,16 @@
               prefixInner.style.transition = 'transform ' + ease;
               prefixOuter.style.width      = '0';
               prefixInner.style.transform  = 'translateX(-100%)';
+
+              // After Hi, I'm is gone, step up to bold
+              setTimeout(function () {
+                markName.style.transition = 'font-weight 0.35s ease';
+                markName.style.fontWeight = '700';
+                setTimeout(function () {
+                  markName.style.transition = '';
+                  markName.style.fontWeight = '';
+                }, 350);
+              }, 450);
 
               // Subtitle + footer appear after greeting is gone
               setTimeout(function () {
