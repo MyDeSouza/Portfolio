@@ -104,27 +104,24 @@
     markEl.style.transform       = 'translateX(' + tx + 'px) translateY(' + (ty + riseOffset) + 'px) scale(' + scaleStart.toFixed(4) + ')';
     markEl.style.opacity         = '0';
 
-    // Phase 1 – fade in at large / centred position
+    // Phase 1 – fade in at large / bottom-left position, nav appears simultaneously
     requestAnimationFrame(function () {
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'translateX(' + tx + 'px) translateY(' + ty + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
-      // Phase 2 – hold, then slide mark to topbar while nav + hero appear
+      if (navWrapper) {
+        navWrapper.style.transition = 'opacity 0.7s ease';
+        navWrapper.style.opacity    = '1';
+      }
+
+      // Phase 2 – hold, then slide mark to topbar while hero appears
       setTimeout(function () {
         // Phase 3: slide mark to topbar; font-weight stays light until Hi leaves
         markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
         markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
 
-        // Nav fades in after mark is mid-transition
-        setTimeout(function () {
-          if (navWrapper) {
-            navWrapper.style.transition = 'opacity 0.5s ease';
-            navWrapper.style.opacity    = '1';
-          }
-        }, 350);
-
-        // Hero text slides in slightly after nav
+        // Hero text slides in after mark starts flying
         setTimeout(function () {
           var hDisplay = document.querySelector('.h-display');
           if (hDisplay) {
