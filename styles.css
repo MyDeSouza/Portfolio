@@ -316,7 +316,7 @@ p, .body {
   letter-spacing: -0.01em;
   line-height: 1.1;
   color: var(--fg);
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease, color 0.5s ease;
 }
 .mark-role {
   font-family: var(--serif);
@@ -326,7 +326,7 @@ p, .body {
   letter-spacing: 0;
   text-transform: none;
   line-height: 1.2;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease, color 0.5s ease;
 }
 
 /* ── Nav pill ─────────────────────────────────────────── */
@@ -348,7 +348,7 @@ p, .body {
   position: relative; /* contains the sliding indicator */
   backdrop-filter: blur(6px) saturate(120%);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
-  transition: gap 0.35s ease, padding 0.35s ease, background-color var(--dur-2) var(--ease-in-out);
+  transition: gap 0.35s ease, padding 0.35s ease, background-color 0.5s ease;
 }
 
 .nav-item {
@@ -389,7 +389,7 @@ p, .body {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color var(--dur-2) var(--ease-in-out);
+              background-color 0.5s ease;
 }
 
 /* Default: active icon is white on the dark circle (cancel inversion) */
