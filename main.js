@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v2');
+  var seenIntro = sessionStorage.getItem('intro-seen');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v2', '1');
+  sessionStorage.setItem('intro-seen', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -110,105 +110,84 @@
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'translateX(' + tx + 'px) translateY(' + ty + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
-      // Phase 2 – hold, slide off Hi,I’m + nav in, then hand off to scroll
+      // Phase 2 – hold, then slide mark to topbar while nav + hero appear
       setTimeout(function () {
-        markEl.style.transition = ‘’;
+        // Phase 3: slide mark to topbar; font-weight stays light until Hi leaves
+        markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
+        markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
 
-        requestAnimationFrame(function () {
-          prefixOuter.style.height = prefixOuter.offsetHeight + ‘px’;
+        // Nav fades in after mark is mid-transition
+        setTimeout(function () {
+          if (navWrapper) {
+            navWrapper.style.transition = 'opacity 0.5s ease';
+            navWrapper.style.opacity    = '1';
+          }
+        }, 350);
 
-          // Hold briefly then slide off greeting + reveal nav
-          setTimeout(function () {
-            if (navWrapper) {
-              navWrapper.style.transition = ‘opacity 0.5s ease’;
-              navWrapper.style.opacity    = ‘1’;
-            }
-            var ease = ‘0.45s cubic-bezier(0.4, 0, 0.2, 1)’;
-            prefixOuter.style.transition = ‘height ‘ + ease;
-            prefixInner.style.transition = ‘transform ‘ + ease;
-            prefixOuter.style.height     = ‘0’;
-            prefixInner.style.transform  = ‘translateY(-100%)’;
-
-            // Activate scroll-driven reveal once greeting is gone
+        // Hero text slides in slightly after nav
+        setTimeout(function () {
+          var hDisplay = document.querySelector('.h-display');
+          if (hDisplay) {
+            hDisplay.style.transform = 'translateY(48px)';
+            hDisplay.style.opacity   = '0';
             setTimeout(function () {
-              var hDisplay = document.querySelector(‘.h-display’);
-              var bodyLg   = document.querySelector(‘.body-lg’);
-              var footer   = document.querySelector(‘.footer’);
+              hDisplay.style.transition =
+                'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+              hDisplay.style.opacity   = '1';
+              hDisplay.style.transform = 'translateY(0)';
+            }, 60);
+          }
+        }, 550);
 
-              // Hero starts hidden; scroll reveals it
-              if (hDisplay) {
-                hDisplay.style.transition = ‘none’;
-                hDisplay.style.opacity    = ‘0’;
-                hDisplay.style.transform  = ‘translateY(60px)’;
-              }
+        // After mark lands: hold at small, then slide 'Hi, I’m' off
+        setTimeout(function () {
+          markEl.style.transition      = '';
+          markEl.style.transform       = '';
+          markEl.style.transformOrigin = '';
+          markEl.style.opacity         = '';
+          markName.style.transition    = '';
+          markName.style.fontWeight    = '400'; // stays light until Hi, I'm slides off
 
-              var scrollThreshold = Math.min(window.innerHeight, 700);
-              var scrollDone = false;
-              window.__introScrolling = true;
 
-              function onScrollIntro() {
-                if (scrollDone) return;
-                var p = Math.min(window.scrollY / scrollThreshold, 1);
+          requestAnimationFrame(function () {
+            prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
 
-                // Mark travels from intro position to natural topbar position
-                var txCur    = tx         * (1 - p);
-                var tyCur    = ty         * (1 - p);
-                var scaleCur = scaleStart + (1 - scaleStart) * p;
-                markEl.style.transition      = ‘none’;
-                markEl.style.transformOrigin = ‘50% 50%’;
-                markEl.style.transform       = ‘translateX(‘ + txCur.toFixed(2) + ‘px) translateY(‘ + tyCur.toFixed(2) + ‘px) scale(‘ + scaleCur.toFixed(4) + ‘)’;
+            // Hold at small mark for 1.5 s
+            setTimeout(function () {
+              var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+              prefixOuter.style.transition = 'height ' + ease;
+              prefixInner.style.transition = 'transform ' + ease;
+              prefixOuter.style.height     = '0';
+              prefixInner.style.transform  = 'translateY(-100%)';
 
-                // Hero reveals proportionally
-                if (hDisplay) {
-                  hDisplay.style.transition = ‘none’;
-                  hDisplay.style.opacity    = String(p);
-                  hDisplay.style.transform  = ‘translateY(‘ + (60 * (1 - p)).toFixed(2) + ‘px)’;
+              // After Hi, I'm is gone, step up to bold
+              setTimeout(function () {
+                markName.style.transition = 'font-weight 0.35s ease';
+                markName.style.fontWeight = '500';
+                setTimeout(function () {
+                  markName.style.transition = '';
+                  markName.style.fontWeight = '';
+                }, 350);
+              }, 450);
+
+              // Subtitle + footer appear after greeting is gone
+              setTimeout(function () {
+                var bodyLg = document.querySelector('.body-lg');
+                var footer = document.querySelector('.footer');
+                if (bodyLg) {
+                  bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
+                  bodyLg.style.opacity    = '1';
+                  bodyLg.style.transform  = 'translateY(0)';
                 }
-
-                if (p >= 1) {
-                  scrollDone = true;
-                  window.__introScrolling = false;
-                  window.dispatchEvent(new CustomEvent(‘intro-scroll-done’));
-                  window.removeEventListener(‘scroll’, onScrollIntro);
-
-                  // Snap mark into natural topbar state
-                  markEl.style.transition      = ‘’;
-                  markEl.style.transform       = ‘’;
-                  markEl.style.transformOrigin = ‘’;
-                  markEl.style.opacity         = ‘’;
-                  markName.style.transition    = ‘font-weight 0.35s ease’;
-                  markName.style.fontWeight    = ‘500’;
-                  setTimeout(function () {
-                    markName.style.transition = ‘’;
-                    markName.style.fontWeight = ‘’;
-                  }, 350);
-
-                  // Fully reveal hero
-                  if (hDisplay) {
-                    hDisplay.style.transition = ‘’;
-                    hDisplay.style.opacity    = ‘’;
-                    hDisplay.style.transform  = ‘’;
-                  }
-
-                  // Subtitle + footer appear
-                  if (bodyLg) {
-                    bodyLg.style.transition = ‘opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)’;
-                    bodyLg.style.opacity    = ‘1’;
-                    bodyLg.style.transform  = ‘translateY(0)’;
-                  }
-                  if (footer) {
-                    footer.style.opacity = ‘’;
-                    footer.classList.add(‘page-reveal’);
-                  }
+                if (footer) {
+                  footer.style.opacity = '';
+                  footer.classList.add('page-reveal');
                 }
-              }
-
-              window.addEventListener(‘scroll’, onScrollIntro, { passive: true });
-              onScrollIntro(); // apply immediately if already scrolled
-            }, 500);
-          }, 800); // hold with greeting visible
-        });
-      }, 700 + 800); // fade-in (700ms) + hold (800ms)
+              }, 480);
+            }, 2800);
+          });
+        }, 900);
+      }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
     });
   });
 }());
@@ -447,7 +426,7 @@
 
   function updateCollapse() {
     var y = window.scrollY;
-    if (y > lastY && y > 60 && !hoverExpanded && !window.__introScrolling) {
+    if (y > lastY && y > 60 && !hoverExpanded) {
       doCollapse();
     } else if (y < lastY && wrapper.classList.contains('collapsed') && !hoverExpanded) {
       doExpand();
@@ -455,11 +434,6 @@
     lastY   = y;
     ticking = false;
   }
-
-  window.addEventListener('intro-scroll-done', function () {
-    if (wrapper.classList.contains('collapsed')) doExpand();
-    else requestAnimationFrame(function () { if (activeItem) showIndicator(); });
-  });
 
   window.addEventListener('scroll', function () {
     if (!ticking) {
