@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v7');
+  var seenIntro = sessionStorage.getItem('intro-seen-v8');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v7', '1');
+  sessionStorage.setItem('intro-seen-v8', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -116,9 +116,21 @@
         navWrapper.style.opacity    = '1';
       }
 
+      // Hi, I'm slides off while mark is still large, BEFORE Phase 3
+      setTimeout(function () {
+        prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
+        requestAnimationFrame(function () {
+          var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+          prefixOuter.style.transition = 'height ' + ease;
+          prefixInner.style.transition = 'transform ' + ease;
+          prefixOuter.style.height     = '0';
+          prefixInner.style.transform  = 'translateY(-100%)';
+        });
+      }, 900);
+
       // Phase 2 – hold, then slide mark to topbar while hero appears
       setTimeout(function () {
-        // Phase 3: slide mark to topbar; font-weight stays light until Hi leaves
+        // Phase 3: slide mark to topbar
         markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
         markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
 
@@ -137,54 +149,31 @@
           }
         }, 550);
 
-        // After mark lands: hold at small, then slide 'Hi, I’m' off
+        // After mark lands: clean up, transition to natural font weight, reveal content
         setTimeout(function () {
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '';
-          markName.style.transition    = '';
-          markName.style.fontWeight    = '400'; // stays light until Hi, I'm slides off
+          markName.style.transition    = 'font-weight 0.35s ease';
+          markName.style.fontWeight    = '500';
+          setTimeout(function () {
+            markName.style.transition = '';
+            markName.style.fontWeight = '';
+          }, 350);
 
-
-          requestAnimationFrame(function () {
-            prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
-
-            // Hold at small mark for 1.5 s
-            setTimeout(function () {
-              var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-              prefixOuter.style.transition = 'height ' + ease;
-              prefixInner.style.transition = 'transform ' + ease;
-              prefixOuter.style.height     = '0';
-              prefixInner.style.transform  = 'translateY(-100%)';
-
-              // After Hi, I'm is gone, step up to bold
-              setTimeout(function () {
-                markName.style.transition = 'font-weight 0.35s ease';
-                markName.style.fontWeight = '500';
-                setTimeout(function () {
-                  markName.style.transition = '';
-                  markName.style.fontWeight = '';
-                }, 350);
-              }, 450);
-
-              // Subtitle + footer appear after greeting is gone
-              setTimeout(function () {
-                var bodyLg = document.querySelector('.body-lg');
-                var footer = document.querySelector('.footer');
-                if (bodyLg) {
-                  bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
-                  bodyLg.style.opacity    = '1';
-                  bodyLg.style.transform  = 'translateY(0)';
-                }
-                if (footer) {
-                  footer.style.opacity = '';
-                  footer.classList.add('page-reveal');
-                }
-                window.dispatchEvent(new CustomEvent('intro-done'));
-              }, 480);
-            }, 2800);
-          });
+          var bodyLg = document.querySelector('.body-lg');
+          var footer = document.querySelector('.footer');
+          if (bodyLg) {
+            bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
+            bodyLg.style.opacity    = '1';
+            bodyLg.style.transform  = 'translateY(0)';
+          }
+          if (footer) {
+            footer.style.opacity = '';
+            footer.classList.add('page-reveal');
+          }
+          window.dispatchEvent(new CustomEvent('intro-done'));
         }, 900);
       }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
     });
