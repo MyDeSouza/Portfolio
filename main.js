@@ -83,7 +83,7 @@
     var navWrapper = document.querySelector('.nav-pill-wrapper');
     if (navWrapper) navWrapper.style.opacity = '0';
 
-    // ── Starting transform: match old intro size, vertically centred ──
+    // ── Starting transform: match old intro size, bottom-right corner ──
     var markRect     = markEl.getBoundingClientRect();
     var markCenterX  = markRect.left + markRect.width  / 2;
     var markCenterY  = markRect.top  + markRect.height / 2;
@@ -92,8 +92,11 @@
     var scaleStart   = Math.min(introSize / markFontSize,
                        (window.innerWidth - 32) / markRect.width); // 16px margin each side
     var riseOffset   = 72;
-    var tx = window.innerWidth  / 2 - markCenterX;
-    var ty = window.innerHeight / 2 - markCenterY;
+    var cornerMargin = 48;
+    var scaledW      = markRect.width  * scaleStart;
+    var scaledH      = markRect.height * scaleStart;
+    var tx = window.innerWidth  - cornerMargin - scaledW / 2 - markCenterX;
+    var ty = window.innerHeight - cornerMargin - scaledH / 2 - markCenterY;
 
     // transform-origin: centre — element centre flies from viewport centre to mark position
     markEl.style.transformOrigin = '50% 50%';
