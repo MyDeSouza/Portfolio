@@ -159,7 +159,7 @@
               // After Hi, I'm is gone, step up to bold
               setTimeout(function () {
                 markName.style.transition = 'font-weight 0.35s ease';
-                markName.style.fontWeight = '700';
+                markName.style.fontWeight = '500';
                 setTimeout(function () {
                   markName.style.transition = '';
                   markName.style.fontWeight = '';
