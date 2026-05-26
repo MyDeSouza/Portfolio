@@ -70,14 +70,15 @@
 
     // ── Greeting ───────────────────────────────────────────────
     var prefixOuter = document.createElement('span');
-    prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
+    prefixOuter.style.cssText = 'display:block;overflow:hidden;white-space:nowrap;';
     var prefixInner = document.createElement('span');
     prefixInner.style.display    = 'inline-block';
     prefixInner.style.fontWeight = '400';
+    prefixInner.style.fontSize   = '0.6em';
     prefixInner.textContent   = 'Hi, I’m '; // curly apostrophe + non-breaking space
     prefixOuter.appendChild(prefixInner);
     markName.insertBefore(prefixOuter, markName.firstChild);
-    markName.style.fontWeight = '400'; // start light; animates to 700 in Phase 3
+    markName.style.fontWeight = '600'; // name starts heavier; prefix overrides to 400
 
     // Hide nav until mark is in position
     var navWrapper = document.querySelector('.nav-pill-wrapper');
@@ -149,15 +150,15 @@
 
 
           requestAnimationFrame(function () {
-            prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
+            prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
 
             // Hold at small mark for 1.5 s
             setTimeout(function () {
               var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-              prefixOuter.style.transition = 'width ' + ease;
+              prefixOuter.style.transition = 'height ' + ease;
               prefixInner.style.transition = 'transform ' + ease;
-              prefixOuter.style.width      = '0';
-              prefixInner.style.transform  = 'translateX(-100%)';
+              prefixOuter.style.height     = '0';
+              prefixInner.style.transform  = 'translateY(-100%)';
 
               // After Hi, I'm is gone, step up to bold
               setTimeout(function () {
