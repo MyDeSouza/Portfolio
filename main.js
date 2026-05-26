@@ -96,7 +96,7 @@
     var scaledW      = markRect.width  * scaleStart;
     var scaledH      = markRect.height * scaleStart;
     var tx = cornerMargin + scaledW / 2 - markCenterX;
-    var ty = window.innerHeight - cornerMargin - scaledH / 2 - markCenterY;
+    var ty = cornerMargin + scaledH / 2 - markCenterY;
 
     // transform-origin: centre — element centre flies from viewport centre to mark position
     markEl.style.transformOrigin = '50% 50%';
