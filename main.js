@@ -70,11 +70,10 @@
 
     // ── Greeting ───────────────────────────────────────────────
     var prefixOuter = document.createElement('span');
-    prefixOuter.style.cssText = 'display:block;overflow:hidden;white-space:nowrap;';
+    prefixOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
     var prefixInner = document.createElement('span');
     prefixInner.style.display    = 'inline-block';
     prefixInner.style.fontWeight = '400';
-    prefixInner.style.fontSize   = '0.6em';
     prefixInner.textContent   = 'Hi, I’m '; // curly apostrophe + non-breaking space
     prefixOuter.appendChild(prefixInner);
     markName.insertBefore(prefixOuter, markName.firstChild);
@@ -147,15 +146,15 @@
 
 
           requestAnimationFrame(function () {
-            prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
+            prefixOuter.style.width = prefixOuter.offsetWidth + 'px';
 
             // Hold at small mark for 1.5 s
             setTimeout(function () {
               var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-              prefixOuter.style.transition = 'height ' + ease;
+              prefixOuter.style.transition = 'width ' + ease;
               prefixInner.style.transition = 'transform ' + ease;
-              prefixOuter.style.height     = '0';
-              prefixInner.style.transform  = 'translateY(-100%)';
+              prefixOuter.style.width      = '0';
+              prefixInner.style.transform  = 'translateX(-100%)';
 
               // After Hi, I'm is gone, step up to bold
               setTimeout(function () {
