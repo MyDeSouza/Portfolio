@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v6');
+  var seenIntro = sessionStorage.getItem('intro-seen-v7');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v6', '1');
+  sessionStorage.setItem('intro-seen-v7', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -116,71 +116,77 @@
         navWrapper.style.opacity    = '1';
       }
 
-      // Phase 2 – hold, Hi,I’m slides off while large, then Max DeSouza shrinks
+      // Phase 2 – hold, then slide mark to topbar while hero appears
       setTimeout(function () {
-        markEl.style.transition = ‘’;
+        // Phase 3: slide mark to topbar; font-weight stays light until Hi leaves
+        markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
+        markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
 
-        requestAnimationFrame(function () {
-          prefixOuter.style.height = prefixOuter.offsetHeight + ‘px’;
+        // Hero text slides in after mark starts flying
+        setTimeout(function () {
+          var hDisplay = document.querySelector('.h-display');
+          if (hDisplay) {
+            hDisplay.style.transform = 'translateY(48px)';
+            hDisplay.style.opacity   = '0';
+            setTimeout(function () {
+              hDisplay.style.transition =
+                'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+              hDisplay.style.opacity   = '1';
+              hDisplay.style.transform = 'translateY(0)';
+            }, 60);
+          }
+        }, 550);
+
+        // After mark lands: hold at small, then slide 'Hi, I’m' off
+        setTimeout(function () {
+          markEl.style.transition      = '';
+          markEl.style.transform       = '';
+          markEl.style.transformOrigin = '';
+          markEl.style.opacity         = '';
+          markName.style.transition    = '';
+          markName.style.fontWeight    = '400'; // stays light until Hi, I'm slides off
+
 
           requestAnimationFrame(function () {
-            // Step 1: Hi,I’m collapses while mark is still large
-            var ease = ‘0.45s cubic-bezier(0.4, 0, 0.2, 1)’;
-            prefixOuter.style.transition = ‘height ‘ + ease;
-            prefixInner.style.transition = ‘transform ‘ + ease;
-            prefixOuter.style.height     = ‘0’;
-            prefixInner.style.transform  = ‘translateY(-100%)’;
+            prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
 
-            // Step 2: Max DeSouza shrinks to topbar
+            // Hold at small mark for 1.5 s
             setTimeout(function () {
-              markEl.style.transition = ‘transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)’;
-              markEl.style.transform  = ‘translateX(0) translateY(0) scale(1)’;
+              var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+              prefixOuter.style.transition = 'height ' + ease;
+              prefixInner.style.transition = 'transform ' + ease;
+              prefixOuter.style.height     = '0';
+              prefixInner.style.transform  = 'translateY(-100%)';
 
-              // Hero slides in as mark arrives
+              // After Hi, I'm is gone, step up to bold
               setTimeout(function () {
-                var hDisplay = document.querySelector(‘.h-display’);
-                if (hDisplay) {
-                  hDisplay.style.transform = ‘translateY(48px)’;
-                  hDisplay.style.opacity   = ‘0’;
-                  setTimeout(function () {
-                    hDisplay.style.transition =
-                      ‘opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)’;
-                    hDisplay.style.opacity   = ‘1’;
-                    hDisplay.style.transform = ‘translateY(0)’;
-                  }, 60);
-                }
-              }, 550);
-
-              // After mark lands: clean up + content
-              setTimeout(function () {
-                markEl.style.transition      = ‘’;
-                markEl.style.transform       = ‘’;
-                markEl.style.transformOrigin = ‘’;
-                markEl.style.opacity         = ‘’;
-                markName.style.transition    = ‘font-weight 0.35s ease’;
-                markName.style.fontWeight    = ‘500’;
+                markName.style.transition = 'font-weight 0.35s ease';
+                markName.style.fontWeight = '500';
                 setTimeout(function () {
-                  markName.style.transition = ‘’;
-                  markName.style.fontWeight = ‘’;
+                  markName.style.transition = '';
+                  markName.style.fontWeight = '';
                 }, 350);
+              }, 450);
 
-                var bodyLg = document.querySelector(‘.body-lg’);
-                var footer = document.querySelector(‘.footer’);
+              // Subtitle + footer appear after greeting is gone
+              setTimeout(function () {
+                var bodyLg = document.querySelector('.body-lg');
+                var footer = document.querySelector('.footer');
                 if (bodyLg) {
-                  bodyLg.style.transition = ‘opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)’;
-                  bodyLg.style.opacity    = ‘1’;
-                  bodyLg.style.transform  = ‘translateY(0)’;
+                  bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
+                  bodyLg.style.opacity    = '1';
+                  bodyLg.style.transform  = 'translateY(0)';
                 }
                 if (footer) {
-                  footer.style.opacity = ‘’;
-                  footer.classList.add(‘page-reveal’);
+                  footer.style.opacity = '';
+                  footer.classList.add('page-reveal');
                 }
-                window.dispatchEvent(new CustomEvent(‘intro-done’));
-              }, 900);
-            }, 500);
+                window.dispatchEvent(new CustomEvent('intro-done'));
+              }, 480);
+            }, 2800);
           });
-        });
-      }, 700 + 800); // fade-in (700ms) + hold (800ms)
+        }, 900);
+      }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
     });
   });
 }());
