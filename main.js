@@ -62,107 +62,112 @@
     }, 700);
   }
 
-  // Fixed overlay so the large intro text paints above everything
+  // One element: markEl starts large at top-left, Hi,I’m collapses, then shrinks to topbar
   requestAnimationFrame(function () {
-    var markEl   = document.querySelector('.mark');
-    var markName = document.querySelector('.mark-name');
+    var markEl   = document.querySelector(‘.mark’);
+    var markName = document.querySelector(‘.mark-name’);
     if (!markEl || !markName) { revealPage(); return; }
 
-    var navWrapper   = document.querySelector('.nav-pill-wrapper');
-    var markRect     = markEl.getBoundingClientRect();
-    var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
+    // ── Insert Hi, I’m prefix ──────────────────────────────────
+    var prefixOuter = document.createElement(‘span’);
+    prefixOuter.style.cssText = ‘display:block;overflow:hidden;white-space:nowrap;’;
+    var prefixInner = document.createElement(‘span’);
+    prefixInner.style.display    = ‘inline-block’;
+    prefixInner.style.fontWeight = ‘400’;
+    prefixInner.textContent      = ‘Hi, I’m’;
+    prefixOuter.appendChild(prefixInner);
+    markName.insertBefore(prefixOuter, markName.firstChild);
+    markName.style.fontWeight = ‘600’;
+
+    var navWrapper   = document.querySelector(‘.nav-pill-wrapper’);
+    if (navWrapper) navWrapper.style.opacity = ‘0’;
+
+    // ── Compute transform so markEl sits at top-left corner ───
     var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
     var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
+    prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + ‘em’;
+
+    // Read rect after font-size is applied
+    var markRect     = markEl.getBoundingClientRect();
+    var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
+    var scaleStart   = Math.min(introSize / markFontSize,
+                       (window.innerWidth - 32) / markRect.width);
     var cornerMargin = 48;
-    var st           = getComputedStyle(markName);
+    var scaledW = markRect.width  * scaleStart;
+    var scaledH = markRect.height * scaleStart;
+    var tx = cornerMargin + scaledW / 2 - (markRect.left + markRect.width  / 2);
+    var ty = cornerMargin + scaledH / 2 - (markRect.top  + markRect.height / 2);
 
-    markEl.style.opacity = '0';
-    if (navWrapper) navWrapper.style.opacity = '0';
+    markEl.style.position      = ‘relative’;
+    markEl.style.zIndex        = ‘999’;
+    markEl.style.transformOrigin = ‘50% 50%’;
+    markEl.style.transform     = ‘translateX(‘ + tx + ‘px) translateY(‘ + (ty + 48) + ‘px) scale(‘ + scaleStart.toFixed(4) + ‘)’;
+    markEl.style.opacity       = ‘0’;
 
-    var overlay = document.createElement('div');
-    overlay.style.cssText =
-      'position:fixed;z-index:9999;pointer-events:none;' +
-      'top:' + cornerMargin + 'px;left:' + cornerMargin + 'px;' +
-      'font-family:' + st.fontFamily + ';' +
-      'font-size:' + introSize + 'px;font-weight:600;' +
-      'line-height:1.1;letter-spacing:-0.01em;color:' + st.color + ';' +
-      'opacity:0;transform-origin:top left;';
-
-    var prefixOuter = document.createElement('div');
-    prefixOuter.style.cssText =
-      'overflow:hidden;white-space:nowrap;' +
-      'font-size:' + (hDisplaySize / introSize).toFixed(4) + 'em;font-weight:400;';
-    var prefixInner = document.createElement('span');
-    prefixInner.style.display = 'inline-block';
-    prefixInner.textContent   = 'Hi, I’m';
-    prefixOuter.appendChild(prefixInner);
-
-    var nameDiv = document.createElement('div');
-    nameDiv.textContent = 'Max DeSouza';
-
-    overlay.appendChild(prefixOuter);
-    overlay.appendChild(nameDiv);
-    document.body.appendChild(overlay);
-
+    // Phase 1 – fade in + rise
     requestAnimationFrame(function () {
-      overlay.style.transition = 'opacity 0.7s ease';
-      overlay.style.opacity    = '1';
+      markEl.style.transition = ‘opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)’;
+      markEl.style.opacity    = ‘1’;
+      markEl.style.transform  = ‘translateX(‘ + tx + ‘px) translateY(‘ + ty + ‘px) scale(‘ + scaleStart.toFixed(4) + ‘)’;
 
       if (navWrapper) {
-        navWrapper.style.transition = 'opacity 0.7s ease';
-        navWrapper.style.opacity    = '1';
+        navWrapper.style.transition = ‘opacity 0.7s ease’;
+        navWrapper.style.opacity    = ‘1’;
       }
 
+      // Phase 2 – hold, Hi,I’m collapses, then markEl shrinks to topbar
       setTimeout(function () {
+        markEl.style.transition = ‘’;
+
         requestAnimationFrame(function () {
-          prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
+          prefixOuter.style.height = prefixOuter.offsetHeight + ‘px’;
 
           requestAnimationFrame(function () {
-            var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-            prefixOuter.style.transition = 'height ' + ease;
-            prefixInner.style.transition = 'transform ' + ease;
-            prefixOuter.style.height     = '0';
-            prefixInner.style.transform  = 'translateY(-100%)';
+            var ease = ‘0.45s cubic-bezier(0.4, 0, 0.2, 1)’;
+            prefixOuter.style.transition = ‘height ‘ + ease;
+            prefixInner.style.transition = ‘transform ‘ + ease;
+            prefixOuter.style.height     = ‘0’;
+            prefixInner.style.transform  = ‘translateY(-100%)’;
 
+            // Phase 3 – markEl shrinks back to its natural topbar position
             setTimeout(function () {
-              var scaleEnd = markFontSize / introSize;
-              var dx = markRect.left - cornerMargin;
-              var dy = markRect.top  - cornerMargin;
-
-              overlay.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease 0.55s';
-              overlay.style.transform  = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + scaleEnd.toFixed(4) + ')';
-              overlay.style.opacity    = '0';
-
-              // Real mark snaps in only after overlay is fully gone
-              setTimeout(function () {
-                markEl.style.opacity = '1';
-                if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-              }, 900);
+              markEl.style.transition = ‘transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)’;
+              markEl.style.transform  = ‘translateX(0) translateY(0) scale(1)’;
 
               setTimeout(function () {
-                var hDisplay = document.querySelector('.h-display');
+                var hDisplay = document.querySelector(‘.h-display’);
                 if (hDisplay) {
-                  hDisplay.style.transform = 'translateY(48px)';
-                  hDisplay.style.opacity   = '0';
+                  hDisplay.style.transform = ‘translateY(48px)’;
+                  hDisplay.style.opacity   = ‘0’;
                   setTimeout(function () {
-                    hDisplay.style.transition = 'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-                    hDisplay.style.opacity   = '1';
-                    hDisplay.style.transform = 'translateY(0)';
+                    hDisplay.style.transition = ‘opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)’;
+                    hDisplay.style.opacity   = ‘1’;
+                    hDisplay.style.transform = ‘translateY(0)’;
                   }, 60);
                 }
               }, 400);
 
+              // Clean up after mark lands
               setTimeout(function () {
-                var bodyLg = document.querySelector('.body-lg');
-                var footer = document.querySelector('.footer');
+                markEl.style.transition      = ‘’;
+                markEl.style.transform       = ‘’;
+                markEl.style.transformOrigin = ‘’;
+                markEl.style.position        = ‘’;
+                markEl.style.zIndex          = ‘’;
+                markEl.style.opacity         = ‘’;
+                markName.style.fontWeight    = ‘’;
+                if (prefixOuter.parentNode) prefixOuter.parentNode.removeChild(prefixOuter);
+
+                var bodyLg = document.querySelector(‘.body-lg’);
+                var footer = document.querySelector(‘.footer’);
                 if (bodyLg) {
-                  bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
-                  bodyLg.style.opacity    = '1';
-                  bodyLg.style.transform  = 'translateY(0)';
+                  bodyLg.style.transition = ‘opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)’;
+                  bodyLg.style.opacity    = ‘1’;
+                  bodyLg.style.transform  = ‘translateY(0)’;
                 }
                 if (footer) {
-                  footer.style.opacity = '';
-                  footer.classList.add('page-reveal');
+                  footer.style.opacity = ‘’;
+                  footer.classList.add(‘page-reveal’);
                 }
               }, 900);
             }, 500);
