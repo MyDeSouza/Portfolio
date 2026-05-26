@@ -70,7 +70,7 @@ html { scroll-behavior: smooth; scrollbar-gutter: stable; }
 
   /* Layout */
   --max:    1240px;
-  --gutter: clamp(20px, 5vw, 96px);
+  --gutter: clamp(16px, 4vw, 72px);
 }
 
 /* ── Project mode — body becomes the project color ── */
