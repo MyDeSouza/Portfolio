@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v10');
+  var seenIntro = sessionStorage.getItem('intro-seen-v11');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v10', '1');
+  sessionStorage.setItem('intro-seen-v11', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -118,7 +118,6 @@
 
       // Hi, I'm fades from bottom to top while mark is still large, BEFORE Phase 3
       setTimeout(function () {
-        var savedH = prefixOuter.offsetHeight;
         prefixOuter.style.overflow = 'visible'; // allow inner to drift without being clipped
 
         // Gradient mask: top-third opaque, bottom-third transparent (mask-size 300%)
@@ -143,12 +142,11 @@
           prefixInner.style.transform          = 'translateY(-20%)';
 
           setTimeout(function () {
+            // Hide without collapsing height — avoids shifting the transform-origin
+            // during Phase 3 (percentage origins move when element height changes).
+            // Space is removed after mark lands at scale(1) where the shift is tiny.
+            prefixOuter.style.visibility = 'hidden';
             prefixOuter.style.overflow   = 'hidden';
-            prefixOuter.style.height     = savedH + 'px';
-            requestAnimationFrame(function () {
-              prefixOuter.style.transition = 'height 0.25s ease';
-              prefixOuter.style.height     = '0';
-            });
           }, 580);
         });
       }, 900);
@@ -176,6 +174,7 @@
 
         // After mark lands: clean up, transition to natural font weight, reveal content
         setTimeout(function () {
+          prefixOuter.style.display    = 'none'; // remove hidden space now that mark is at scale(1)
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
