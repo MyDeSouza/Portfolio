@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v8');
+  var seenIntro = sessionStorage.getItem('intro-seen-v10');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v8', '1');
+  sessionStorage.setItem('intro-seen-v10', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -116,15 +116,40 @@
         navWrapper.style.opacity    = '1';
       }
 
-      // Hi, I'm slides off while mark is still large, BEFORE Phase 3
+      // Hi, I'm fades from bottom to top while mark is still large, BEFORE Phase 3
       setTimeout(function () {
-        prefixOuter.style.height = prefixOuter.offsetHeight + 'px';
+        var savedH = prefixOuter.offsetHeight;
+        prefixOuter.style.overflow = 'visible'; // allow inner to drift without being clipped
+
+        // Gradient mask: top-third opaque, bottom-third transparent (mask-size 300%)
+        // y=0% → element sees opaque zone (fully visible)
+        // y=100% → element sees transparent zone (fully invisible)
+        // sweeping from bottom: bottom of text disappears first
+        var g = 'linear-gradient(to top, transparent 33%, black 67%)';
+        prefixInner.style.webkitMaskImage    = g;
+        prefixInner.style.maskImage          = g;
+        prefixInner.style.webkitMaskSize     = '100% 300%';
+        prefixInner.style.maskSize           = '100% 300%';
+        prefixInner.style.webkitMaskRepeat   = 'no-repeat';
+        prefixInner.style.maskRepeat         = 'no-repeat';
+        prefixInner.style.webkitMaskPosition = '0% 0%';
+        prefixInner.style.maskPosition       = '0% 0%';
+
         requestAnimationFrame(function () {
-          var ease = '0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-          prefixOuter.style.transition = 'height ' + ease;
-          prefixInner.style.transition = 'transform ' + ease;
-          prefixOuter.style.height     = '0';
-          prefixInner.style.transform  = 'translateY(-100%)';
+          var easeStr = '0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+          prefixInner.style.transition = '-webkit-mask-position ' + easeStr + ', mask-position ' + easeStr + ', transform ' + easeStr;
+          prefixInner.style.webkitMaskPosition = '0% 100%';
+          prefixInner.style.maskPosition       = '0% 100%';
+          prefixInner.style.transform          = 'translateY(-20%)';
+
+          setTimeout(function () {
+            prefixOuter.style.overflow   = 'hidden';
+            prefixOuter.style.height     = savedH + 'px';
+            requestAnimationFrame(function () {
+              prefixOuter.style.transition = 'height 0.25s ease';
+              prefixOuter.style.height     = '0';
+            });
+          }, 580);
         });
       }, 900);
 
