@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v11');
+  var seenIntro = sessionStorage.getItem('intro-seen-v12');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v11', '1');
+  sessionStorage.setItem('intro-seen-v12', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -116,38 +116,17 @@
         navWrapper.style.opacity    = '1';
       }
 
-      // Hi, I'm fades from bottom to top while mark is still large, BEFORE Phase 3
+      // Hi, I'm fades out (mirrors hero text entrance: opacity + upward drift)
       setTimeout(function () {
-        prefixOuter.style.overflow = 'visible'; // allow inner to drift without being clipped
-
-        // Gradient mask: top-third opaque, bottom-third transparent (mask-size 300%)
-        // y=0% → element sees opaque zone (fully visible)
-        // y=100% → element sees transparent zone (fully invisible)
-        // sweeping from bottom: bottom of text disappears first
-        var g = 'linear-gradient(to top, transparent 33%, black 67%)';
-        prefixInner.style.webkitMaskImage    = g;
-        prefixInner.style.maskImage          = g;
-        prefixInner.style.webkitMaskSize     = '100% 300%';
-        prefixInner.style.maskSize           = '100% 300%';
-        prefixInner.style.webkitMaskRepeat   = 'no-repeat';
-        prefixInner.style.maskRepeat         = 'no-repeat';
-        prefixInner.style.webkitMaskPosition = '0% 0%';
-        prefixInner.style.maskPosition       = '0% 0%';
-
         requestAnimationFrame(function () {
-          var easeStr = '0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-          prefixInner.style.transition = '-webkit-mask-position ' + easeStr + ', mask-position ' + easeStr + ', transform ' + easeStr;
-          prefixInner.style.webkitMaskPosition = '0% 100%';
-          prefixInner.style.maskPosition       = '0% 100%';
-          prefixInner.style.transform          = 'translateY(-20%)';
+          prefixInner.style.transition = 'opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          prefixInner.style.opacity    = '0';
+          prefixInner.style.transform  = 'translateY(-5px)';
 
           setTimeout(function () {
-            // Hide without collapsing height — avoids shifting the transform-origin
-            // during Phase 3 (percentage origins move when element height changes).
-            // Space is removed after mark lands at scale(1) where the shift is tiny.
-            prefixOuter.style.visibility = 'hidden';
             prefixOuter.style.overflow   = 'hidden';
-          }, 580);
+            prefixOuter.style.visibility = 'hidden';
+          }, 480);
         });
       }, 900);
 
@@ -174,7 +153,7 @@
 
         // After mark lands: clean up, transition to natural font weight, reveal content
         setTimeout(function () {
-          prefixOuter.style.display    = 'none'; // remove hidden space now that mark is at scale(1)
+          prefixOuter.style.height     = '0'; // collapse space — batched with transform removal in one frame
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
