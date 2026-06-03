@@ -8,11 +8,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v30');
+  var seenIntro = sessionStorage.getItem('intro-seen-v31');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v30', '1');
+  sessionStorage.setItem('intro-seen-v31', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -80,9 +80,10 @@
     markName.insertBefore(prefixOuter, markName.firstChild);
     markName.style.fontWeight = '600'; // name starts heavier; prefix overrides to 400
 
-    // Hide nav until mark is in position
+    // Pill shell stays visible; only the icon items inside fade in later
     var navWrapper = document.querySelector('.nav-pill-wrapper');
-    if (navWrapper) navWrapper.style.opacity = '0';
+    var navIconItems = document.querySelectorAll('.nav-pill .nav-item');
+    navIconItems.forEach(function (el) { el.style.opacity = '0'; });
 
     // ── Starting transform: scale up from topbar position ──
     var markRect     = markEl.getBoundingClientRect();
@@ -137,7 +138,11 @@
 
         // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
-          if (navWrapper) { navWrapper.style.transition = 'opacity 0.5s ease'; navWrapper.style.opacity = '1'; }
+          // Reveal the nav icon items (pill shell was always visible)
+          navIconItems.forEach(function (el) {
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity    = '1';
+          });
 
           // Reveal eyebrow then h-display elements
           var eyebrow = document.querySelector('.home-hero .eyebrow');
