@@ -149,7 +149,7 @@
             setTimeout(function () {
               el.style.transition =
                 'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-              el.style.opacity   = '1';
+              el.style.opacity   = i === 0 ? '1' : '0.72';
               el.style.transform = 'translateY(0)';
             }, 60 + i * 120);
           });

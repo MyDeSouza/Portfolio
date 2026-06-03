@@ -638,7 +638,7 @@ p, .body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  padding: 0 var(--gutter) clamp(2rem, 5vh, 4rem);
+  padding: 0 var(--gutter) clamp(4rem, 10vh, 7rem);
   gap: var(--s-7);
 }
 
@@ -649,6 +649,11 @@ p, .body {
   font-weight: 400;
   opacity: 0;
   animation: fadeUp var(--dur-4) var(--ease-out) 0.2s forwards;
+}
+
+.home-hero p.h-display {
+  animation-name: fadeUpMuted;
+  animation-delay: 0.35s;
 }
 
 .home-hero .eyebrow {
@@ -682,6 +687,11 @@ p, .body {
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUpMuted {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 0.72; transform: translateY(0); }
 }
 
 /* =========================================================
