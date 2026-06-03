@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v25');
+  var seenIntro = sessionStorage.getItem('intro-seen-v26');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v25', '1');
+  sessionStorage.setItem('intro-seen-v26', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -102,7 +102,7 @@
     requestAnimationFrame(function () {
       var prefixH    = prefixInner.offsetHeight;
       var extraLower = 3; // local px → Hi I'm appears S×extraLower px below topbar
-      var gapDes     = 5; // local px → gap between Hi I'm and Max DeSouza = S×gapDes px
+      var gapDes     = 3; // local px → gap between Hi I'm and Max DeSouza = S×gapDes px
 
       // Shift Hi I'm up by (prefixH + gapDes) so it sits above Max DeSouza with gapDes gap
       var shiftUp = prefixH + gapDes;
