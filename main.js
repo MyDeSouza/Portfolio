@@ -8,11 +8,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v27');
+  var seenIntro = sessionStorage.getItem('intro-seen-v28');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v27', '1');
+  sessionStorage.setItem('intro-seen-v28', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -87,7 +87,7 @@
     // ── Starting transform: scale up from topbar position ──
     var markRect     = markEl.getBoundingClientRect();
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
-    var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
+    var introSize    = Math.min(Math.max(64, window.innerWidth * 0.09), 120);
     var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
     prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + 'em';
     var scaleStart = Math.min(introSize / markFontSize,
