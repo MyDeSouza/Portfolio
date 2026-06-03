@@ -638,8 +638,8 @@ p, .body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  padding: 0 var(--gutter) clamp(4rem, 10vh, 7rem);
-  gap: var(--s-7);
+  padding: 0 var(--gutter) clamp(6rem, 14vh, 10rem);
+  gap: var(--s-5);
 }
 
 .home-hero .h-display {
