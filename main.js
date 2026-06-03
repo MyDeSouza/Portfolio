@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v18');
+  var seenIntro = sessionStorage.getItem('intro-seen-v19');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v18', '1');
+  sessionStorage.setItem('intro-seen-v19', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -91,46 +91,47 @@
     var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
     var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
     prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + 'em';
-    var scaleStart  = Math.min(introSize / markFontSize,
-                      (window.innerWidth - 32) / markRect.width);
-    var riseOffset  = 4; // px local → ~40px visual at intro scale
+    var scaleStart = Math.min(introSize / markFontSize,
+                     (window.innerWidth - 32) / markRect.width);
 
-    // Start 2× offset below; Phase 1 rises halfway (original fade-in feel),
-    // then shuffles the rest when Hi I'm leaves.
     markEl.style.transformOrigin = 'left top';
-    markEl.style.transform       = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (riseOffset * 2) + 'px)';
     markEl.style.opacity         = '0';
+    // transform set in rAF after measuring prefixH so the gap is exact
 
     // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
-      // Measure prefix line-height then lift it above Max DeSouza via translateY.
-      // Because prefixOuter.height is 0 this never contributes to the mark's layout,
-      // so removing it at cleanup causes zero position shift (no snap).
       var prefixH = prefixInner.offsetHeight;
-      prefixInner.style.transform = 'translateY(-' + prefixH + 'px)';
+      var gapPx   = 3; // local-coord gap kept after Phase 1; shuffled away with Hi I'm
 
-      // Phase 1: fade in + rise halfway (original fade-in feel)
+      // Push Hi I'm an extra gapPx above its natural touching point so Max DeSouza
+      // has clear space below it at the start.
+      prefixInner.style.transform = 'translateY(-' + (prefixH + gapPx) + 'px)';
+
+      // Initial: Max DeSouza starts prefixH*scale below its final large position,
+      // putting it clearly underneath where Hi I'm renders.
+      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + prefixH + 'px)';
+      markEl.offsetHeight; // force reflow so browser commits initial state before transition
+
+      // Phase 1: fade in + rise (stops with gapPx remaining — ready for shuffle)
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
-      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + riseOffset + 'px)';
+      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + gapPx + 'px)';
 
       if (navWrapper) {
         navWrapper.style.transition = 'opacity 0.7s ease';
         navWrapper.style.opacity    = '1';
       }
 
-      // Hi, I'm fades out; Max DeSouza rises shortly after
+      // Hi I'm fades + Max DeSouza rises at the same rate simultaneously
       setTimeout(function () {
+        markEl.style.transition = 'transform 0.55s ease';
+        markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ')';
+
         requestAnimationFrame(function () {
           prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
-          prefixInner.style.transform  = 'translateY(-' + (prefixH + 5) + 'px)';
+          prefixInner.style.transform  = 'translateY(-' + (prefixH + gapPx + 5) + 'px)';
         });
-
-        setTimeout(function () {
-          markEl.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-          markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ')';
-        }, 300);
       }, 900);
 
       // Phase 2 – hold, then shrink mark to natural size while hero appears
