@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v23');
+  var seenIntro = sessionStorage.getItem('intro-seen-v24');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v23', '1');
+  sessionStorage.setItem('intro-seen-v24', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -101,7 +101,7 @@
     // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
       var prefixH = prefixInner.offsetHeight;
-      var gapPx = prefixH * 2; // 2× Hi I'm height of gap → ~140px visual separation
+      var gapPx = prefixH + 4; // moderate increase over baseline → ~110px visual separation
 
       // Lift Hi I'm by (prefixH + gapPx) above its natural position
       prefixInner.style.transform = 'translateY(-' + (prefixH + gapPx) + 'px)';
