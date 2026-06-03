@@ -8,11 +8,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v28');
+  var seenIntro = sessionStorage.getItem('intro-seen-v30');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v28', '1');
+  sessionStorage.setItem('intro-seen-v30', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -93,38 +93,36 @@
     var scaleStart = Math.min(introSize / markFontSize,
                      (window.innerWidth - 32) / markRect.width);
 
-    markEl.style.transformOrigin = 'left top';
+    // transform-origin: 50% 50% — scale radiates from the mark's own centre.
+    // With the mark centred horizontally in the topbar, this also centres horizontally.
+    markEl.style.transformOrigin = '50% 50%';
     markEl.style.opacity         = '0';
-    // transform set in rAF after measuring prefixH so the gap is exact
 
-    // Phase 1 – fade in at large scale, nav appears simultaneously
+    // Phase 1 – fade in at large scale centred on screen
     requestAnimationFrame(function () {
-      var prefixH    = prefixInner.offsetHeight;
-      var extraLower = 3; // local px → Hi I'm appears S×extraLower px below topbar
-      var gapDes     = 3; // local px → gap between Hi I'm and Max DeSouza = S×gapDes px
+      var prefixH = prefixInner.offsetHeight;
+      var gapDes  = 3; // gap between Hi I'm and Max DeSouza in local px
 
-      // Shift Hi I'm up by (prefixH + gapDes) so it sits above Max DeSouza with gapDes gap
+      // Lift Hi I'm above Max DeSouza
       var shiftUp = prefixH + gapDes;
       prefixInner.style.transform = 'translateY(-' + shiftUp + 'px)';
 
-      // Phase 1 target r: positions Hi I'm visibly on screen (S×extraLower below topbar)
-      // and Max DeSouza S×(prefixH+extraLower+gapDes) below topbar
-      var holdR = prefixH + extraLower + gapDes;
+      // holdR: translateY needed to visually centre the large mark at 50 vh.
+      // With origin at 50%/50%, centre_viewport = markCenterY + S*holdR.
+      var markCenterY = markRect.top + markRect.height / 2;
+      var holdR = (window.innerHeight / 2 - markCenterY) / scaleStart;
+
+      // Start slightly below centre so Phase 1 has a gentle rise
       markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (holdR + prefixH) + 'px)';
       markEl.offsetHeight; // force reflow
 
-      // Phase 1: fade in + rise by prefixH toward Phase 1 resting position
+      // Phase 1: fade in + rise to centred position
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + holdR + 'px)';
 
-      // Nav stays hidden during Phase 1 — revealed alongside bento in Phase 3
-
-      // Hi I'm fades + Max DeSouza rises at the same rate simultaneously
+      // Hi I'm fades; mark stays centred — Phase 3 handles the full collapse to nav
       setTimeout(function () {
-        markEl.style.transition = 'transform 0.55s ease';
-        markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ')';
-
         requestAnimationFrame(function () {
           prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
@@ -132,7 +130,7 @@
         });
       }, 1300);
 
-      // Phase 2 – hold, then shrink mark to natural size while hero appears
+      // Phase 3 – collapse large centred mark into the nav
       setTimeout(function () {
         markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
         markEl.style.transform  = 'scale(1)';

@@ -264,9 +264,10 @@ p, .body {
   position: sticky;
   top: 0;
   z-index: 10;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
   padding: 1.5rem var(--gutter) 0.75rem;
   font-family: var(--mono);
   font-size: 0.78rem;
@@ -646,7 +647,8 @@ p, .body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   padding: 0 var(--gutter) clamp(6rem, 14vh, 10rem);
   gap: var(--s-5);
 }
