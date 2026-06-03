@@ -477,31 +477,39 @@
 
 
 
-// ── Hero opacity swap after 8 s ───────────────────────────────
+// ── Hero: after 8 s both texts dim to 64%, hover restores to 100% ──
 (function () {
-  var h1 = document.querySelector('.home-hero h1.h-display');
-  var p  = document.querySelector('.home-hero p.h-display');
-  if (!h1 || !p) return;
+  var hero = document.querySelector('.home-hero');
+  var h1   = document.querySelector('.home-hero h1.h-display');
+  var p    = document.querySelector('.home-hero p.h-display');
+  if (!hero || !h1 || !p) return;
 
   setTimeout(function () {
     var easing = '0.7s ease';
 
-    // H1: animate to 72%, then hand off to CSS class so :hover can work
+    // Capture current computed values as inline start points
+    h1.style.opacity   = getComputedStyle(h1).opacity;
+    p.style.animation  = 'none';
+    p.style.opacity    = getComputedStyle(p).opacity;
+    p.style.fontWeight = getComputedStyle(p).fontWeight;
+    p.offsetHeight; // force reflow
+
+    // Animate both to 64%
     h1.style.transition = 'opacity ' + easing;
-    h1.style.opacity    = '0.72';
+    h1.style.opacity    = '0.64';
+    p.style.transition  = 'opacity ' + easing + ', font-weight ' + easing;
+    p.style.opacity     = '0.64';
+    p.style.fontWeight  = '400';
+
+    // Hand off to CSS class after transition so :hover and :has() take over
     setTimeout(function () {
       h1.style.transition = '';
       h1.style.opacity    = '';
-      h1.classList.add('hero-faded');
+      p.style.transition  = '';
+      p.style.opacity     = '';
+      p.style.fontWeight  = '';
+      hero.classList.add('hero-active');
     }, 700);
-
-    // P: clear animation fill, set start value, then transition to full opacity + slightly thicker
-    p.style.animation  = 'none';
-    p.style.opacity    = '0.72';
-    p.offsetHeight;
-    p.style.transition = 'opacity ' + easing + ', font-weight ' + easing;
-    p.style.opacity    = '1';
-    p.style.fontWeight = '450';
   }, 8000);
 }());
 

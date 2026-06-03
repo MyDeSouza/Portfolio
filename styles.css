@@ -661,14 +661,26 @@ p, .body {
   animation-delay: 0.35s;
 }
 
-/* Applied after 8s so CSS :hover can override opacity */
-.home-hero h1.h-display.hero-faded {
-  opacity: 0.72;
-  transition: opacity 0.3s ease;
+/* Applied after 8s — both texts at 64%, hover brings to 100% */
+.home-hero.hero-active h1.h-display,
+.home-hero.hero-active p.h-display {
+  opacity: 0.64;
+  transition: opacity 0.3s ease, font-weight 0.3s ease;
 }
 
-.home-hero h1.h-display.hero-faded:hover {
+.home-hero.hero-active h1.h-display:hover {
   opacity: 1;
+}
+
+.home-hero.hero-active p.h-display:hover {
+  opacity: 1;
+  font-weight: 450;
+}
+
+/* Hovering top text keeps bottom at 64% + thinner weight */
+.home-hero.hero-active:has(h1.h-display:hover) p.h-display {
+  opacity: 0.64;
+  font-weight: 400;
 }
 
 .home-hero .eyebrow {
