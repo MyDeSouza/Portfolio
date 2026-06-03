@@ -312,7 +312,7 @@ p, .body {
 .mark-name {
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   letter-spacing: -0.01em;
   line-height: 1.1;
   color: var(--fg);
@@ -355,8 +355,8 @@ p, .body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
@@ -398,8 +398,8 @@ p, .body {
 
 /* Icons — black by default on light pill */
 .nav-icon {
-  width: 17px;
-  height: 17px;
+  width: 19px;
+  height: 19px;
   display: block;
   opacity: 1;
   filter: invert(1);
@@ -410,8 +410,8 @@ p, .body {
 .home-icon-wrap {
   position: relative;
   display: inline-block;
-  width: 17px;
-  height: 17px;
+  width: 19px;
+  height: 19px;
   overflow: hidden;
   opacity: 1;
   filter: invert(1);
@@ -469,8 +469,8 @@ p, .body {
 .icon-person {
   position: absolute;
   top: 0; left: 0;
-  width: 17px;
-  height: 17px;
+  width: 19px;
+  height: 19px;
 }
 .icon-scroll  { animation: homeIconScroll  9s linear infinite; }
 .icon-coffee  { animation: homeIconCoffee  9s linear infinite; }
