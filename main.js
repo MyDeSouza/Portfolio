@@ -10,11 +10,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v28');
+  var seenIntro = sessionStorage.getItem('intro-seen-v29');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v28', '1');
+  sessionStorage.setItem('intro-seen-v29', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -95,27 +95,28 @@
     var scaleStart = Math.min(introSize / markFontSize,
                      (window.innerWidth - 32) / markRect.width);
 
-    markEl.style.transformOrigin = 'left top';
+    // transform-origin: left center — scale radiates from the mark's vertical midpoint
+    // which sits at 50 vh now that the topbar is full-height + align-items: center
+    markEl.style.transformOrigin = 'left center';
     markEl.style.opacity         = '0';
     // transform set in rAF after measuring prefixH so the gap is exact
 
     // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
       var prefixH    = prefixInner.offsetHeight;
-      var extraLower = 3; // local px → Hi I'm appears S×extraLower px below topbar
-      var gapDes     = 3; // local px → gap between Hi I'm and Max DeSouza = S×gapDes px
+      var gapDes     = 3; // local px → gap between Hi I'm and Max DeSouza
 
       // Shift Hi I'm up by (prefixH + gapDes) so it sits above Max DeSouza with gapDes gap
       var shiftUp = prefixH + gapDes;
       prefixInner.style.transform = 'translateY(-' + shiftUp + 'px)';
 
-      // Phase 1 target r: positions Hi I'm visibly on screen (S×extraLower below topbar)
-      // and Max DeSouza S×(prefixH+extraLower+gapDes) below topbar
-      var holdR = prefixH + extraLower + gapDes;
+      // holdR: small downward offset so Phase 1 rise and shuffle both feel alive.
+      // With left-center origin, holdR=0 → Max DeSouza perfectly centred at 50 vh.
+      var holdR = 3;
       markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (holdR + prefixH) + 'px)';
       markEl.offsetHeight; // force reflow
 
-      // Phase 1: fade in + rise by prefixH toward Phase 1 resting position
+      // Phase 1: fade in + rise toward Phase 1 resting position
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + holdR + 'px)';
