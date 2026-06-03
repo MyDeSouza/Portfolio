@@ -1,6 +1,6 @@
 // ── Mark entry animation + page reveal ───────────────────────
 (function () {
-  var pageEls = Array.prototype.slice.call(document.querySelectorAll('.h-display')).concat([
+  var pageEls = Array.prototype.slice.call(document.querySelectorAll('.h-display, .home-hero .eyebrow')).concat([
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
   ]).filter(Boolean);
@@ -140,6 +140,18 @@
         // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
           if (navWrapper) { navWrapper.style.transition = 'opacity 0.5s ease'; navWrapper.style.opacity = '1'; }
+
+          // Reveal eyebrow then h-display elements
+          var eyebrow = document.querySelector('.home-hero .eyebrow');
+          if (eyebrow) {
+            eyebrow.style.transform = 'translateY(48px)';
+            eyebrow.style.opacity   = '0';
+            setTimeout(function () {
+              eyebrow.style.transition = 'opacity 0.6s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+              eyebrow.style.opacity    = '1';
+              eyebrow.style.transform  = 'translateY(0)';
+            }, 0);
+          }
 
           var hDisplays = document.querySelectorAll('.h-display');
           hDisplays.forEach(function (el, i) {
