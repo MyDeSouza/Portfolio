@@ -302,13 +302,12 @@ p, .body {
 [data-mode="project"] .nav-pill.active-shown .nav-item.active .nav-icon,
 [data-mode="project"] .nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: invert(1); }
 
-/* Mark lives outside the pill, absolutely positioned so it doesn't shift the centred pill */
+/* Mark outside the pill, absolutely positioned so it doesn't shift the centred pill */
 .topbar-mark-ghost {
   position: absolute;
   left: var(--gutter);
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none; /* pill is nav only; mark used for intro animation only */
 }
 
 .nav-pill .mark-name {

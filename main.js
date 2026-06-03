@@ -8,11 +8,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v33');
+  var seenIntro = sessionStorage.getItem('intro-seen-v34');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v33', '1');
+  sessionStorage.setItem('intro-seen-v34', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -169,15 +169,13 @@
           });
         }, 550);
 
-        // After mark lands: fade out ghost mark (it was only for the intro animation)
+        // After mark lands: clear inline styles so it returns to natural small visible state
         setTimeout(function () {
           prefixOuter.style.display    = 'none';
-          markEl.style.transition      = 'opacity 0.3s ease';
-          markEl.style.opacity         = '0';
-          setTimeout(function () {
-            markEl.style.display = 'none';
-            markEl.style.transition = '';
-          }, 300);
+          markEl.style.transition      = '';
+          markEl.style.transform       = '';
+          markEl.style.transformOrigin = '';
+          markEl.style.opacity         = '';
           markName.style.transition    = 'font-weight 0.35s ease';
           markName.style.fontWeight    = '500';
           setTimeout(function () {
