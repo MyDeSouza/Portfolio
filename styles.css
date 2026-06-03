@@ -638,14 +638,14 @@ p, .body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  padding: 0 var(--gutter) 0.75rem;
-  gap: var(--s-6);
+  padding: 0 var(--gutter) clamp(2rem, 5vh, 4rem);
+  gap: var(--s-7);
 }
 
 .home-hero .h-display {
-  font-size: clamp(16px, 1.8vw, 22px);
-  line-height: 1.45;
-  letter-spacing: -0.01em;
+  font-size: clamp(20px, 2.4vw, 32px);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
   font-weight: 400;
   opacity: 0;
   animation: fadeUp var(--dur-4) var(--ease-out) 0.2s forwards;
