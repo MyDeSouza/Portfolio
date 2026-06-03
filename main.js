@@ -494,12 +494,12 @@
     p.style.fontWeight = getComputedStyle(p).fontWeight;
     p.offsetHeight; // force reflow
 
-    // Animate both to 64%
+    // h1 dims to 64%, p brightens to 100% + slightly thicker weight
     h1.style.transition = 'opacity ' + easing;
     h1.style.opacity    = '0.64';
     p.style.transition  = 'opacity ' + easing + ', font-weight ' + easing;
-    p.style.opacity     = '0.64';
-    p.style.fontWeight  = '400';
+    p.style.opacity     = '1';
+    p.style.fontWeight  = '450';
 
     // Hand off to CSS class after transition so :hover and :has() take over
     setTimeout(function () {

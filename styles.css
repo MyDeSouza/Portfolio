@@ -661,23 +661,23 @@ p, .body {
   animation-delay: 0.35s;
 }
 
-/* Applied after 8s — both texts at 64%, hover brings to 100% */
-.home-hero.hero-active h1.h-display,
-.home-hero.hero-active p.h-display {
+/* Applied after 8s — h1 dims to 64%, p brightens to 100% + weight 450 */
+.home-hero.hero-active h1.h-display {
   opacity: 0.64;
+  transition: opacity 0.3s ease;
+}
+
+.home-hero.hero-active p.h-display {
+  opacity: 1;
+  font-weight: 450;
   transition: opacity 0.3s ease, font-weight 0.3s ease;
 }
 
+/* Hover h1: restore h1 to 100%, revert p to 64% + weight 400 */
 .home-hero.hero-active h1.h-display:hover {
   opacity: 1;
 }
 
-.home-hero.hero-active p.h-display:hover {
-  opacity: 1;
-  font-weight: 450;
-}
-
-/* Hovering top text keeps bottom at 64% + thinner weight */
 .home-hero.hero-active:has(h1.h-display:hover) p.h-display {
   opacity: 0.64;
   font-weight: 400;
