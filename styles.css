@@ -661,6 +661,16 @@ p, .body {
   animation-delay: 0.35s;
 }
 
+/* Applied after 8s so CSS :hover can override opacity */
+.home-hero h1.h-display.hero-faded {
+  opacity: 0.72;
+  transition: opacity 0.3s ease;
+}
+
+.home-hero h1.h-display.hero-faded:hover {
+  opacity: 1;
+}
+
 .home-hero .eyebrow {
   margin-bottom: var(--s-5);
   opacity: 0;

@@ -484,16 +484,24 @@
   if (!h1 || !p) return;
 
   setTimeout(function () {
-    // Clear animation fill so transition can control opacity on p
-    p.style.animation = 'none';
-    p.style.opacity   = '0.72';
-    p.offsetHeight;
+    var easing = '0.7s ease';
 
-    var t = 'opacity 0.7s ease';
-    h1.style.transition = t;
-    h1.style.opacity    = '0.8';
-    p.style.transition  = t;
-    p.style.opacity     = '1';
+    // H1: animate to 72%, then hand off to CSS class so :hover can work
+    h1.style.transition = 'opacity ' + easing;
+    h1.style.opacity    = '0.72';
+    setTimeout(function () {
+      h1.style.transition = '';
+      h1.style.opacity    = '';
+      h1.classList.add('hero-faded');
+    }, 700);
+
+    // P: clear animation fill, set start value, then transition to full opacity + slightly thicker
+    p.style.animation  = 'none';
+    p.style.opacity    = '0.72';
+    p.offsetHeight;
+    p.style.transition = 'opacity ' + easing + ', font-weight ' + easing;
+    p.style.opacity    = '1';
+    p.style.fontWeight = '450';
   }, 8000);
 }());
 
