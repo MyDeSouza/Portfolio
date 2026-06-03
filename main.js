@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v15');
+  var seenIntro = sessionStorage.getItem('intro-seen-v16');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v15', '1');
+  sessionStorage.setItem('intro-seen-v16', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -91,12 +91,14 @@
     var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
     var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
     prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + 'em';
-    var scaleStart = Math.min(introSize / markFontSize,
-                     (window.innerWidth - 32) / markRect.width);
+    var scaleStart  = Math.min(introSize / markFontSize,
+                      (window.innerWidth - 32) / markRect.width);
+    var riseOffset  = 4; // px in local coords → ~40px visual at intro scale
 
     // transform-origin: left top — mark scales from its natural topbar corner
+    // translateY(riseOffset) shifts Max DeSouza down; it rises up when Hi I'm leaves
     markEl.style.transformOrigin = 'left top';
-    markEl.style.transform       = 'scale(' + scaleStart.toFixed(4) + ')';
+    markEl.style.transform       = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + riseOffset + 'px)';
     markEl.style.opacity         = '0';
 
     // Phase 1 – fade in at large scale, nav appears simultaneously
@@ -115,8 +117,12 @@
         navWrapper.style.opacity    = '1';
       }
 
-      // Hi, I'm fades out — same easing as hero text entrance (opacity + upward drift)
+      // Hi, I'm fades out + Max DeSouza rises up simultaneously
       setTimeout(function () {
+        // Mark rises: remove the translateY offset while keeping scale
+        markEl.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+        markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ')';
+
         requestAnimationFrame(function () {
           prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
