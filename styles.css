@@ -651,6 +651,11 @@ p, .body {
   animation: fadeUp var(--dur-4) var(--ease-out) 0.2s forwards;
 }
 
+.home-hero h1.h-display {
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 500;
+}
+
 .home-hero p.h-display {
   animation-name: fadeUpMuted;
   animation-delay: 0.35s;
