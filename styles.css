@@ -695,6 +695,12 @@ p, .body {
 
 .home-hero .eyebrow {
   margin-bottom: var(--s-5);
+  font-size: clamp(32px, 4vw, 56px);
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--fg);
   opacity: 0;
   animation: fadeUp var(--dur-4) var(--ease-out) 0.05s forwards;
 }
