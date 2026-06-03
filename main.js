@@ -477,30 +477,24 @@
 
 
 
-// ── Hero equalise: after 7.5 s second text matches first ──────
+// ── Hero opacity swap after 8 s ───────────────────────────────
 (function () {
-  var hero = document.querySelector('.home-hero');
-  var h1   = document.querySelector('.home-hero h1.h-display');
-  var p    = document.querySelector('.home-hero p.h-display');
-  if (!hero || !h1 || !p) return;
+  var h1 = document.querySelector('.home-hero h1.h-display');
+  var p  = document.querySelector('.home-hero p.h-display');
+  if (!h1 || !p) return;
 
   setTimeout(function () {
-    var easing = '0.7s cubic-bezier(0.16, 1, 0.3, 1)';
-
-    // Clear CSS animation fill so transition can take over opacity
+    // Clear animation fill so transition can control opacity on p
     p.style.animation = 'none';
-    p.style.opacity   = '0.72'; // set explicit start value
-    p.offsetHeight;             // force reflow
+    p.style.opacity   = '0.72';
+    p.offsetHeight;
 
-    // Match h1 size and go full opacity
-    p.style.transition = 'opacity 0.7s ease, font-size ' + easing;
-    p.style.opacity    = '1';
-    p.style.fontSize   = getComputedStyle(h1).fontSize;
-
-    // Shuffle both up together
-    hero.style.transition    = 'padding-bottom ' + easing;
-    hero.style.paddingBottom = 'clamp(9rem, 20vh, 14rem)';
-  }, 7500);
+    var t = 'opacity 0.7s ease';
+    h1.style.transition = t;
+    h1.style.opacity    = '0.8';
+    p.style.transition  = t;
+    p.style.opacity     = '1';
+  }, 8000);
 }());
 
 
