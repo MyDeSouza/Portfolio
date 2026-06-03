@@ -307,8 +307,8 @@ p, .body {
 }
 
 .nav-pill .mark-name {
-  font-size: 0.875rem;
-  letter-spacing: -0.005em;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
   text-transform: none;
 }
 
