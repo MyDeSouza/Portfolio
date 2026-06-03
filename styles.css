@@ -463,33 +463,43 @@ p, .body {
 }
 
 
-/* Home icon — slides up: exit top, teleport below (clipped), enter from bottom */
+/* Home icon — 3-icon cycle: scroll → coffee → person (9 s, each visible ~3 s) */
 .icon-scroll,
-.icon-coffee {
+.icon-coffee,
+.icon-person {
   position: absolute;
   top: 0; left: 0;
   width: 17px;
   height: 17px;
 }
-.icon-scroll { animation: homeIconScroll 6s linear infinite; }
-.icon-coffee  { animation: homeIconCoffee 6s linear infinite; }
+.icon-scroll  { animation: homeIconScroll  9s linear infinite; }
+.icon-coffee  { animation: homeIconCoffee  9s linear infinite; }
+.icon-person  { animation: homeIconPerson  9s linear infinite; }
 
 @keyframes homeIconScroll {
   0%   { transform: translateY(0); }
-  40%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
-  48%  { transform: translateY(-110%); animation-timing-function: step-start; }
-  49%  { transform: translateY(110%); }
-  90%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
-  98%  { transform: translateY(0); }
+  28%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
+  32%  { transform: translateY(-110%); animation-timing-function: step-start; }
+  33%  { transform: translateY(110%); }
+  95%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
+  99%  { transform: translateY(0); }
   100% { transform: translateY(0); }
 }
 @keyframes homeIconCoffee {
   0%   { transform: translateY(110%); }
-  40%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
-  48%  { transform: translateY(0); }
-  90%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
-  98%  { transform: translateY(-110%); animation-timing-function: step-start; }
-  99%  { transform: translateY(110%); }
+  28%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
+  33%  { transform: translateY(0); }
+  62%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
+  66%  { transform: translateY(-110%); animation-timing-function: step-start; }
+  67%  { transform: translateY(110%); }
+  100% { transform: translateY(110%); }
+}
+@keyframes homeIconPerson {
+  0%   { transform: translateY(110%); }
+  62%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
+  67%  { transform: translateY(0); }
+  95%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
+  99%  { transform: translateY(-110%); animation-timing-function: step-start; }
   100% { transform: translateY(110%); }
 }
 
@@ -534,7 +544,8 @@ p, .body {
   .nav-icon        { width: 20px; height: 20px; }
   .home-icon-wrap  { width: 20px; height: 20px; }
   .icon-scroll,
-  .icon-coffee     { width: 20px; height: 20px; }
+  .icon-coffee,
+  .icon-person     { width: 20px; height: 20px; }
   .nav-label { display: none; }
 }
 
