@@ -451,9 +451,7 @@ p, .body {
 [data-mode="project"] .nav-item:not(.active) .nav-item-label { color: #ffffff; }
 
 .nav-item:hover .nav-item-label {
-  opacity: 1;
-  /* On enter: wait for pill to fully expand before showing text */
-  transition: opacity 0.12s ease 0.32s;
+  opacity: 0; /* hover labels disabled */
 }
 
 /* Fade the indicator only when a non-active item is hovered */
