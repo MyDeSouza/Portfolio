@@ -652,6 +652,7 @@ p, .body {
 }
 
 .home-hero .h-display {
+  font-family: var(--font-body);
   font-size: clamp(20px, 2.4vw, 32px);
   line-height: 1.4;
   letter-spacing: -0.015em;
@@ -696,7 +697,7 @@ p, .body {
 .home-hero .eyebrow {
   margin-bottom: var(--s-5);
   font-size: clamp(40px, 5vw, 70px);
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: -0.02em;
   text-transform: none;
