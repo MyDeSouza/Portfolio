@@ -306,6 +306,12 @@ p, .body {
   padding: 0 0.5rem 0 0.25rem;
 }
 
+.nav-pill .mark-name {
+  font-size: 0.875rem;
+  letter-spacing: -0.005em;
+  text-transform: none;
+}
+
 .mark {
   display: flex;
   flex-direction: column;
