@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v17');
+  var seenIntro = sessionStorage.getItem('intro-seen-v18');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v17', '1');
+  sessionStorage.setItem('intro-seen-v18', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -93,12 +93,12 @@
     prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + 'em';
     var scaleStart  = Math.min(introSize / markFontSize,
                       (window.innerWidth - 32) / markRect.width);
-    var riseOffset  = 4; // px in local coords → ~40px visual at intro scale
+    var riseOffset  = 4; // px local → ~40px visual at intro scale
 
-    // transform-origin: left top — mark scales from its natural topbar corner
-    // translateY(riseOffset) shifts Max DeSouza down; it rises up when Hi I'm leaves
+    // Start 2× offset below; Phase 1 rises halfway (original fade-in feel),
+    // then shuffles the rest when Hi I'm leaves.
     markEl.style.transformOrigin = 'left top';
-    markEl.style.transform       = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + riseOffset + 'px)';
+    markEl.style.transform       = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (riseOffset * 2) + 'px)';
     markEl.style.opacity         = '0';
 
     // Phase 1 – fade in at large scale, nav appears simultaneously
@@ -109,8 +109,10 @@
       var prefixH = prefixInner.offsetHeight;
       prefixInner.style.transform = 'translateY(-' + prefixH + 'px)';
 
-      markEl.style.transition = 'opacity 0.7s ease';
+      // Phase 1: fade in + rise halfway (original fade-in feel)
+      markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
+      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + riseOffset + 'px)';
 
       if (navWrapper) {
         navWrapper.style.transition = 'opacity 0.7s ease';
@@ -126,9 +128,9 @@
         });
 
         setTimeout(function () {
-          markEl.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+          markEl.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
           markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ')';
-        }, 150);
+        }, 300);
       }, 900);
 
       // Phase 2 – hold, then shrink mark to natural size while hero appears
@@ -178,7 +180,7 @@
           }
           window.dispatchEvent(new CustomEvent('intro-done'));
         }, 900);
-      }, 700 + 800); // fade-in (700 ms) + hold (800 ms)
+      }, 700 + 1100); // fade-in (700ms) + hold (800ms + 300ms for shuffle to finish)
     });
   });
 }());
