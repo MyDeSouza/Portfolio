@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v13');
+  var seenIntro = sessionStorage.getItem('intro-seen-v14');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v13', '1');
+  sessionStorage.setItem('intro-seen-v14', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -83,33 +83,24 @@
     var navWrapper = document.querySelector('.nav-pill-wrapper');
     if (navWrapper) navWrapper.style.opacity = '0';
 
-    // ── Starting transform: match old intro size, bottom-left corner ──
+    // ── Starting transform: scale up from topbar position ──
     var markRect     = markEl.getBoundingClientRect();
-    var markCenterX  = markRect.left + markRect.width  / 2;
-    var markCenterY  = markRect.top  + markRect.height / 2;
     var markFontSize = parseFloat(getComputedStyle(markName).fontSize);
     var introSize    = Math.min(Math.max(96, window.innerWidth * 0.15), 192);
     var hDisplaySize = Math.min(Math.max(28, window.innerWidth * 0.045), 64);
     prefixInner.style.fontSize = (hDisplaySize / introSize).toFixed(4) + 'em';
-    var scaleStart   = Math.min(introSize / markFontSize,
-                       (window.innerWidth - 32) / markRect.width); // 16px margin each side
-    var riseOffset   = 72;
-    var cornerMargin = 48;
-    var scaledW      = markRect.width  * scaleStart;
-    var scaledH      = markRect.height * scaleStart;
-    var tx = cornerMargin + scaledW / 2 - markCenterX;
-    var ty = cornerMargin + scaledH / 2 - markCenterY;
+    var scaleStart = Math.min(introSize / markFontSize,
+                     (window.innerWidth - 32) / markRect.width);
 
-    // transform-origin: centre — element centre flies from viewport centre to mark position
-    markEl.style.transformOrigin = '50% 50%';
-    markEl.style.transform       = 'translateX(' + tx + 'px) translateY(' + (ty + riseOffset) + 'px) scale(' + scaleStart.toFixed(4) + ')';
+    // transform-origin: left top — mark scales from its natural topbar corner
+    markEl.style.transformOrigin = 'left top';
+    markEl.style.transform       = 'scale(' + scaleStart.toFixed(4) + ')';
     markEl.style.opacity         = '0';
 
-    // Phase 1 – fade in at large / bottom-left position, nav appears simultaneously
+    // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
-      markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+      markEl.style.transition = 'opacity 0.7s ease';
       markEl.style.opacity    = '1';
-      markEl.style.transform  = 'translateX(' + tx + 'px) translateY(' + ty + 'px) scale(' + scaleStart.toFixed(4) + ')';
 
       if (navWrapper) {
         navWrapper.style.transition = 'opacity 0.7s ease';
@@ -131,11 +122,10 @@
         });
       }, 900);
 
-      // Phase 2 – hold, then slide mark to topbar while hero appears
+      // Phase 2 – hold, then shrink mark to natural size while hero appears
       setTimeout(function () {
-        // Phase 3: slide mark to topbar
-        markEl.style.transition  = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
-        markEl.style.transform   = 'translateX(0) translateY(0) scale(1)';
+        markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
+        markEl.style.transform  = 'scale(1)';
 
         // Hero text slides in after mark starts flying
         setTimeout(function () {
