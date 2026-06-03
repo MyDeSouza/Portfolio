@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v12');
+  var seenIntro = sessionStorage.getItem('intro-seen-v13');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v12', '1');
+  sessionStorage.setItem('intro-seen-v13', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -116,17 +116,18 @@
         navWrapper.style.opacity    = '1';
       }
 
-      // Hi, I'm fades out (mirrors hero text entrance: opacity + upward drift)
+      // Hi, I'm fades out — same easing as hero text entrance (opacity + upward drift)
       setTimeout(function () {
+        prefixOuter.style.overflow = 'visible'; // allow drift past clip boundary
         requestAnimationFrame(function () {
-          prefixInner.style.transition = 'opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
-          prefixInner.style.transform  = 'translateY(-5px)';
+          prefixInner.style.transform  = 'translateY(-5px)'; // ~45px visual at intro scale
 
           setTimeout(function () {
             prefixOuter.style.overflow   = 'hidden';
             prefixOuter.style.visibility = 'hidden';
-          }, 480);
+          }, 540);
         });
       }, 900);
 
