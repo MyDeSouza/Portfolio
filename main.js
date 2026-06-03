@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v24');
+  var seenIntro = sessionStorage.getItem('intro-seen-v25');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v24', '1');
+  sessionStorage.setItem('intro-seen-v25', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -100,20 +100,24 @@
 
     // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
-      var prefixH = prefixInner.offsetHeight;
-      var gapPx = prefixH + 4; // moderate increase over baseline → ~110px visual separation
+      var prefixH    = prefixInner.offsetHeight;
+      var extraLower = 3; // local px → Hi I'm appears S×extraLower px below topbar
+      var gapDes     = 5; // local px → gap between Hi I'm and Max DeSouza = S×gapDes px
 
-      // Lift Hi I'm by (prefixH + gapPx) above its natural position
-      prefixInner.style.transform = 'translateY(-' + (prefixH + gapPx) + 'px)';
+      // Shift Hi I'm up by (prefixH + gapDes) so it sits above Max DeSouza with gapDes gap
+      var shiftUp = prefixH + gapDes;
+      prefixInner.style.transform = 'translateY(-' + shiftUp + 'px)';
 
-      // Initial: Max DeSouza starts (prefixH + gapPx)*scale below natural
-      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (prefixH + gapPx) + 'px)';
-      markEl.offsetHeight; // force reflow so browser commits initial state before transition
+      // Phase 1 target r: positions Hi I'm visibly on screen (S×extraLower below topbar)
+      // and Max DeSouza S×(prefixH+extraLower+gapDes) below topbar
+      var holdR = prefixH + extraLower + gapDes;
+      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (holdR + prefixH) + 'px)';
+      markEl.offsetHeight; // force reflow
 
-      // Phase 1: fade in + rise to gapPx remaining (Max DeSouza clearly below Hi I'm)
+      // Phase 1: fade in + rise by prefixH toward Phase 1 resting position
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
-      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + gapPx + 'px)';
+      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + holdR + 'px)';
 
       if (navWrapper) {
         navWrapper.style.transition = 'opacity 0.7s ease';
@@ -128,7 +132,7 @@
         requestAnimationFrame(function () {
           prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
-          prefixInner.style.transform  = 'translateY(-' + (prefixH + gapPx + 5) + 'px)';
+          prefixInner.style.transform  = 'translateY(-' + (shiftUp + 5) + 'px)';
         });
       }, 1300);
 
