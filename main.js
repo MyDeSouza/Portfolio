@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v16');
+  var seenIntro = sessionStorage.getItem('intro-seen-v17');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v16', '1');
+  sessionStorage.setItem('intro-seen-v17', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -117,17 +117,18 @@
         navWrapper.style.opacity    = '1';
       }
 
-      // Hi, I'm fades out + Max DeSouza rises up simultaneously
+      // Hi, I'm fades out; Max DeSouza rises shortly after
       setTimeout(function () {
-        // Mark rises: remove the translateY offset while keeping scale
-        markEl.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
-        markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ')';
-
         requestAnimationFrame(function () {
           prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
           prefixInner.style.transform  = 'translateY(-' + (prefixH + 5) + 'px)';
         });
+
+        setTimeout(function () {
+          markEl.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+          markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ')';
+        }, 150);
       }, 900);
 
       // Phase 2 – hold, then shrink mark to natural size while hero appears
