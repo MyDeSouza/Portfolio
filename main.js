@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v19');
+  var seenIntro = sessionStorage.getItem('intro-seen-v20');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v19', '1');
+  sessionStorage.setItem('intro-seen-v20', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -101,18 +101,16 @@
     // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
       var prefixH = prefixInner.offsetHeight;
-      var gapPx   = 3; // local-coord gap kept after Phase 1; shuffled away with Hi I'm
+      var gapPx = prefixH; // one full Hi I'm height of gap → no visual overlap
 
-      // Push Hi I'm an extra gapPx above its natural touching point so Max DeSouza
-      // has clear space below it at the start.
+      // Lift Hi I'm by 2×prefixH so it clears Max DeSouza completely
       prefixInner.style.transform = 'translateY(-' + (prefixH + gapPx) + 'px)';
 
-      // Initial: Max DeSouza starts prefixH*scale below its final large position,
-      // putting it clearly underneath where Hi I'm renders.
-      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + prefixH + 'px)';
+      // Initial: Max DeSouza starts 2×prefixH×scale below final — fully under Hi I'm
+      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (prefixH * 2) + 'px)';
       markEl.offsetHeight; // force reflow so browser commits initial state before transition
 
-      // Phase 1: fade in + rise (stops with gapPx remaining — ready for shuffle)
+      // Phase 1: fade in + rise to gapPx remaining (Hi I'm stays clear above)
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + gapPx + 'px)';
