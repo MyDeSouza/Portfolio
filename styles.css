@@ -341,10 +341,10 @@ p, .body {
 .nav-pill {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   background: rgba(205, 206, 212, 0.16);
   border-radius: 999px;
-  padding: 8px;
+  padding: 10px;
   position: relative; /* contains the sliding indicator */
   backdrop-filter: blur(6px) saturate(120%);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
