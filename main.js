@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v21');
+  var seenIntro = sessionStorage.getItem('intro-seen-v22');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v21', '1');
+  sessionStorage.setItem('intro-seen-v22', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -101,19 +101,19 @@
     // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
       var prefixH = prefixInner.offsetHeight;
-      var holdY = 8; // local px Max DeSouza sits below natural after Phase 1 (~80px visual)
+      var gapPx = prefixH * 2; // 2× Hi I'm height of gap → ~140px visual separation
 
-      // Hi I'm sits directly above Max DeSouza's top edge — no gap, "in line"
-      prefixInner.style.transform = 'translateY(-' + prefixH + 'px)';
+      // Lift Hi I'm by (prefixH + gapPx) above its natural position
+      prefixInner.style.transform = 'translateY(-' + (prefixH + gapPx) + 'px)';
 
-      // Initial: starts (prefixH + holdY)*scale below natural
-      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (prefixH + holdY) + 'px)';
+      // Initial: Max DeSouza starts (prefixH + gapPx)*scale below natural
+      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (prefixH + gapPx) + 'px)';
       markEl.offsetHeight; // force reflow so browser commits initial state before transition
 
-      // Phase 1: fade in + rise, stopping with holdY remaining (Max DeSouza slightly low)
+      // Phase 1: fade in + rise to gapPx remaining (Max DeSouza clearly below Hi I'm)
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
-      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + holdY + 'px)';
+      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + gapPx + 'px)';
 
       if (navWrapper) {
         navWrapper.style.transition = 'opacity 0.7s ease';
@@ -128,7 +128,7 @@
         requestAnimationFrame(function () {
           prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
-          prefixInner.style.transform  = 'translateY(-' + (prefixH + 5) + 'px)';
+          prefixInner.style.transform  = 'translateY(-' + (prefixH + gapPx + 5) + 'px)';
         });
       }, 900);
 
