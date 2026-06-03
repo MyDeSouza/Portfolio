@@ -653,6 +653,17 @@ p, .body {
   gap: var(--s-5);
 }
 
+.bento-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  padding: 2rem 2rem;
+  opacity: 0;
+  animation: fadeUp var(--dur-4) var(--ease-out) 0.1s forwards;
+}
+
 .home-hero .h-display {
   font-size: clamp(20px, 2.4vw, 32px);
   line-height: 1.4;
