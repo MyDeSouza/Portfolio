@@ -663,7 +663,7 @@ p, .body {
 }
 
 .home-hero h1.h-display {
-  font-size: clamp(18px, 2.2vw, 30px);
+  font-size: clamp(16px, 1.9vw, 26px);
 }
 
 .home-hero p.h-display {
@@ -680,8 +680,7 @@ p, .body {
 
 .home-hero.hero-active p.h-display {
   opacity: 1;
-  font-variation-settings: 'wght' 450;
-  transition: opacity 0.3s ease, font-variation-settings 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 /* Hover h1: restore h1 to 100%, revert p to 64% + wght 400 */
@@ -691,7 +690,6 @@ p, .body {
 
 .home-hero.hero-active:has(h1.h-display:hover) p.h-display {
   opacity: 0.64;
-  font-variation-settings: 'wght' 400;
 }
 
 .home-hero .eyebrow {
