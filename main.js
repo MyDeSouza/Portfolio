@@ -120,10 +120,7 @@
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + holdR + 'px)';
 
-      if (navWrapper) {
-        navWrapper.style.transition = 'opacity 0.7s ease';
-        navWrapper.style.opacity    = '1';
-      }
+      // Nav stays hidden during Phase 1 — revealed alongside bento in Phase 3
 
       // Hi I'm fades + Max DeSouza rises at the same rate simultaneously
       setTimeout(function () {
@@ -149,6 +146,7 @@
           var bentoOverlay = document.querySelector('.bento-overlay');
           if (bentoCard)    { bentoCard.style.transition    = 'opacity 0.5s ease'; bentoCard.style.opacity    = '1'; }
           if (bentoOverlay) { bentoOverlay.style.transition = 'opacity 0.5s ease'; bentoOverlay.style.opacity = '1'; }
+          if (navWrapper)   { navWrapper.style.transition   = 'opacity 0.5s ease'; navWrapper.style.opacity   = '1'; }
 
           var hDisplays = document.querySelectorAll('.h-display');
           hDisplays.forEach(function (el, i) {
