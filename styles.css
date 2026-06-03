@@ -656,6 +656,7 @@ p, .body {
 }
 
 .home-hero p.h-display {
+  font-size: clamp(16px, 1.9vw, 26px);
   animation-name: fadeUpMuted;
   animation-delay: 0.35s;
 }
