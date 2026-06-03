@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v14');
+  var seenIntro = sessionStorage.getItem('intro-seen-v15');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v14', '1');
+  sessionStorage.setItem('intro-seen-v15', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -70,7 +70,9 @@
 
     // ── Greeting ───────────────────────────────────────────────
     var prefixOuter = document.createElement('span');
-    prefixOuter.style.cssText = 'display:block;overflow:hidden;white-space:nowrap;';
+    // height:0 from the start — prefix never takes up layout space, so there is
+    // nothing to collapse at cleanup and no position snap when it is removed.
+    prefixOuter.style.cssText = 'display:block;height:0;overflow:visible;white-space:nowrap;';
     var prefixInner = document.createElement('span');
     prefixInner.style.display    = 'inline-block';
     prefixInner.style.fontWeight = '400';
@@ -99,6 +101,12 @@
 
     // Phase 1 – fade in at large scale, nav appears simultaneously
     requestAnimationFrame(function () {
+      // Measure prefix line-height then lift it above Max DeSouza via translateY.
+      // Because prefixOuter.height is 0 this never contributes to the mark's layout,
+      // so removing it at cleanup causes zero position shift (no snap).
+      var prefixH = prefixInner.offsetHeight;
+      prefixInner.style.transform = 'translateY(-' + prefixH + 'px)';
+
       markEl.style.transition = 'opacity 0.7s ease';
       markEl.style.opacity    = '1';
 
@@ -109,16 +117,10 @@
 
       // Hi, I'm fades out — same easing as hero text entrance (opacity + upward drift)
       setTimeout(function () {
-        prefixOuter.style.overflow = 'visible'; // allow drift past clip boundary
         requestAnimationFrame(function () {
           prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
-          prefixInner.style.transform  = 'translateY(-5px)'; // ~45px visual at intro scale
-
-          setTimeout(function () {
-            prefixOuter.style.overflow   = 'hidden';
-            prefixOuter.style.visibility = 'hidden';
-          }, 540);
+          prefixInner.style.transform  = 'translateY(-' + (prefixH + 5) + 'px)';
         });
       }, 900);
 
@@ -144,7 +146,7 @@
 
         // After mark lands: clean up, transition to natural font weight, reveal content
         setTimeout(function () {
-          prefixOuter.style.height     = '0'; // collapse space — batched with transform removal in one frame
+          prefixOuter.style.display    = 'none'; // height was 0 from start — no layout change, no snap
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
