@@ -475,3 +475,37 @@
     requestAnimationFrame(function () { if (activeItem) showIndicator(); });
   });
 }());
+
+
+
+// ── Hero scroll ───────────────────────────────────────────────
+(function () {
+  var hero   = document.querySelector('.home-hero');
+  var panel1 = document.querySelector('.hero-panel--1');
+  var panel2 = document.querySelector('.hero-panel--2');
+  if (!hero || !panel1 || !panel2) return;
+
+  function ease(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
+  function tick() {
+    var scrolled  = window.scrollY;
+    var range     = hero.offsetHeight - window.innerHeight;
+    if (range <= 0) return;
+    var progress  = Math.max(0, Math.min(1, scrolled / range));
+
+    // Panel 1 exits over the first 60 % of scroll
+    var p1 = ease(Math.min(progress / 0.6, 1));
+    panel1.style.opacity   = 1 - p1;
+    panel1.style.transform = 'translateY(' + (-p1 * 48) + 'px) scale(' + (1 - p1 * 0.06) + ')';
+
+    // Panel 2 enters from 30 % onward
+    var p2 = ease(Math.max(0, Math.min(1, (progress - 0.3) / 0.6)));
+    panel2.style.opacity   = p2;
+    panel2.style.transform = 'translateY(' + ((1 - p2) * 60) + 'px)';
+  }
+
+  window.addEventListener('scroll', tick, { passive: true });
+  tick();
+}());

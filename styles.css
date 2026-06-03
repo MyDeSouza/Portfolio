@@ -633,13 +633,28 @@ p, .body {
    Home — hero
    ========================================================= */
 .home-hero {
-  min-height: calc(100vh - 64px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  text-align: left;
-  padding: var(--s-9) var(--gutter) var(--s-8);
+  height: 220vh;
+  position: relative;
+}
+
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-panel {
+  position: absolute;
+  bottom: var(--s-8);
+  left: var(--gutter);
+  right: var(--gutter);
+  will-change: transform, opacity;
+}
+
+.hero-panel--2 {
+  opacity: 0;
+  transform: translateY(60px);
 }
 
 .home-hero .eyebrow {
