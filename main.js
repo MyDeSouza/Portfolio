@@ -8,11 +8,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v32');
+  var seenIntro = sessionStorage.getItem('intro-seen-v31');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v32', '1');
+  sessionStorage.setItem('intro-seen-v31', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -131,23 +131,12 @@
         });
       }, 1300);
 
-      // Phase 3 – fade large mark out, snap to natural pill size, fade back in
+      // Phase 3 – collapse large centred mark into the nav
       setTimeout(function () {
-        markEl.style.transition = 'opacity 0.4s ease';
-        markEl.style.opacity    = '0';
+        markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
+        markEl.style.transform  = 'scale(1)';
 
-        setTimeout(function () {
-          // Instant reset — no scale animation
-          markEl.style.transition      = '';
-          markEl.style.transform       = '';
-          markEl.style.transformOrigin = '';
-          requestAnimationFrame(function () {
-            markEl.style.transition = 'opacity 0.35s ease';
-            markEl.style.opacity    = '1';
-          });
-        }, 400);
-
-        // Hero text slides in as mark fades back in
+        // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
           // Reveal the nav icon items (pill shell was always visible)
           navIconItems.forEach(function (el) {
@@ -180,9 +169,13 @@
           });
         }, 550);
 
-        // Clean up prefix and font weight (transform/opacity already cleared at 400ms)
+        // After mark lands: clean up, transition to natural font weight, reveal content
         setTimeout(function () {
-          prefixOuter.style.display = 'none';
+          prefixOuter.style.display    = 'none'; // height was 0 from start — no layout change, no snap
+          markEl.style.transition      = '';
+          markEl.style.transform       = '';
+          markEl.style.transformOrigin = '';
+          markEl.style.opacity         = '';
           markName.style.transition    = 'font-weight 0.35s ease';
           markName.style.fontWeight    = '500';
           setTimeout(function () {
