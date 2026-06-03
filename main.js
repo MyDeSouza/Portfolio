@@ -80,10 +80,9 @@
     markName.insertBefore(prefixOuter, markName.firstChild);
     markName.style.fontWeight = '600'; // name starts heavier; prefix overrides to 400
 
-    // Pill shell stays visible; only the icon items inside fade in later
+    // Hide the whole pill; it fades in when Max DeSouza lands
     var navWrapper = document.querySelector('.nav-pill-wrapper');
-    var navIconItems = document.querySelectorAll('.nav-pill .nav-item');
-    navIconItems.forEach(function (el) { el.style.opacity = '0'; });
+    if (navWrapper) navWrapper.style.opacity = '0';
 
     // ── Starting transform: scale up from topbar position ──
     var markRect     = markEl.getBoundingClientRect();
@@ -140,11 +139,8 @@
 
         // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
-          // Reveal the nav icon items (pill shell was always visible)
-          navIconItems.forEach(function (el) {
-            el.style.transition = 'opacity 0.5s ease';
-            el.style.opacity    = '1';
-          });
+          // Pill fades in as Max DeSouza lands
+          if (navWrapper) { navWrapper.style.transition = 'opacity 0.5s ease'; navWrapper.style.opacity = '1'; }
 
           // Reveal eyebrow then h-display elements
           var eyebrow = document.querySelector('.home-hero .eyebrow');
