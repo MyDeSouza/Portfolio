@@ -653,7 +653,6 @@ p, .body {
 
 .home-hero h1.h-display {
   font-size: clamp(24px, 3vw, 40px);
-  font-weight: 500;
 }
 
 .home-hero p.h-display {
