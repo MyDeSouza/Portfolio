@@ -642,43 +642,13 @@ p, .body {
    Home — hero
    ========================================================= */
 .home-hero {
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Darkens the rest of the canvas behind the bento */
-.bento-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.10);
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-  animation: fadeUp var(--dur-4) var(--ease-out) 0.1s forwards;
-}
-
-.bento-card {
-  /* Fixed panel: flush left / top / bottom, stops at centre */
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  z-index: 2;
-
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0 var(--gutter) clamp(6rem, 14vh, 10rem);
   gap: var(--s-5);
-  padding: 2.5rem 2.5rem 3rem var(--gutter);
-
-  /* Same as page — contrast comes from the darkened right half + shadow */
-  background: var(--bg);
-  border-radius: 0 32px 32px 0;
-  box-shadow: 8px 0 60px rgba(0, 0, 0, 0.18);
-
-  opacity: 0;
-  animation: fadeUp var(--dur-4) var(--ease-out) 0.1s forwards;
 }
 
 .home-hero .h-display {

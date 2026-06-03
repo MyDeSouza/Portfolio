@@ -1,8 +1,6 @@
 // ── Mark entry animation + page reveal ───────────────────────
 (function () {
   var pageEls = Array.prototype.slice.call(document.querySelectorAll('.h-display')).concat([
-    document.querySelector('.bento-card'),
-    document.querySelector('.bento-overlay'),
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
   ]).filter(Boolean);
@@ -141,12 +139,7 @@
 
         // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
-          // Bento card + overlay fade in before text slides up
-          var bentoCard    = document.querySelector('.bento-card');
-          var bentoOverlay = document.querySelector('.bento-overlay');
-          if (bentoCard)    { bentoCard.style.transition    = 'opacity 0.5s ease'; bentoCard.style.opacity    = '1'; }
-          if (bentoOverlay) { bentoOverlay.style.transition = 'opacity 0.5s ease'; bentoOverlay.style.opacity = '1'; }
-          if (navWrapper)   { navWrapper.style.transition   = 'opacity 0.5s ease'; navWrapper.style.opacity   = '1'; }
+          if (navWrapper) { navWrapper.style.transition = 'opacity 0.5s ease'; navWrapper.style.opacity = '1'; }
 
           var hDisplays = document.querySelectorAll('.h-display');
           hDisplays.forEach(function (el, i) {
