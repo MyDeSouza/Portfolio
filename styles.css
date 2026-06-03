@@ -379,11 +379,12 @@ p, .body {
 
 /* Sliding indicator — JS sets left+top to item centre px; CSS offsets by own half-size */
 .nav-indicator {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
   transform: translate(-50%, -50%);
-  width: 44px;   /* desktop nav-item (34px) + 5px each side */
+  width: 44px;
   height: 44px;
   background: #0c1116;   /* dark circle on light pill */
   border-radius: 999px;
