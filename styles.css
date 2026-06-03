@@ -672,7 +672,7 @@ p, .body {
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--s-5);
-  padding: 2.5rem 2.5rem 3rem;
+  padding: 2.5rem 2.5rem 3rem var(--gutter);
 
   /* Same as page — contrast comes from the darkened right half + shadow */
   background: var(--bg);
