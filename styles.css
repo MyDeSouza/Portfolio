@@ -302,13 +302,8 @@ p, .body {
 [data-mode="project"] .nav-pill.active-shown .nav-item.active .nav-icon,
 [data-mode="project"] .nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: invert(1); }
 
-/* Mark outside the pill, absolutely positioned so it doesn't shift the centred pill */
-.topbar-mark-ghost {
-  position: absolute;
-  left: var(--gutter);
-  top: 50%;
-  transform: translateY(-50%);
-}
+/* Mark is a flex sibling of the pill — both centred together in the topbar */
+.topbar-mark-ghost { /* no special positioning needed */ }
 
 .nav-pill .mark-name {
   font-size: 1.1rem;

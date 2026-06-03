@@ -8,11 +8,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v34');
+  var seenIntro = sessionStorage.getItem('intro-seen-v35');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v34', '1');
+  sessionStorage.setItem('intro-seen-v35', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -108,19 +108,21 @@
       var shiftUp = prefixH + gapDes;
       prefixInner.style.transform = 'translateY(-' + shiftUp + 'px)';
 
-      // holdR: translateY needed to visually centre the large mark at 50 vh.
-      // With origin at 50%/50%, centre_viewport = markCenterY + S*holdR.
-      var markCenterY = markRect.top + markRect.height / 2;
+      // holdX/holdR: translate needed to centre the large mark at 50vw/50vh.
+      // Natural mark position is to the left of the pill, so holdX shifts it right.
+      var markCenterX = markRect.left + markRect.width  / 2;
+      var markCenterY = markRect.top  + markRect.height / 2;
+      var holdX = (window.innerWidth  / 2 - markCenterX) / scaleStart;
       var holdR = (window.innerHeight / 2 - markCenterY) / scaleStart;
 
       // Start slightly below centre so Phase 1 has a gentle rise
-      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + (holdR + prefixH) + 'px)';
+      markEl.style.transform = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + (holdR + prefixH) + 'px)';
       markEl.offsetHeight; // force reflow
 
       // Phase 1: fade in + rise to centred position
       markEl.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
       markEl.style.opacity    = '1';
-      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateY(' + holdR + 'px)';
+      markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + holdR + 'px)';
 
       // Hi I'm fades; mark stays centred — Phase 3 handles the full collapse to nav
       setTimeout(function () {
