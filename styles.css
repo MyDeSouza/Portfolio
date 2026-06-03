@@ -647,6 +647,7 @@ p, .body {
   line-height: 1.4;
   letter-spacing: -0.015em;
   font-weight: 400;
+  font-variation-settings: 'wght' 400;
   opacity: 0;
   animation: fadeUp var(--dur-4) var(--ease-out) 0.2s forwards;
 }
@@ -661,7 +662,7 @@ p, .body {
   animation-delay: 0.35s;
 }
 
-/* Applied after 8s — h1 dims to 64%, p brightens to 100% + weight 450 */
+/* Applied after 8s — h1 dims to 64%, p brightens to 100% + wght 450 */
 .home-hero.hero-active h1.h-display {
   opacity: 0.64;
   transition: opacity 0.3s ease;
@@ -669,18 +670,18 @@ p, .body {
 
 .home-hero.hero-active p.h-display {
   opacity: 1;
-  font-weight: 450;
-  transition: opacity 0.3s ease, font-weight 0.3s ease;
+  font-variation-settings: 'wght' 450;
+  transition: opacity 0.3s ease, font-variation-settings 0.3s ease;
 }
 
-/* Hover h1: restore h1 to 100%, revert p to 64% + weight 400 */
+/* Hover h1: restore h1 to 100%, revert p to 64% + wght 400 */
 .home-hero.hero-active h1.h-display:hover {
   opacity: 1;
 }
 
 .home-hero.hero-active:has(h1.h-display:hover) p.h-display {
   opacity: 0.64;
-  font-weight: 400;
+  font-variation-settings: 'wght' 400;
 }
 
 .home-hero .eyebrow {

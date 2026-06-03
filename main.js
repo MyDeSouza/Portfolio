@@ -487,27 +487,27 @@
   setTimeout(function () {
     var easing = '0.7s ease';
 
-    // Capture current computed values as inline start points
-    h1.style.opacity   = getComputedStyle(h1).opacity;
-    p.style.animation  = 'none';
-    p.style.opacity    = getComputedStyle(p).opacity;
-    p.style.fontWeight = getComputedStyle(p).fontWeight;
+    // Capture current values as inline start points
+    h1.style.opacity              = getComputedStyle(h1).opacity;
+    p.style.animation             = 'none';
+    p.style.opacity               = getComputedStyle(p).opacity;
+    p.style.fontVariationSettings = "'wght' 400";
     p.offsetHeight; // force reflow
 
-    // h1 dims to 64%, p brightens to 100% + slightly thicker weight
+    // h1 dims to 64%, p brightens to 100% + smoothly thickens via fvs axis
     h1.style.transition = 'opacity ' + easing;
     h1.style.opacity    = '0.64';
-    p.style.transition  = 'opacity ' + easing + ', font-weight ' + easing;
+    p.style.transition  = 'opacity ' + easing + ', font-variation-settings ' + easing;
     p.style.opacity     = '1';
-    p.style.fontWeight  = '450';
+    p.style.fontVariationSettings = "'wght' 450";
 
     // Hand off to CSS class after transition so :hover and :has() take over
     setTimeout(function () {
-      h1.style.transition = '';
-      h1.style.opacity    = '';
-      p.style.transition  = '';
-      p.style.opacity     = '';
-      p.style.fontWeight  = '';
+      h1.style.transition           = '';
+      h1.style.opacity              = '';
+      p.style.transition            = '';
+      p.style.opacity               = '';
+      p.style.fontVariationSettings = '';
       hero.classList.add('hero-active');
     }, 700);
   }, 8000);
