@@ -633,28 +633,22 @@ p, .body {
    Home — hero
    ========================================================= */
 .home-hero {
-  height: 220vh;
-  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0 var(--gutter) 0.75rem;
+  gap: var(--s-6);
 }
 
-.hero-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.hero-panel {
-  position: absolute;
-  bottom: var(--s-8);
-  left: var(--gutter);
-  right: var(--gutter);
-  will-change: transform, opacity;
-}
-
-.hero-panel--2 {
+.home-hero .h-display {
+  font-size: clamp(16px, 1.8vw, 22px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  font-weight: 400;
   opacity: 0;
-  transform: translateY(60px);
+  animation: fadeUp var(--dur-4) var(--ease-out) 0.2s forwards;
 }
 
 .home-hero .eyebrow {

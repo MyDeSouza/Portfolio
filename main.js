@@ -1,19 +1,18 @@
 // ── Mark entry animation + page reveal ───────────────────────
 (function () {
-  var pageEls = [
-    document.querySelector('.h-display'),
+  var pageEls = Array.prototype.slice.call(document.querySelectorAll('.h-display')).concat([
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
-  ].filter(Boolean);
+  ]).filter(Boolean);
 
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v26');
+  var seenIntro = sessionStorage.getItem('intro-seen-v27');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v26', '1');
+  sessionStorage.setItem('intro-seen-v27', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -141,19 +140,19 @@
         markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
         markEl.style.transform  = 'scale(1)';
 
-        // Hero text slides in after mark starts flying
+        // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
-          var hDisplay = document.querySelector('.h-display');
-          if (hDisplay) {
-            hDisplay.style.transform = 'translateY(48px)';
-            hDisplay.style.opacity   = '0';
+          var hDisplays = document.querySelectorAll('.h-display');
+          hDisplays.forEach(function (el, i) {
+            el.style.transform = 'translateY(48px)';
+            el.style.opacity   = '0';
             setTimeout(function () {
-              hDisplay.style.transition =
+              el.style.transition =
                 'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-              hDisplay.style.opacity   = '1';
-              hDisplay.style.transform = 'translateY(0)';
-            }, 60);
-          }
+              el.style.opacity   = '1';
+              el.style.transform = 'translateY(0)';
+            }, 60 + i * 120);
+          });
         }, 550);
 
         // After mark lands: clean up, transition to natural font weight, reveal content
@@ -478,34 +477,3 @@
 
 
 
-// ── Hero scroll ───────────────────────────────────────────────
-(function () {
-  var hero   = document.querySelector('.home-hero');
-  var panel1 = document.querySelector('.hero-panel--1');
-  var panel2 = document.querySelector('.hero-panel--2');
-  if (!hero || !panel1 || !panel2) return;
-
-  function ease(t) {
-    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-  }
-
-  function tick() {
-    var scrolled  = window.scrollY;
-    var range     = hero.offsetHeight - window.innerHeight;
-    if (range <= 0) return;
-    var progress  = Math.max(0, Math.min(1, scrolled / range));
-
-    // Panel 1 exits over the first 60 % of scroll
-    var p1 = ease(Math.min(progress / 0.6, 1));
-    panel1.style.opacity   = 1 - p1;
-    panel1.style.transform = 'translateY(' + (-p1 * 48) + 'px) scale(' + (1 - p1 * 0.06) + ')';
-
-    // Panel 2 enters from 30 % onward
-    var p2 = ease(Math.max(0, Math.min(1, (progress - 0.3) / 0.6)));
-    panel2.style.opacity   = p2;
-    panel2.style.transform = 'translateY(' + ((1 - p2) * 60) + 'px)';
-  }
-
-  window.addEventListener('scroll', tick, { passive: true });
-  tick();
-}());
