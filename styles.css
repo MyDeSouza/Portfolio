@@ -3,7 +3,16 @@
    ========================================================= */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  scrollbar-color: #2563eb transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 999px; }
 
 :root {
   /* ── Neutrals — cool grey, slight blue undertone ── */
