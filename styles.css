@@ -646,20 +646,20 @@ p, .body {
 .home-hero {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 0 var(--gutter) clamp(6rem, 14vh, 10rem);
-  gap: var(--s-5);
+  align-items: flex-end;
+  padding: 0 0 var(--gutter) var(--gutter);
 }
 
 .bento-card {
+  width: calc(50% - var(--gutter));
+  min-height: calc(100vh - 4rem);
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   gap: var(--s-5);
   background: rgba(0, 0, 0, 0.04);
   border-radius: 18px;
-  padding: 2rem 2rem;
+  padding: 2rem;
   opacity: 0;
   animation: fadeUp var(--dur-4) var(--ease-out) 0.1s forwards;
 }
