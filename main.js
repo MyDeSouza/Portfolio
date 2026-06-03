@@ -9,11 +9,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v22');
+  var seenIntro = sessionStorage.getItem('intro-seen-v23');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v22', '1');
+  sessionStorage.setItem('intro-seen-v23', '1');
 
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
@@ -74,7 +74,7 @@
     // nothing to collapse at cleanup and no position snap when it is removed.
     prefixOuter.style.cssText = 'display:block;height:0;overflow:visible;white-space:nowrap;';
     var prefixInner = document.createElement('span');
-    prefixInner.style.display    = 'inline-block';
+    prefixInner.style.display    = 'block';
     prefixInner.style.fontWeight = '400';
     prefixInner.textContent   = 'Hi, I’m '; // curly apostrophe + non-breaking space
     prefixOuter.appendChild(prefixInner);
@@ -130,7 +130,7 @@
           prefixInner.style.opacity    = '0';
           prefixInner.style.transform  = 'translateY(-' + (prefixH + gapPx + 5) + 'px)';
         });
-      }, 900);
+      }, 1300);
 
       // Phase 2 – hold, then shrink mark to natural size while hero appears
       setTimeout(function () {
@@ -179,7 +179,7 @@
           }
           window.dispatchEvent(new CustomEvent('intro-done'));
         }, 900);
-      }, 700 + 1100); // fade-in (700ms) + hold (800ms + 300ms for shuffle to finish)
+      }, 700 + 1500); // fade-in (700ms) + hold (extended to clear the longer Hi I'm wait)
     });
   });
 }());
