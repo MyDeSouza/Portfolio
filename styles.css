@@ -656,8 +656,8 @@ p, .body {
   font-size: clamp(20px, 2.4vw, 32px);
   line-height: 1.4;
   letter-spacing: -0.015em;
-  font-weight: 400;
-  font-variation-settings: 'wght' 400;
+  font-weight: 300;
+  font-variation-settings: 'wght' 300;
   opacity: 0;
   animation: fadeUp var(--dur-4) var(--ease-out) 0.2s forwards;
 }
