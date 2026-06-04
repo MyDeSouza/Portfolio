@@ -502,3 +502,18 @@
 
 
 
+// ── Projects filter toggle ────────────────────────────────────
+(function () {
+  var toggle = document.getElementById('projects-toggle');
+  var grid   = document.querySelector('.projects-grid');
+  if (!toggle || !grid) return;
+
+  toggle.addEventListener('click', function (e) {
+    e.preventDefault();
+    grid.classList.toggle('filtered');
+    toggle.classList.toggle('active');
+  });
+}());
+
+
+

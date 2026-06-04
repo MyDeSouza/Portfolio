@@ -713,9 +713,22 @@ p, .body {
   aspect-ratio: 21 / 9;
 }
 
-/* Projects page: uniform 2-per-row, no wide hero card */
-.projects-page-grid {
-  padding-top: 5rem;
+/* Filtered view: uniform 2-per-row, all cards equal */
+.projects-grid.filtered .project-card:first-child {
+  grid-column: span 1;
+}
+
+.projects-grid.filtered .project-card:first-child .project-thumb {
+  aspect-ratio: 16 / 9;
+}
+
+.projects-grid {
+  transition: none;
+}
+
+.project-card,
+.project-thumb {
+  transition: aspect-ratio 0.4s ease;
 }
 
 /* =========================================================
