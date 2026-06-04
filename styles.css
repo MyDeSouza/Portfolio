@@ -448,11 +448,7 @@ p, .body {
               opacity 0.18s ease,
               transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.nav-item:hover .nav-icon,
-.nav-item:hover .home-icon-wrap {
-  opacity: 0;
-  filter: none;
-}
+/* icon stays visible on hover */
 
 /* Hover label — injected by JS */
 .nav-item-label {
