@@ -1,5 +1,7 @@
 // ── Mark entry animation + page reveal ───────────────────────
 (function () {
+  document.body.style.visibility = ''; // always restore — cleared by head script
+
   var pageEls = Array.prototype.slice.call(document.querySelectorAll('.h-display, .home-hero .eyebrow')).concat([
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
