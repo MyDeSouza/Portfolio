@@ -396,8 +396,7 @@ p, .body {
               border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nav-item:hover {
-  width: var(--hover-w, 60px);
-  border-radius: 17px; /* half of 34px height = true pill */
+  /* expand disabled */
 }
 /* Active: indicator handles the dark bg — no extra layer */
 .nav-item.active:hover  { background: transparent; }
