@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v35');
+  var seenIntro = sessionStorage.getItem('intro-seen-v36');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v35', '1');
+  sessionStorage.setItem('intro-seen-v36', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
