@@ -3,6 +3,7 @@
   document.body.style.visibility = ''; // always restore — cleared by head script
 
   var pageEls = Array.prototype.slice.call(document.querySelectorAll('.h-display, .home-hero .eyebrow')).concat([
+    document.querySelector('.projects-grid'),
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
   ]).filter(Boolean);
@@ -143,8 +144,10 @@
 
         // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
-          // Pill fades in as Max DeSouza lands
+          // Pill and projects grid fade in as Max DeSouza lands
           if (navWrapper) { navWrapper.style.transition = 'opacity 0.5s ease'; navWrapper.style.opacity = '1'; }
+          var grid = document.querySelector('.projects-grid');
+          if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
 
           // Reveal eyebrow then h-display elements
           var eyebrow = document.querySelector('.home-hero .eyebrow');
