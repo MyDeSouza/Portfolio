@@ -407,7 +407,6 @@ p, .body {
 
 /* Sliding indicator — JS sets left+top to item centre px; CSS offsets by own half-size */
 .nav-indicator {
-  display: none;
   position: absolute;
   top: 0;
   left: 0;
