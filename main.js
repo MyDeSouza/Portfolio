@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v36');
+  var seenIntro = sessionStorage.getItem('intro-seen-v37');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v36', '1');
+  sessionStorage.setItem('intro-seen-v37', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -128,14 +128,21 @@
       markEl.style.opacity    = '1';
       markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + holdR + 'px)';
 
-      // Hi I'm fades; mark stays centred — Phase 3 handles the full collapse to nav
+      // Hi I'm fades faster, then Max DeSouza rises to where Hi I'm was
       setTimeout(function () {
+        // 1. Hi I'm fades quickly
         requestAnimationFrame(function () {
-          prefixInner.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          prefixInner.style.transition = 'opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
           prefixInner.style.opacity    = '0';
           prefixInner.style.transform  = 'translateY(-' + (shiftUp + 5) + 'px)';
         });
-      }, 1300);
+
+        // 2. Large Max DeSouza rises up to where Hi I'm was
+        setTimeout(function () {
+          markEl.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+          markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + (holdR - shiftUp) + 'px)';
+        }, 320); // after Hi I'm is mostly gone
+      }, 800);
 
       // Phase 3 – collapse large centred mark into the nav
       setTimeout(function () {
@@ -202,7 +209,7 @@
           document.body.style.overflow = ''; // unlock scroll
           window.dispatchEvent(new CustomEvent('intro-done'));
         }, 900);
-      }, 700 + 1500); // fade-in (700ms) + hold (extended to clear the longer Hi I'm wait)
+      }, 700 + 1600); // fade-in (700ms) + hold — gives time for Hi I'm fade + rise before collapse
     });
   });
 }());
