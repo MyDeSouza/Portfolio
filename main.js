@@ -404,11 +404,12 @@
   var ticking = false;
 
   function updateCollapse() {
-    var y = window.scrollY;
-    if (y > 60 && y > lastY && !hoverExpanded) {
+    var y     = window.scrollY;
+    var delta = y - lastY;
+    if (delta > 0 && y > 60 && !hoverExpanded) {
       doCollapse();
-    } else if (y < 60 && wrapper.classList.contains('collapsed') && !hoverExpanded) {
-      doExpand();
+    } else if (delta < -10 && wrapper.classList.contains('collapsed') && !hoverExpanded) {
+      doExpand(); // expand after 10 px upward scroll to avoid micro-oscillation
     }
     lastY   = y;
     ticking = false;
