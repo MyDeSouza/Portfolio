@@ -355,38 +355,7 @@
   });
   document.body.removeChild(measurer);
 
-  // ── Active-item: morph indicator circle → pill on hover ─────
-  if (activeItem) {
-    var pillEase    = '0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-    var origIndLeft = null;
-
-    activeItem.addEventListener('mouseenter', function () {
-      stopNonActiveTracking();
-      var pr       = pill.getBoundingClientRect();
-      var ir       = activeItem.getBoundingClientRect();
-      var itemLeft = ir.left - pr.left;
-      origIndLeft  = itemLeft + ir.width / 2;
-      var hoverW   = parseFloat(getComputedStyle(activeItem).getPropertyValue('--hover-w')) || 60;
-      var newLeft  = itemLeft + hoverW / 2;
-      requestAnimationFrame(function () {
-        indicator.style.transition =
-          'width ' + pillEase + ', left ' + pillEase +
-          ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
-          ', background-color var(--dur-2) var(--ease-in-out)';
-        indicator.style.width = (hoverW + 10) + 'px';
-        indicator.style.left  = newLeft + 'px';
-      });
-    });
-
-    activeItem.addEventListener('mouseleave', function () {
-      indicator.style.transition =
-        'width ' + pillEase + ', left ' + pillEase +
-        ', opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)' +
-        ', background-color var(--dur-2) var(--ease-in-out)';
-      indicator.style.width = '44px';
-      if (origIndLeft !== null) indicator.style.left = origIndLeft + 'px';
-    });
-  }
+  // Active-item hover expand removed — indicator stays as circle
 
   // ── Non-active hover: track indicator during layout shifts ───
   var nonActiveRAF = null;
