@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v37');
+  var seenIntro = sessionStorage.getItem('intro-seen-v38');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v37', '1');
+  sessionStorage.setItem('intro-seen-v38', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -139,7 +139,7 @@
 
         // 2. Large Max DeSouza rises up to where Hi I'm was
         setTimeout(function () {
-          markEl.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+          markEl.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
           markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + (holdR - shiftUp) + 'px)';
         }, 320); // after Hi I'm is mostly gone
       }, 800);
