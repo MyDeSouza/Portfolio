@@ -14,6 +14,8 @@
 
   sessionStorage.setItem('intro-seen-v35', '1');
 
+  document.body.style.overflow = 'hidden'; // prevent scroll during intro
+
   pageEls.forEach(function (el) {
     el.style.animation = 'none'; // stop CSS fadeUp overriding opacity:0
     el.style.opacity   = '0';
@@ -192,6 +194,7 @@
             footer.style.opacity = '';
             footer.classList.add('page-reveal');
           }
+          document.body.style.overflow = ''; // unlock scroll
           window.dispatchEvent(new CustomEvent('intro-done'));
         }, 900);
       }, 700 + 1500); // fade-in (700ms) + hold (extended to clear the longer Hi I'm wait)
