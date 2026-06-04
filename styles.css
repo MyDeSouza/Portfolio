@@ -664,6 +664,56 @@ p, .body {
 .section-body p + p { margin-top: 1.25rem; }
 
 /* =========================================================
+   Projects grid
+   ========================================================= */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding: 2rem var(--gutter) 4rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--fg);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.project-card:hover { opacity: 0.85; }
+
+.project-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--line);
+  border-radius: 10px;
+}
+
+.project-meta {
+  padding: 0 0.25rem;
+}
+
+.project-title {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Wide card — first project spans both columns */
+.project-card:first-child {
+  grid-column: span 2;
+}
+
+.project-card:first-child .project-thumb {
+  aspect-ratio: 21 / 9;
+}
+
+/* =========================================================
    Home — hero
    ========================================================= */
 .home-hero {
