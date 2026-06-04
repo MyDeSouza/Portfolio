@@ -314,6 +314,21 @@ p, .body {
 /* Mark is a flex sibling of the pill — both centred together in the topbar */
 .topbar-mark-ghost { /* no special positioning needed */ }
 
+.mark-pill {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--fg);
+  opacity: 0.15;
+  width: 100%;
+  transition: opacity 0.5s ease, background-color 0.5s ease;
+}
+
+.topbar.over-dark .mark-pill {
+  background: #ffffff;
+  opacity: 0.3;
+}
+
 .nav-pill .mark-name {
   font-size: 1.1rem;
   letter-spacing: -0.01em;
