@@ -1,0 +1,308 @@
+/* ============================================================
+   Max DeSouza Design System — colors_and_type.css
+   ------------------------------------------------------------
+   Two modes:
+     [data-mode="default"]  — white walls, black ink. The
+                              in-between space. The portfolio
+                              chrome. Calm.
+     [data-mode="project"]  — full project takeover. The body
+                              becomes the project color, ink
+                              flips to white, every greyscale
+                              UI element becomes translucent
+                              glass so the project bleeds
+                              through it.
+   ============================================================ */
+
+/* ---------- 1. FONT FACES ---------- */
+
+@font-face {
+  font-family: "Outfit";
+  src: url("fonts/Outfit-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("fonts/Urbanist-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("fonts/Urbanist-Italic-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ---------- 2. ROOT TOKENS (DEFAULT MODE) ---------- */
+
+:root,
+[data-mode="default"] {
+  /* Neutrals — cool grey with a subtle blue undertone. Reads awake, not somber. */
+  --paper:        #f7f9fc;   /* page background — fresh, cool off-white */
+  --paper-2:      #ffffff;   /* card / surface */
+  --ink:          #0c1116;   /* primary text — deep cool near-black */
+  --ink-2:        #3a414d;   /* secondary text */
+  --ink-3:        #7a818e;   /* tertiary, meta — cool grey */
+  --ink-4:        #bdc2cb;   /* disabled, hairlines on dark */
+  --line:         #e6e9ef;   /* hairline rules */
+  --line-strong:  #d2d6de;
+
+  /* Foreground / background semantics */
+  --bg:           var(--paper);
+  --fg:           var(--ink);
+  --fg-muted:     var(--ink-2);
+  --fg-faint:     var(--ink-3);
+  --surface:      var(--paper-2);
+  --border:       var(--line);
+  --border-strong:var(--line-strong);
+
+  /* Default mode "accent" is just ink — neutral system */
+  --accent:       var(--ink);
+  --accent-fg:    var(--paper);
+
+  /* Project color slot. In default mode it falls back to ink. */
+  --project:      var(--ink);
+  --project-fg:   var(--paper);
+  --project-tint: rgba(12, 17, 22, 0.04);
+
+  /* Glass — translucency of UI controls. In default mode the
+     glass sits on white, so it leans dark. Borders are deliberately
+     subtle — the alpha system carries the shape, not a hard outline. */
+  --glass-bg:        rgba(12, 17, 22, 0.04);
+  --glass-bg-hover:  rgba(12, 17, 22, 0.08);
+  --glass-bg-active: rgba(12, 17, 22, 0.12);
+  --glass-border:    rgba(12, 17, 22, 0.04);
+  --glass-fg:        var(--ink);
+
+  /* Focus */
+  --focus-ring:   rgba(12, 17, 22, 0.35);
+
+  /* Radii — friendly bento. Subtle on the smallest scale, generous on
+     containers. Buttons land at 10px, cards 12, hero containers 16+. */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* Spacing scale — 4pt base */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  24px;
+  --s-6:  32px;
+  --s-7:  48px;
+  --s-8:  64px;
+  --s-9:  96px;
+  --s-10: 128px;
+
+  /* Shadows — used sparingly. Editorial = quiet shadows. Lean blue-grey
+     to match the cool neutral palette. */
+  --shadow-1: 0 1px 2px rgba(12, 17, 22, 0.05);
+  --shadow-2: 0 4px 16px rgba(12, 17, 22, 0.07);
+  --shadow-3: 0 12px 40px rgba(12, 17, 22, 0.11);
+
+  /* Motion — editorial: slow, generous, cubic */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 180ms;
+  --dur-2: 320ms;
+  --dur-3: 520ms;   /* page transitions */
+  --dur-4: 840ms;   /* hero reveals */
+
+  /* Typography axes */
+  --font-display: "Urbanist", system-ui, sans-serif;
+  --font-body:    "Outfit",   system-ui, sans-serif;
+  --font-mono:    ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* When a project supplies its own type, components read these.
+     In default mode they fall back to the system stack. */
+  --font-project-display: var(--font-display);
+  --font-project-body:    var(--font-body);
+}
+
+/* ---------- 3. PROJECT MODE OVERRIDES ----------
+   When [data-mode="project"] is on, --project / --project-fg are
+   set inline per-project (style="--project:#c14a1a;"). Everything
+   else recolors automatically. */
+
+[data-mode="project"] {
+  --bg:        var(--project);
+  --fg:        var(--project-fg, #fff);
+  --fg-muted:  rgba(255, 255, 255, 0.72);
+  --fg-faint:  rgba(255, 255, 255, 0.48);
+  --surface:   rgba(255, 255, 255, 0.06);
+  --border:    rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.28);
+
+  --accent:    rgba(255, 255, 255, 1);
+  --accent-fg: var(--project);
+
+  /* Glass becomes translucent WHITE — the project color bleeds through
+     every "greyscale" control. Borders are nearly invisible — the
+     translucency is what makes the shape readable, not a hard outline.
+     Rest state is intentionally low-key so secondary glass actions don't
+     compete with the solid primary CTA. */
+  --glass-bg:        rgba(255, 255, 255, 0.07);
+  --glass-bg-hover:  rgba(255, 255, 255, 0.14);
+  --glass-bg-active: rgba(255, 255, 255, 0.22);
+  --glass-border:    rgba(255, 255, 255, 0.08);
+  --glass-fg:        #ffffff;
+
+  --focus-ring: rgba(255, 255, 255, 0.6);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.10);
+  --shadow-2: 0 4px 24px rgba(0, 0, 0, 0.18);
+  --shadow-3: 0 16px 60px rgba(0, 0, 0, 0.28);
+}
+
+/* ---------- 4. TYPE SCALE (semantic) ----------
+   Display = Outfit. Body / UI / meta = Urbanist.
+   Inside a project case study, --font-project-* can override. */
+
+.h-display,
+h1.display {
+  font-family: var(--font-project-display);
+  font-weight: 500;            /* Outfit reads strong at 500 */
+  font-size: clamp(48px, 7.2vw, 112px);
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+}
+
+h1, .h1 {
+  font-family: var(--font-project-display);
+  font-weight: 500;
+  font-size: clamp(36px, 4.4vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+  color: var(--fg);
+}
+
+h2, .h2 {
+  font-family: var(--font-project-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3.0vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  color: var(--fg);
+}
+
+h3, .h3 {
+  font-family: var(--font-project-display);
+  font-weight: 500;
+  font-size: clamp(22px, 2.0vw, 28px);
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  color: var(--fg);
+}
+
+h4, .h4 {
+  font-family: var(--font-project-body);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+}
+
+p, .body {
+  font-family: var(--font-project-body);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+
+.body-lg {
+  font-family: var(--font-project-body);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+.body-sm {
+  font-family: var(--font-project-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+.meta,
+.eyebrow {
+  font-family: var(--font-project-body);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.code,
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+
+/* ---------- 5. BASE ELEMENTS ---------- */
+
+* { box-sizing: border-box; }
+
+/* Specificity bump: the preview environment injects
+   `html, body { background: transparent; }` which would otherwise mask
+   our token-driven background. html[data-mode] / body[data-mode-host]
+   raises us above that. */
+html[data-mode],
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition:
+    background-color var(--dur-3) var(--ease-in-out),
+    color var(--dur-3) var(--ease-in-out);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity var(--dur-1) var(--ease-out);
+}
+a:hover { opacity: 0.6; }
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* ---------- 6. GLASS UTILITY ---------- */
+
+.glass {
+  background: var(--glass-bg);
+  color: var(--glass-fg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    transform var(--dur-1) var(--ease-out);
+}
+.glass:hover  { background: var(--glass-bg-hover); }
+.glass:active { background: var(--glass-bg-active); transform: scale(0.985); }

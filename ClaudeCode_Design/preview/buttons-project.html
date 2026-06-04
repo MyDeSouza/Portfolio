@@ -1,0 +1,27 @@
+<!doctype html>
+<html data-mode="project" style="--project: #2e7ce8; --project-fg: #fff;">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 40px 36px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-body); font-weight: 500; font-size: 16px;
+    letter-spacing: -0.005em; padding: 18px 32px; border-radius: var(--r-sm);
+    cursor: pointer; border: 1px solid transparent; text-decoration: none;
+  }
+  .solid { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .glass { background: var(--glass-bg); color: var(--glass-fg); border-color: var(--glass-border); backdrop-filter: blur(14px) saturate(140%); }
+  .ghost { background: transparent; color: var(--fg); border-bottom: 1px solid currentColor; border-radius: 0; padding: 16px 0; }
+  .label { font-family: var(--font-body); font-size: 11px; color: var(--fg-muted); letter-spacing: 0.14em; text-transform: uppercase; width: 100%; margin: 6px 0 0; }
+</style>
+</head>
+<body>
+  <div class="label">Project mode · CF Blue</div>
+  <button class="btn glass">Visit</button>
+  <button class="btn glass">Read</button>
+  <button class="btn solid">Open</button>
+  <button class="btn ghost">All</button>
+</body>
+</html>

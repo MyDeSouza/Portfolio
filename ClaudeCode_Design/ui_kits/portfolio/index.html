@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-mode="default">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Max DeSouza — Portfolio</title>
+
+    <!-- Design system tokens + type -->
+    <link rel="stylesheet" href="../../colors_and_type.css" />
+
+    <style>
+      /* Local kit overrides — colors_and_type.css is canonical for tokens.
+         The only things added here are: (1) fix font url paths up two
+         folders to fonts/, (2) the route-transition keyframes. */
+      @font-face {
+        font-family: "Outfit";
+        src: url("../../fonts/Outfit-VariableFont_wght.ttf") format("truetype-variations");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Urbanist";
+        src: url("../../fonts/Urbanist-VariableFont_wght.ttf") format("truetype-variations");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Urbanist";
+        src: url("../../fonts/Urbanist-Italic-VariableFont_wght.ttf") format("truetype-variations");
+        font-weight: 100 900;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      /* Editorial route enter — slow, considered. Uses transition on
+         opacity/transform via a 1-frame mount toggle in JS rather than
+         a CSS keyframe, because keyframes don't run while the iframe
+         is backgrounded (causing blank screenshots). */
+      .route-enter {
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+          opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
+          transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .route-enter[data-pending="1"] {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      @keyframes navIconFade {
+        0%   { opacity: 0; transform: translateY(2px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Hide the colors_and_type.css' bare @font-face rules — they resolve
+         to fonts/ relative to the OUTER css, which from this file is
+         /fonts/, but the link is from /ui_kits/portfolio/, so the rules
+         above re-declare with the right relative path. */
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- React -->
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+    <!-- Lucide icons (thin line, stroke-width 1.25 set in Icon.jsx) -->
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+
+    <!-- Data -->
+    <script src="data.js"></script>
+
+    <!-- Components (order matters — App uses everything below it) -->
+    <script type="text/babel" src="Icon.jsx"></script>
+    <script type="text/babel" src="Controls.jsx"></script>
+    <script type="text/babel" src="Chrome.jsx"></script>
+    <script type="text/babel" src="ProjectCard.jsx"></script>
+    <script type="text/babel" src="Home.jsx"></script>
+    <script type="text/babel" src="Projects.jsx"></script>
+    <script type="text/babel" src="Me.jsx"></script>
+    <script type="text/babel" src="CaseStudy.jsx"></script>
+    <script type="text/babel" src="App.jsx"></script>
+
+    <script type="text/babel">
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html data-mode="default">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 24px 28px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .swatch { display: flex; flex-direction: column; gap: 8px; }
+  .chip { width: 100%; aspect-ratio: 1.4; border-radius: var(--r-sm); border: 1px solid var(--border); position: relative; overflow: hidden; }
+  .chip .title { position: absolute; bottom: 12px; left: 14px; font-family: var(--font-display); font-weight: 500; font-size: 22px; letter-spacing: -0.022em; }
+  .label { font-family: var(--font-body); font-weight: 500; font-size: 12px; color: var(--fg); letter-spacing: -0.005em; }
+  .hex { font-family: ui-monospace, monospace; font-size: 10px; color: var(--fg-faint); }
+</style>
+</head>
+<body>
+  <div class="swatch">
+    <div class="chip" style="background: linear-gradient(180deg, #ffffff 0%, #dbeafe 7%, #3b82f6 22%, #1e3a8a 42%, #0a1530 72%, #03050a 100%);">
+      <span class="title" style="color: #fff;">Cadence</span>
+    </div>
+    <div class="label">Cadence · Earth horizon</div><div class="hex">gradient</div>
+  </div>
+  <div class="swatch">
+    <div class="chip" style="background: #0eb5d6;"><span class="title" style="color: #fff;">Pay</span></div>
+    <div class="label">Pay · Blue turquoise</div><div class="hex">#0eb5d6</div>
+  </div>
+  <div class="swatch">
+    <div class="chip" style="background: #ffb400;"><span class="title" style="color: #fff;">Mode</span></div>
+    <div class="label">Mode · Vivid amber-gold</div><div class="hex">#ffb400</div>
+  </div>
+  <div class="swatch">
+    <div class="chip" style="background: #2e7ce8;"><span class="title" style="color: #fff;">CF</span></div>
+    <div class="label">CF · Cadillac blue</div><div class="hex">#2e7ce8</div>
+  </div>
+  <div class="swatch">
+    <div class="chip" style="background: #a8d5a8;"><span class="title" style="color: #fff;">Parks</span></div>
+    <div class="label">Parks · Pastel sage</div><div class="hex">#a8d5a8</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html data-mode="default">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 28px 32px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    color: var(--glass-fg); border-radius: var(--r-pill);
+    font-family: var(--font-body); font-size: 12px; font-weight: 400; letter-spacing: 0.02em;
+    backdrop-filter: blur(14px);
+  }
+  .chip-solid {
+    padding: 7px 14px; background: var(--ink); color: #fff;
+    border-radius: var(--r-pill);
+    font-family: var(--font-body); font-size: 12px; font-weight: 400; letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+  <span class="chip">2024</span>
+  <span class="chip">Product UX</span>
+  <span class="chip">Thesis</span>
+  <span class="chip">Solo</span>
+  <span class="chip-solid">Selected</span>
+</body>
+</html>

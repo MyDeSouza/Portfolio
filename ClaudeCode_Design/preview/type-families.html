@@ -1,0 +1,35 @@
+<!doctype html>
+<html data-mode="default">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 28px 32px; display: flex; gap: 48px; align-items: stretch; }
+  .specimen { flex: 1; }
+  .name { font-family: var(--font-body); font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-faint); margin-bottom: 16px; }
+  .glyphs { font-size: 56px; line-height: 1; letter-spacing: -0.025em; color: var(--fg); margin-bottom: 14px; }
+  .weights { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--fg-muted); }
+  .weights span { display: block; }
+</style>
+</head>
+<body>
+  <div class="specimen">
+    <div class="name">Urbanist · Display</div>
+    <div class="glyphs" style="font-family: var(--font-display); font-weight: 500;">Aa Gg 24</div>
+    <div class="weights" style="font-family: var(--font-display);">
+      <span style="font-weight: 300;">Light · Project titles seldom use this.</span>
+      <span style="font-weight: 500;">Medium · The default display weight.</span>
+      <span style="font-weight: 700;">Bold · Reserved for the hero only.</span>
+    </div>
+  </div>
+  <div class="specimen">
+    <div class="name">Outfit · Body</div>
+    <div class="glyphs" style="font-family: var(--font-body); font-weight: 400;">Aa Gg 24</div>
+    <div class="weights" style="font-family: var(--font-body);">
+      <span style="font-weight: 400;">Regular · Body copy, the workhorse.</span>
+      <span style="font-weight: 500;">Medium · Eyebrows, labels, buttons.</span>
+      <span style="font-weight: 600;">Semibold · h4 + emphasis only.</span>
+    </div>
+  </div>
+</body>
+</html>

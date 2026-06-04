@@ -1,0 +1,58 @@
+<!doctype html>
+<html data-mode="default">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 28px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  .card { display: flex; flex-direction: column; gap: 10px; cursor: pointer; }
+  .meta-label {
+    font-family: var(--font-body); font-weight: 400; font-size: 11px;
+    color: var(--fg-faint); letter-spacing: 0.14em; text-transform: uppercase;
+    align-self: flex-start;
+  }
+  .cover {
+    position: relative; width: 100%; aspect-ratio: 4/3;
+    border-radius: 2px;
+    overflow: hidden; border: 1px solid var(--border);
+  }
+  .reveal {
+    position: absolute; left: 20px; bottom: 18px; right: 20px;
+    display: flex; flex-direction: column; gap: 6px;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    color: #fff;
+  }
+  .card:hover .reveal { opacity: 1; transform: translateY(0); }
+  .name {
+    font-family: var(--font-display); font-weight: 500; font-size: 28px;
+    line-height: 1; letter-spacing: -0.022em;
+  }
+  .sentence {
+    font-family: var(--font-body); font-weight: 400; font-size: 14px;
+    line-height: 1.4; max-width: 22ch;
+  }
+</style>
+</head>
+<body>
+  <article class="card">
+    <span class="meta-label">2024 · Product UX</span>
+    <div class="cover" style="background: linear-gradient(180deg, #ffffff 0%, #dbeafe 7%, #3b82f6 22%, #1e3a8a 42%, #0a1530 72%, #03050a 100%);">
+      <div class="reveal">
+        <span class="name">Cadence</span>
+        <span class="sentence">Surfacing files in place.</span>
+      </div>
+    </div>
+  </article>
+  <article class="card">
+    <span class="meta-label">2023 · Product UX</span>
+    <div class="cover" style="background: #ffb400;">
+      <div class="reveal">
+        <span class="name">Mode</span>
+        <span class="sentence">Travel, one screen.</span>
+      </div>
+    </div>
+  </article>
+</body>
+</html>

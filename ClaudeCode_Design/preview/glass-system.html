@@ -1,0 +1,44 @@
+<!doctype html>
+<html data-mode="project" style="--project: #14b8a6; --project-fg: #fff;">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 32px 36px; }
+  .row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .row + .row { margin-top: 20px; }
+  .label { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-muted); width: 96px; flex-shrink: 0; }
+  .swatch {
+    width: 120px; height: 72px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--fg); font-family: var(--font-body); font-size: 12px;
+    font-weight: 500; letter-spacing: -0.005em;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid var(--glass-border);
+  }
+  .b1 { background: var(--glass-bg); }
+  .b2 { background: var(--glass-bg-hover); }
+  .b3 { background: var(--glass-bg-active); }
+  .alpha { font-family: ui-monospace, monospace; font-size: 11px; opacity: 0.7; margin-left: auto; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="label">Rest</div>
+    <div class="swatch b1">Glass</div>
+    <div class="alpha">white · 10% · border 10%</div>
+  </div>
+  <div class="row">
+    <div class="label">Hover</div>
+    <div class="swatch b2">Glass</div>
+    <div class="alpha">white · 18% · border 10%</div>
+  </div>
+  <div class="row">
+    <div class="label">Active</div>
+    <div class="swatch b3">Glass</div>
+    <div class="alpha">white · 26% · border 10%</div>
+  </div>
+</body>
+</html>
