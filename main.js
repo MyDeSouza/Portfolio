@@ -405,9 +405,9 @@
 
   function updateCollapse() {
     var y = window.scrollY;
-    if (y > lastY && y > 60 && !hoverExpanded) {
+    if (y > 60 && y > lastY && !hoverExpanded) {
       doCollapse();
-    } else if (y < lastY && wrapper.classList.contains('collapsed') && !hoverExpanded) {
+    } else if (y < 60 && wrapper.classList.contains('collapsed') && !hoverExpanded) {
       doExpand();
     }
     lastY   = y;
