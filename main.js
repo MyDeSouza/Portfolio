@@ -504,14 +504,27 @@
 
 // ── Projects filter toggle ────────────────────────────────────
 (function () {
-  var toggle = document.getElementById('projects-toggle');
-  var grid   = document.querySelector('.projects-grid');
+  var toggle    = document.getElementById('projects-toggle');
+  var grid      = document.querySelector('.projects-grid');
+  var indicator = document.querySelector('.nav-indicator');
+  var pill      = document.querySelector('.nav-pill');
+  var homeItem  = document.querySelector('.nav-item[aria-label="Home"]');
   if (!toggle || !grid) return;
+
+  function moveIndicator(target) {
+    if (!indicator || !pill || !target) return;
+    var pr = pill.getBoundingClientRect();
+    var ir = target.getBoundingClientRect();
+    indicator.style.transition =
+      'left 0.4s cubic-bezier(0.16, 1, 0.3, 1), top 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+    indicator.style.left = (ir.left - pr.left + ir.width  / 2) + 'px';
+    indicator.style.top  = (ir.top  - pr.top  + ir.height / 2) + 'px';
+  }
 
   toggle.addEventListener('click', function (e) {
     e.preventDefault();
-    grid.classList.toggle('filtered');
-    toggle.classList.toggle('active');
+    var isFiltered = grid.classList.toggle('filtered');
+    moveIndicator(isFiltered ? toggle : homeItem);
   });
 }());
 
