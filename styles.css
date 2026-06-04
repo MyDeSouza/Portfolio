@@ -311,12 +311,16 @@ p, .body {
 [data-mode="project"] .nav-pill.active-shown .nav-item.active .nav-icon,
 [data-mode="project"] .nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: invert(1); }
 
-/* Mark absolute on the left; pill centres on its own as only flex child */
+/* Mark absolute on the left; pill centres on its own as only flex child.
+   margin-block: auto centres vertically without any CSS transform — avoids
+   conflict with the JS intro transform causing a snap on cleanup. */
 .topbar-mark-ghost {
   position: absolute;
   left: var(--gutter);
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  margin-block: auto;
+  height: fit-content;
 }
 
 .nav-pill .mark-name {
