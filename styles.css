@@ -670,7 +670,7 @@ p, .body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  padding: 2rem var(--gutter) 4rem;
+  padding: 5rem var(--gutter) 4rem;
 }
 
 .project-card {
@@ -717,14 +717,7 @@ p, .body {
    Home — hero
    ========================================================= */
 .home-hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  text-align: center;
-  padding: 0 var(--gutter) clamp(6rem, 14vh, 10rem);
-  gap: var(--s-5);
+  display: none; /* intro animation uses topbar mark; section no longer needed */
 }
 
 .home-hero .h-display {
