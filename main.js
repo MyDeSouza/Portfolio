@@ -217,7 +217,7 @@
 
   // ── Topbar over-dark detection ───────────────────────────
   var topbar  = document.querySelector('.topbar');
-  var darkEls = document.querySelectorAll('.project-cover, [data-dark]');
+  var darkEls = document.querySelectorAll('.project-cover, [data-dark], .project-card');
 
   var mark        = document.querySelector('.mark');
   var markFadeTimer = null;
