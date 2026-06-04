@@ -704,13 +704,18 @@ p, .body {
   letter-spacing: -0.01em;
 }
 
-/* Wide card — first project spans both columns */
-.project-card:first-child {
+/* Home: first project spans both columns */
+.projects-grid:not(.projects-page-grid) .project-card:first-child {
   grid-column: span 2;
 }
 
-.project-card:first-child .project-thumb {
+.projects-grid:not(.projects-page-grid) .project-card:first-child .project-thumb {
   aspect-ratio: 21 / 9;
+}
+
+/* Projects page: uniform 2-per-row, no wide hero card */
+.projects-page-grid {
+  padding-top: 5rem;
 }
 
 /* =========================================================
