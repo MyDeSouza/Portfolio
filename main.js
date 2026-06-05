@@ -359,6 +359,7 @@
   measurer.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:11px;font-weight:500;letter-spacing:0.05em;font-family:inherit;';
   document.body.appendChild(measurer);
   navItems.forEach(function (item) {
+    if (item.classList.contains('nav-item--text')) return; // already has text content
     var text = item.getAttribute('aria-label') || '';
     measurer.textContent = text;
     var w = measurer.offsetWidth + 24;
