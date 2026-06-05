@@ -374,27 +374,30 @@ p, .body {
   background: #ffffff;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: 0 0 0 1px #ffffff;
   transition: background-color 0.3s ease;
 }
 
 #about-btn {
   color: #0c1116;
   opacity: 0.64;
+  transition: opacity 0.2s ease 0.15s;
 }
 
 .about-open #about-btn {
   color: #0c1116;
   opacity: 1;
+  transition: opacity 0.2s ease 0.15s;
 }
 
 #work-btn {
   color: #0c1116;
   opacity: 1;
+  transition: opacity 0.2s ease 0.15s;
 }
 
 .about-open #work-btn {
   opacity: 0.64;
+  transition: opacity 0.2s ease 0.15s;
 }
 
 /* When pill is dark (over dark background), work text should be white */
@@ -493,7 +496,7 @@ p, .body {
   position: relative;
   backdrop-filter: blur(6px) saturate(120%);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
-  transition: background-color 0.5s ease;
+  transition: background-color 0.3s ease;
 }
 
 .nav-item {
