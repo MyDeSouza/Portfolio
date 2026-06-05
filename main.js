@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v38');
+  var seenIntro = sessionStorage.getItem('intro-seen-v39');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v38', '1');
+  sessionStorage.setItem('intro-seen-v39', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -144,14 +144,23 @@
         }, 320); // after Hi I'm is mostly gone
       }, 800);
 
-      // Phase 3 – collapse large centred mark into the nav
+      // Phase 3 – fade large mark out, snap to natural position, fade pill + content in
       setTimeout(function () {
-        markEl.style.transition = 'transform 0.85s cubic-bezier(0.65, 0, 0.35, 1)';
-        markEl.style.transform  = 'scale(1)';
+        // Fade the large centred version out cleanly
+        markEl.style.transition = 'opacity 0.4s ease';
+        markEl.style.opacity    = '0';
 
-        // Hero text slides in after mark starts flying — reveal all .h-display blocks
         setTimeout(function () {
-          // Pill and projects grid fade in as Max DeSouza lands
+          // Snap to natural small position with no visible movement
+          markEl.style.transition      = '';
+          markEl.style.transform       = '';
+          markEl.style.transformOrigin = '';
+          markEl.style.opacity         = '1';
+        }, 400);
+
+        // Hero text + pill + grid slide in as large mark fades
+        setTimeout(function () {
+          // Pill and projects grid fade in
           if (navWrapper) { navWrapper.style.transition = 'opacity 0.5s ease'; navWrapper.style.opacity = '1'; }
           var grid = document.querySelector('.projects-grid');
           if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
