@@ -330,7 +330,7 @@ p, .body {
 }
 
 .nav-item--text {
-  width: auto !important;
+  width: auto;
   min-width: unset;
   overflow: visible;
   font-size: 1.1rem;
@@ -340,7 +340,21 @@ p, .body {
   text-transform: none;
   color: var(--fg);
   padding: 0 0.5rem;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease,
+              color 0.5s ease;
 }
+
+/* Collapse: hide non-active text items */
+.nav-pill-wrapper.collapsed .nav-item--text:not(.active) {
+  width: 0 !important;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Dark pill: text flips white */
+.topbar.over-dark .nav-item--text { color: #ffffff; }
 
 /* ── About panel ─────────────────────────────────────────── */
 .about-overlay {
