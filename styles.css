@@ -393,8 +393,6 @@ p, .body {
   background: #ffffff;
   color: #0c1116;
   opacity: 1;
-  padding-top: 6px;
-  padding-bottom: 6px;
   transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
@@ -402,8 +400,6 @@ p, .body {
   background: #ffffff;
   color: #0c1116;
   opacity: 0.64;
-  padding-top: 6px;
-  padding-bottom: 6px;
   transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
@@ -499,7 +495,7 @@ p, .body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
+  height: 44px;
   border-radius: 999px;
   position: relative;
   cursor: pointer;
