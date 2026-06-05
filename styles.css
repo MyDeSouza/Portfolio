@@ -378,27 +378,30 @@ p, .body {
 }
 
 #about-btn {
-  color: #ffffff;
+  color: #0c1116;
   opacity: 0.64;
-  transition: opacity 0.2s ease 0.15s;
+  transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
 .about-open #about-btn {
-  color: #0c1116;
+  background: #0c1116;
+  color: #ffffff;
   opacity: 1;
-  transition: opacity 0.2s ease 0.15s;
+  transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
 #work-btn {
+  background: #0c1116;
   color: #ffffff;
   opacity: 1;
-  transition: opacity 0.2s ease 0.15s;
+  transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
 .about-open #work-btn {
+  background: transparent;
   color: #0c1116;
   opacity: 0.64;
-  transition: opacity 0.2s ease 0.15s;
+  transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
 
@@ -480,10 +483,12 @@ p, .body {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #0c1116;
+  background: rgba(205, 206, 212, 0.16);
   border-radius: 999px;
   padding: 8px 6px;
   position: relative;
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
   transition: background-color 0.3s ease;
 }
 
@@ -495,7 +500,7 @@ p, .body {
   border-radius: 999px;
   position: relative;
   cursor: pointer;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .nav-indicator { display: none; }
