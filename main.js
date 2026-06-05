@@ -319,8 +319,9 @@
     wrapper.classList.add('collapsed');
     hideIndicator();
     if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width ' + collapseEase;
-      dsOuter.style.width      = '0';
+      dsOuter.style.transition   = 'width ' + collapseEase + ', padding-right ' + collapseEase;
+      dsOuter.style.width        = '0';
+      dsOuter.style.paddingRight = '0';
     }
     if (markGhost) {
       markGhost.style.transition      = 'transform ' + collapseEase;
@@ -333,8 +334,9 @@
     wrapper.classList.remove('collapsed');
     requestAnimationFrame(function () { showIndicator(); });
     if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width ' + expandEase;
-      dsOuter.style.width      = dsNatW + 'px';
+      dsOuter.style.transition   = 'width ' + expandEase + ', padding-right ' + expandEase;
+      dsOuter.style.width        = dsNatW + 'px';
+      dsOuter.style.paddingRight = '0.28em';
     }
     if (markGhost) {
       markGhost.style.transition = 'transform ' + expandEase;
