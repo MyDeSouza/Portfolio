@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v44');
+  var seenIntro = sessionStorage.getItem('intro-seen-v45');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v44', '1');
+  sessionStorage.setItem('intro-seen-v45', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -157,21 +157,23 @@
           markEl.style.opacity         = '0';
         }, 420);
 
-        // Pill + grid + text fade in simultaneously with the mark fade-out (no gap)
-        if (navWrapper) { navWrapper.style.transition = 'opacity 0.55s ease'; navWrapper.style.opacity = '1'; }
-        var grid = document.querySelector('.projects-grid');
-        if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
+        // Pill + grid + text fade in after mark has finished fading (420ms delay)
+        setTimeout(function () {
+          if (navWrapper) { navWrapper.style.transition = 'opacity 0.55s ease'; navWrapper.style.opacity = '1'; }
+          var grid = document.querySelector('.projects-grid');
+          if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
 
-        var hDisplays = document.querySelectorAll('.h-display');
-        hDisplays.forEach(function (el, i) {
-          el.style.transform = 'translateY(32px)';
-          el.style.opacity   = '0';
-          setTimeout(function () {
-            el.style.transition = 'opacity 0.8s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
-            el.style.opacity    = i === 0 ? '1' : '0.72';
-            el.style.transform  = 'translateY(0)';
-          }, 80 + i * 100);
-        });
+          var hDisplays = document.querySelectorAll('.h-display');
+          hDisplays.forEach(function (el, i) {
+            el.style.transform = 'translateY(32px)';
+            el.style.opacity   = '0';
+            setTimeout(function () {
+              el.style.transition = 'opacity 0.8s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+              el.style.opacity    = i === 0 ? '1' : '0.72';
+              el.style.transform  = 'translateY(0)';
+            }, 80 + i * 100);
+          });
+        }, 420);
 
         // Cleanup + intro-done
         setTimeout(function () {
@@ -261,7 +263,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v44');
+  var seenKey    = sessionStorage.getItem('intro-seen-v45');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
