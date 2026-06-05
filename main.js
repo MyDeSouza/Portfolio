@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v41');
+  var seenIntro = sessionStorage.getItem('intro-seen-v42');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v41', '1');
+  sessionStorage.setItem('intro-seen-v42', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -139,82 +139,50 @@
 
       }, 800);
 
-      // Phase 3 – fade large mark out, snap to natural position, fade pill + content in
+      // Phase 3 – fade large mark out while content simultaneously fades in
       setTimeout(function () {
-        // Fade large version out with same upward drift as Hi I'm
+        // Fade large mark out with upward drift
         markEl.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
         markEl.style.opacity    = '0';
         markEl.style.transform  = (markEl.style.transform || '') + ' translateY(-12px)';
 
+        // Snap mark to natural position at 350ms (still hidden)
         setTimeout(function () {
-          // Snap to natural position — keep hidden; intro-done will split text then fade in
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '0';
-        }, 400);
+        }, 350);
 
-        // Hero text + pill + grid slide in as large mark fades
+        // Pill + grid + text fade in simultaneously with the mark fade-out (no gap)
+        if (navWrapper) { navWrapper.style.transition = 'opacity 0.55s ease'; navWrapper.style.opacity = '1'; }
+        var grid = document.querySelector('.projects-grid');
+        if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
+
+        var hDisplays = document.querySelectorAll('.h-display');
+        hDisplays.forEach(function (el, i) {
+          el.style.transform = 'translateY(32px)';
+          el.style.opacity   = '0';
+          setTimeout(function () {
+            el.style.transition = 'opacity 0.8s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+            el.style.opacity    = i === 0 ? '1' : '0.72';
+            el.style.transform  = 'translateY(0)';
+          }, 80 + i * 100);
+        });
+
+        // Cleanup + intro-done
         setTimeout(function () {
-          // Pill and projects grid fade in
-          if (navWrapper) { navWrapper.style.transition = 'opacity 0.5s ease'; navWrapper.style.opacity = '1'; }
-          var grid = document.querySelector('.projects-grid');
-          if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
-
-          // Reveal eyebrow then h-display elements
-          var eyebrow = document.querySelector('.home-hero .eyebrow');
-          if (eyebrow) {
-            eyebrow.style.transform = 'translateY(48px)';
-            eyebrow.style.opacity   = '0';
-            setTimeout(function () {
-              eyebrow.style.transition = 'opacity 0.6s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
-              eyebrow.style.opacity    = '1';
-              eyebrow.style.transform  = 'translateY(0)';
-            }, 0);
-          }
-
-          var hDisplays = document.querySelectorAll('.h-display');
-          hDisplays.forEach(function (el, i) {
-            el.style.transform = 'translateY(48px)';
-            el.style.opacity   = '0';
-            setTimeout(function () {
-              el.style.transition =
-                'opacity 0.9s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-              el.style.opacity   = i === 0 ? '1' : '0.72';
-              el.style.transform = 'translateY(0)';
-            }, 60 + i * 120);
-          });
-        }, 550);
-
-        // After mark lands: clear inline styles so it returns to natural small visible state
-        setTimeout(function () {
-          prefixOuter.style.display    = 'none';
-          markEl.style.transition      = '';
-          markEl.style.transform       = '';
-          markEl.style.transformOrigin = '';
-          markEl.style.opacity         = '';
-          markName.style.transition    = 'font-weight 0.35s ease';
-          markName.style.fontWeight    = '500';
+          prefixOuter.style.display = 'none';
+          markName.style.transition = 'font-weight 0.35s ease';
+          markName.style.fontWeight = '500';
           setTimeout(function () {
             markName.style.transition = '';
             markName.style.fontWeight = '';
           }, 350);
-
-          var bodyLg = document.querySelector('.body-lg');
-          var footer = document.querySelector('.footer');
-          if (bodyLg) {
-            bodyLg.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
-            bodyLg.style.opacity    = '1';
-            bodyLg.style.transform  = 'translateY(0)';
-          }
-          if (footer) {
-            footer.style.opacity = '';
-            footer.classList.add('page-reveal');
-          }
-          document.body.style.overflow = ''; // unlock scroll
+          document.body.style.overflow = '';
           window.dispatchEvent(new CustomEvent('intro-done'));
-        }, 900);
-      }, 700 + 1600); // fade-in (700ms) + hold — gives time for Hi I'm fade + rise before collapse
+        }, 600);
+      }, 700 + 1000); // Phase 3 starts sooner
     });
   });
 }());
@@ -290,7 +258,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v41');
+  var seenKey    = sessionStorage.getItem('intro-seen-v42');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
