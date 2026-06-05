@@ -401,6 +401,7 @@ p, .body {
   background: transparent;
   color: #ffffff;
   opacity: 1;
+  font-weight: 350;
   transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
