@@ -432,8 +432,8 @@
         collapseY = y;
       }
     } else {
-      // Expand: at least 20 px above where we collapsed
-      if (y < collapseY - 20 && !hoverExpanded) {
+      // Expand: any upward scroll while collapsed
+      if (delta < 0 && !hoverExpanded) {
         doExpand();
         expandY = y;
       }
