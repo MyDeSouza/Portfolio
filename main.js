@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v48');
+  var seenIntro = sessionStorage.getItem('intro-seen-v49');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v48', '1');
+  sessionStorage.setItem('intro-seen-v49', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -141,52 +141,38 @@
 
       // Phase 3 – starts right when Hi I'm finishes (1200ms + 300ms fade = 1500ms)
       setTimeout(function () {
-        // Force reflow so browser commits current state, then fade out with upward drift
+        // 1. Fade large mark out quickly (0.3s)
         markEl.offsetHeight;
         requestAnimationFrame(function () {
-          markEl.style.transition = 'opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+          markEl.style.transition = 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
           markEl.style.opacity    = '0';
           markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + (holdR - 12) + 'px)';
         });
 
-        // Snap mark to natural position after fade completes (still hidden)
+        // 2. At 320ms: snap + split text → now mark is "Product Designer" at opacity 0
         setTimeout(function () {
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '0';
-        }, 500);
-
-        // Pill + grid + text fade in as mark nears end of fade
-        setTimeout(function () {
-          if (navWrapper) { navWrapper.style.transition = 'opacity 0.55s ease'; navWrapper.style.opacity = '1'; }
-          var grid = document.querySelector('.projects-grid');
-          if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
-
-          var hDisplays = document.querySelectorAll('.h-display');
-          hDisplays.forEach(function (el, i) {
-            el.style.transform = 'translateY(32px)';
-            el.style.opacity   = '0';
-            setTimeout(function () {
-              el.style.transition = 'opacity 0.8s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
-              el.style.opacity    = i === 0 ? '1' : '0.72';
-              el.style.transform  = 'translateY(0)';
-            }, 80 + i * 100);
-          });
-        }, 50);
-
-        // Cleanup + intro-done
-        setTimeout(function () {
-          prefixOuter.style.display = 'none';
-          markName.style.transition = 'font-weight 0.35s ease';
-          markName.style.fontWeight = '500';
-          setTimeout(function () {
-            markName.style.transition = '';
-            markName.style.fontWeight = '';
-          }, 350);
+          prefixOuter.style.display    = 'none';
+          markName.style.fontWeight    = '500';
+          // Fire intro-done so nav IIFE runs setupMarkSplit (text → "Product Designer")
           document.body.style.overflow = '';
           window.dispatchEvent(new CustomEvent('intro-done'));
-        }, 600);
+        }, 320);
+
+        // 3. At 370ms: nav pill + Product Designer fade in together (0.65s)
+        setTimeout(function () {
+          if (navWrapper) { navWrapper.style.transition = 'opacity 0.65s ease'; navWrapper.style.opacity = '1'; }
+          // markGhost fades in via nav IIFE's intro-done listener (already set up)
+        }, 370);
+
+        // 4. At 700ms: projects grid fades in (~halfway through nav/mark fade)
+        setTimeout(function () {
+          var grid = document.querySelector('.projects-grid');
+          if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
+        }, 700);
       }, 700 + 800); // 1500ms total — fires right as Hi I'm finishes
     });
   });
@@ -263,7 +249,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v48');
+  var seenKey    = sessionStorage.getItem('intro-seen-v49');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
