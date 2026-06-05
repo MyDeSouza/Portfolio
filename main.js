@@ -529,7 +529,7 @@
 (function () {
   var aboutBtn  = document.getElementById('about-btn');
   var workBtn   = document.getElementById('work-btn');
-  var panel     = document.getElementById('about-panel');
+  var wrapper   = document.getElementById('about-panel');
   var overlay   = document.getElementById('about-overlay');
   var indicator = document.querySelector('.nav-indicator');
   var pill      = document.querySelector('.nav-pill');
@@ -545,7 +545,7 @@
   }
 
   function openAbout() {
-    if (panel)   { panel.classList.add('open');   panel.setAttribute('aria-hidden', 'false'); }
+    if (wrapper)  { wrapper.setAttribute('aria-hidden', 'false'); }
     if (overlay) overlay.classList.add('open');
     document.body.classList.add('about-open');
     document.body.style.overflow = 'hidden';
@@ -555,7 +555,7 @@
   }
 
   function closeAbout() {
-    if (panel)   { panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
+    if (wrapper)  { wrapper.setAttribute('aria-hidden', 'true'); }
     if (overlay) overlay.classList.remove('open');
     document.body.classList.remove('about-open');
     document.body.style.overflow = '';
