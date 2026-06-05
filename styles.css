@@ -386,17 +386,16 @@ p, .body {
 .about-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent;
   z-index: 20;
-  opacity: 0;
+  opacity: 1; /* always ready for click-to-close, no visual tint */
   pointer-events: none;
-  transition: opacity 0.4s ease;
 }
 
 .about-overlay.open {
-  opacity: 1;
   pointer-events: auto;
 }
+
 
 .about-panel {
   position: fixed;
