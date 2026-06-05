@@ -374,6 +374,7 @@ p, .body {
   background: #ffffff;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+  box-shadow: 0 0 0 1px #ffffff;
   transition: background-color 0.3s ease;
 }
 
