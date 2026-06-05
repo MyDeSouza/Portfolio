@@ -391,12 +391,16 @@ p, .body {
   opacity: 1;
 }
 
-#work-btn {
-  color: #000000;
+.nav-pill #work-btn {
+  color: #000000 !important;
 }
 
-#work-btn.active {
-  color: #000000;
+.nav-pill #work-btn.active {
+  color: #000000 !important;
+}
+
+.nav-item--text#work-btn {
+  color: #000000 !important;
 }
 
 .about-open #work-btn {
