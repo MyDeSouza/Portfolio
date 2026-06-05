@@ -1294,3 +1294,193 @@ p, .body {
   animation: pageReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* =========================================================
+   Bento Grid — Seven boxes layout
+   ========================================================= */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto;
+  gap: clamp(16px, 2vw, 24px);
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter) clamp(3rem, 8vw, 6rem);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.bento-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+  transition: all var(--dur-2) var(--ease-out);
+  animation: pageReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.bento-box:hover {
+  border-color: var(--ink-3);
+  box-shadow: 0 8px 32px rgba(12, 17, 22, 0.08);
+  transform: translateY(-4px);
+}
+
+/* Grid positioning for specific boxes */
+.bento-box-1 { grid-column: span 2; grid-row: span 2; }
+.bento-box-2 { grid-column: span 2; grid-row: span 2; }
+.bento-box-3 { grid-column: span 2; grid-row: span 1; }
+.bento-box-4 { grid-column: span 2; grid-row: span 1; }
+.bento-box-5 { grid-column: span 2; grid-row: span 1; }
+.bento-box-6 { grid-column: span 3; grid-row: span 1; }
+.bento-box-7 { grid-column: span 3; grid-row: span 1; }
+
+.bento-title {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+
+.bento-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  line-height: 1.6;
+  color: var(--fg-muted);
+  flex-grow: 1;
+}
+
+.bento-photo {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: var(--r-md);
+  min-height: 300px;
+}
+
+.bento-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+}
+
+.bento-list li {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.bento-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--ink-3);
+}
+
+.bento-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bento-item-title {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.bento-item-meta {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--fg-faint);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.bento-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.bento-tool {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-sm);
+  color: var(--fg-muted);
+  text-align: center;
+  transition: all var(--dur-1) var(--ease-out);
+}
+
+.bento-tool:hover {
+  background: var(--glass-bg-hover);
+  color: var(--fg);
+}
+
+.bento-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  transition: all var(--dur-2) var(--ease-out);
+}
+
+.bento-link:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--ink);
+  transform: translateX(4px);
+}
+
+.bento-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .bento-box-1 { grid-column: span 2; grid-row: span 2; }
+  .bento-box-2 { grid-column: span 2; grid-row: span 2; }
+  .bento-box-3 { grid-column: span 2; }
+  .bento-box-4 { grid-column: span 2; }
+  .bento-box-5 { grid-column: span 2; }
+  .bento-box-6 { grid-column: span 2; }
+  .bento-box-7 { grid-column: span 2; }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-box-1,
+  .bento-box-2,
+  .bento-box-3,
+  .bento-box-4,
+  .bento-box-5,
+  .bento-box-6,
+  .bento-box-7 {
+    grid-column: span 1;
+  }
+}
+
