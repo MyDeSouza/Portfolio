@@ -390,6 +390,7 @@ p, .body {
 
 .topbar.over-dark #about-btn {
   color: #ffffff;
+  font-weight: 400;
 }
 
 .about-open #about-btn {
