@@ -387,6 +387,10 @@ p, .body {
   opacity: 1;
 }
 
+#work-btn {
+  opacity: 1;
+}
+
 #work-btn.active {
   color: #000000;
 }
