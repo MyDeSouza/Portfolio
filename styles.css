@@ -388,6 +388,7 @@ p, .body {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(2px);
   z-index: 20;
   opacity: 0;
   pointer-events: none;
