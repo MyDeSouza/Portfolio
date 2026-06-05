@@ -1295,20 +1295,27 @@ p, .body {
 }
 
 /* =========================================================
-   Bento Grid — Seven boxes layout
+   Bento Layout — About panel with large left + sidebar right
    ========================================================= */
-.bento-grid {
+.bento-layout {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: auto;
-  gap: clamp(16px, 2vw, 24px);
-  padding: clamp(2rem, 4vw, 3rem);
-  max-width: 100%;
-  margin: 0;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2rem);
+  align-items: start;
 }
 
-.about-panel__inner .bento-grid {
-  padding: clamp(2rem, 4vw, 3rem);
+.bento-large {
+  grid-row: span 5;
+}
+
+.bento-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2rem);
+}
+
+.bento-small {
+  flex: 1;
 }
 
 .bento-box {
@@ -1464,30 +1471,20 @@ p, .body {
 
 /* Responsive design */
 @media (max-width: 1024px) {
-  .bento-grid {
-    grid-template-columns: repeat(4, 1fr);
+  .bento-layout {
+    grid-template-columns: 1fr;
   }
-  .bento-box-1 { grid-column: span 2; grid-row: span 2; }
-  .bento-box-2 { grid-column: span 2; grid-row: span 2; }
-  .bento-box-3 { grid-column: span 2; }
-  .bento-box-4 { grid-column: span 2; }
-  .bento-box-5 { grid-column: span 2; }
-  .bento-box-6 { grid-column: span 2; }
-  .bento-box-7 { grid-column: span 2; }
+  .bento-large {
+    grid-row: span 1;
+  }
 }
 
 @media (max-width: 640px) {
-  .bento-grid {
+  .bento-layout {
     grid-template-columns: 1fr;
   }
-  .bento-box-1,
-  .bento-box-2,
-  .bento-box-3,
-  .bento-box-4,
-  .bento-box-5,
-  .bento-box-6,
-  .bento-box-7 {
-    grid-column: span 1;
+  .bento-sidebar {
+    flex-direction: column;
   }
 }
 
