@@ -242,8 +242,11 @@
     dsOuter.appendChild(dsInner);
     topbarLabel.appendChild(dsOuter);
 
-    // "Design" — always visible
-    topbarLabel.appendChild(document.createTextNode('Design'));
+    // "Design" / "Designer" — swaps when about panel is open
+    var labelSuffix = document.createElement('span');
+    labelSuffix.id = 'topbar-label-suffix';
+    labelSuffix.textContent = 'Design';
+    topbarLabel.appendChild(labelSuffix);
 
     requestAnimationFrame(function () {
       dsNatW = dsOuter.offsetWidth;
@@ -543,6 +546,8 @@
     if (overlay) overlay.classList.add('open');
     document.body.classList.add('about-open');
     document.body.style.overflow = 'hidden';
+    var s = document.getElementById('topbar-label-suffix');
+    if (s) s.textContent = 'Designer';
     moveIndicator(aboutBtn);
   }
 
@@ -551,6 +556,8 @@
     if (overlay) overlay.classList.remove('open');
     document.body.classList.remove('about-open');
     document.body.style.overflow = '';
+    var s = document.getElementById('topbar-label-suffix');
+    if (s) s.textContent = 'Design';
     moveIndicator(workBtn);
   }
 
