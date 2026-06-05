@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v45');
+  var seenIntro = sessionStorage.getItem('intro-seen-v46');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v45', '1');
+  sessionStorage.setItem('intro-seen-v46', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -132,7 +132,7 @@
       setTimeout(function () {
         // 1. Hi I'm fades quickly
         requestAnimationFrame(function () {
-          prefixInner.style.transition = 'opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+          prefixInner.style.transition = 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
           prefixInner.style.opacity    = '0';
           prefixInner.style.transform  = 'translateY(-' + (shiftUp + 5) + 'px)';
         });
@@ -144,7 +144,7 @@
         // Force reflow so browser commits current state, then fade out with upward drift
         markEl.offsetHeight;
         requestAnimationFrame(function () {
-          markEl.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+          markEl.style.transition = 'opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
           markEl.style.opacity    = '0';
           markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + (holdR - 12) + 'px)';
         });
@@ -155,9 +155,9 @@
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '0';
-        }, 420);
+        }, 500);
 
-        // Pill + grid + text fade in after mark has finished fading (420ms delay)
+        // Pill + grid + text fade in after mark has finished fading (500ms delay)
         setTimeout(function () {
           if (navWrapper) { navWrapper.style.transition = 'opacity 0.55s ease'; navWrapper.style.opacity = '1'; }
           var grid = document.querySelector('.projects-grid');
@@ -263,7 +263,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v45');
+  var seenKey    = sessionStorage.getItem('intro-seen-v46');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
