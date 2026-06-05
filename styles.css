@@ -405,6 +405,11 @@ p, .body {
   transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
+.nav-pill-wrapper.collapsed #work-btn {
+  background: transparent;
+  color: #ffffff;
+}
+
 
 /* ── About panel ─────────────────────────────────────────── */
 .about-overlay {
