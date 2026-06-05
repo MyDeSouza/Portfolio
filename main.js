@@ -242,8 +242,8 @@
     dsOuter.appendChild(dsInner);
     markName.appendChild(dsOuter);
 
-    // "Designer" — always visible
-    markName.appendChild(document.createTextNode('Designer'));
+    // "Design" — always visible
+    markName.appendChild(document.createTextNode('Design'));
 
     requestAnimationFrame(function () {
       dsNatW = dsOuter.offsetWidth;
