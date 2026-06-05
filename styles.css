@@ -363,9 +363,9 @@ p, .body {
   text-transform: none;
   color: var(--fg);
   padding: 0 1rem;
-  transition: max-width 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-              padding 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.4s ease 0.1s,
+  transition: max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease 0.25s,
               color 0.4s ease;
 }
 
@@ -404,7 +404,8 @@ p, .body {
   background: #ffffff;
   color: #0c1116;
   opacity: 1;
-  transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s;
+  transition: opacity 0.2s ease 0.15s, background-color 0.25s ease 0.15s,
+              color 0.25s ease 0.15s, font-weight 0.25s ease 0.15s;
 }
 
 .about-open #work-btn {
@@ -419,7 +420,7 @@ p, .body {
   background: transparent;
   color: #ffffff;
   font-weight: 400;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, font-weight 0.25s ease;
 }
 
 
@@ -525,20 +526,16 @@ p, .body {
 .nav-indicator { display: none; }
 .nav-label     { display: none; }
 
-/* Collapse: hide non-active items; truncate suffix on active item */
+/* Collapse: hide non-active items; opacity fires first, then width collapses */
 .nav-pill-wrapper.collapsed .nav-item:not(.active) {
   max-width: 0;
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
   padding: 0;
-  transition: max-width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-              padding 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.2s ease;
-}
-
-.nav-pill-wrapper.collapsed .nav-name-prefix {
-  display: none;
+  transition: opacity 0.15s ease,
+              max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
+              padding 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
 }
 
 /* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
