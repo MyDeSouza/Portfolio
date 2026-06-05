@@ -1334,14 +1334,7 @@ p, .body {
   flex-direction: column;
   justify-content: flex-start;
   gap: 0.75rem;
-  transition: all var(--dur-2) var(--ease-out);
   animation: pageReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.bento-box:hover {
-  background: rgba(20, 20, 18, 0.64);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transform: translateY(-4px);
 }
 
 /* Grid positioning for specific boxes */
@@ -1440,12 +1433,6 @@ p, .body {
   border-radius: var(--r-sm);
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  transition: all var(--dur-1) var(--ease-out);
-}
-
-.bento-tool:hover {
-  background: rgba(20, 20, 18, 0.48);
-  color: #ffffff;
 }
 
 .bento-link {
@@ -1461,12 +1448,6 @@ p, .body {
   background: rgba(20, 20, 18, 0.32);
   border: none;
   border-radius: var(--r-md);
-  transition: all var(--dur-2) var(--ease-out);
-}
-
-.bento-link:hover {
-  background: rgba(20, 20, 18, 0.48);
-  transform: translateX(4px);
 }
 
 .bento-link svg {
