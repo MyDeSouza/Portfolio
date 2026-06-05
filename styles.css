@@ -405,13 +405,14 @@ p, .body {
   background: transparent;
   color: #ffffff;
   opacity: 1;
-  font-weight: 350;
+  font-weight: 400;
   transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
 .nav-pill-wrapper.collapsed #work-btn {
   background: transparent;
   color: #ffffff;
+  font-weight: 400;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
