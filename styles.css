@@ -277,7 +277,7 @@ p, .body {
   justify-content: center;
   align-items: center;
   gap: clamp(1rem, 2vw, 2rem);
-  padding: 1.5rem var(--gutter) 0.75rem;
+  padding: 1.125rem var(--gutter);
   font-family: var(--mono);
   font-size: 0.78rem;
   letter-spacing: 0.02em;
@@ -339,6 +339,7 @@ p, .body {
   color: var(--fg);
   opacity: 0;
   white-space: nowrap;
+  text-transform: none;
   transition: color 0.5s ease;
 }
 
