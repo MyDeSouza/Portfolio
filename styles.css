@@ -367,7 +367,7 @@ p, .body {
 .topbar.over-dark .nav-item--text { color: #ffffff; }
 
 /* About panel open: dark background, white pill, black Max DeSouza, 64% Work */
-body.about-open { background-color: #3a3e48; }
+body.about-open { background-color: #c8cad8; }
 
 .about-open .topbar-label { color: #ffffff; }
 
@@ -388,13 +388,15 @@ body.about-open { background-color: #3a3e48; }
 .about-overlay {
   position: fixed;
   inset: 0;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.18);
   z-index: 20;
-  opacity: 1; /* always ready for click-to-close, no visual tint */
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
 .about-overlay.open {
+  opacity: 1;
   pointer-events: auto;
 }
 
