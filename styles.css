@@ -375,8 +375,13 @@ p, .body {
   transition: background-color 0.3s ease;
 }
 
+#about-btn {
+  opacity: 0.64;
+}
+
 .about-open #about-btn {
   color: #0c1116;
+  opacity: 1;
 }
 
 .about-open #work-btn {
