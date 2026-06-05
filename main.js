@@ -541,6 +541,7 @@
   function openAbout() {
     if (panel)   { panel.classList.add('open');   panel.setAttribute('aria-hidden', 'false'); }
     if (overlay) overlay.classList.add('open');
+    document.body.classList.add('about-open');
     document.body.style.overflow = 'hidden';
     moveIndicator(aboutBtn);
   }
@@ -548,6 +549,7 @@
   function closeAbout() {
     if (panel)   { panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
     if (overlay) overlay.classList.remove('open');
+    document.body.classList.remove('about-open');
     document.body.style.overflow = '';
     moveIndicator(workBtn);
   }

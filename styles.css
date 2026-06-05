@@ -366,6 +366,20 @@ p, .body {
 
 .topbar.over-dark .nav-item--text { color: #ffffff; }
 
+/* About panel open: white pill, black active label, muted Work */
+.about-open .nav-pill {
+  background: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.about-open #about-btn {
+  color: #0c1116;
+}
+
+.about-open #work-btn {
+  opacity: 0.64;
+}
+
 /* ── About panel ─────────────────────────────────────────── */
 .about-overlay {
   position: fixed;
