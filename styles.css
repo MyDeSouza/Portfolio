@@ -474,7 +474,7 @@ p, .body {
   padding: 0 !important;
 }
 
-.nav-pill-wrapper.collapsed .nav-name-suffix {
+.nav-pill-wrapper.collapsed .nav-name-prefix {
   display: none;
 }
 
