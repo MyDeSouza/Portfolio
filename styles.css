@@ -367,7 +367,6 @@ p, .body {
 .topbar.over-dark .nav-item--text { color: #ffffff; }
 
 /* About panel open: dark background, white pill, black Max DeSouza, 64% Work */
-body.about-open { background-color: #c8cad8; }
 
 .about-open .topbar-label { color: #ffffff; }
 
