@@ -147,11 +147,11 @@
         markEl.style.transform  = (markEl.style.transform || '') + ' translateY(-12px)';
 
         setTimeout(function () {
-          // Snap to natural small position with no visible movement
+          // Snap to natural position — keep hidden; intro-done will split text then fade in
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
-          markEl.style.opacity         = '1';
+          markEl.style.opacity         = '0';
         }, 400);
 
         // Hero text + pill + grid slide in as large mark fades
@@ -296,7 +296,13 @@
   } else {
     window.addEventListener('intro-done', function onID() {
       window.removeEventListener('intro-done', onID);
-      setupMarkSplit();
+      setupMarkSplit(); // text changes to "Product Designer" while still opacity:0
+      requestAnimationFrame(function () {
+        if (markGhost) {
+          markGhost.style.transition = 'opacity 0.4s ease';
+          markGhost.style.opacity    = '1'; // fade in already showing correct text
+        }
+      });
     });
   }
 
