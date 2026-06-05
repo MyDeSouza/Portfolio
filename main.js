@@ -325,10 +325,28 @@
 
   // ── Collapse helpers ─────────────────────────────────────────
   var hoverExpanded = false;
-  var collapseEase  = '0.55s cubic-bezier(0.4, 0, 0.2, 1)';
-  var expandEase    = '0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+  var collapseEase  = '0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+  var expandEase    = '0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+
+  // Measure about-btn natural width for JS-driven animation
+  var aboutBtnEl   = document.getElementById('about-btn');
+  var aboutBtnNatW = aboutBtnEl ? aboutBtnEl.offsetWidth : 0;
 
   function doCollapse() {
+    collapseY = window.scrollY;
+
+    if (aboutBtnEl && aboutBtnNatW) {
+      aboutBtnEl.style.overflow   = 'hidden';
+      aboutBtnEl.style.transition = 'none';
+      aboutBtnEl.style.width      = aboutBtnNatW + 'px';
+      aboutBtnEl.style.opacity    = '1';
+      aboutBtnEl.offsetHeight; // force reflow so transition starts from measured width
+      aboutBtnEl.style.transition = 'opacity 0.15s ease, width ' + collapseEase + ' 0.05s, padding ' + collapseEase + ' 0.05s';
+      aboutBtnEl.style.width      = '0';
+      aboutBtnEl.style.padding    = '0';
+      aboutBtnEl.style.opacity    = '0';
+    }
+
     wrapper.classList.add('collapsed');
     hideIndicator();
     if (dsOuter && dsNatW) {
@@ -345,6 +363,18 @@
 
   function doExpand() {
     wrapper.classList.remove('collapsed');
+
+    if (aboutBtnEl && aboutBtnNatW) {
+      aboutBtnEl.style.transition = 'width ' + expandEase + ', padding ' + expandEase + ', opacity 0.3s ease 0.2s';
+      aboutBtnEl.style.width      = aboutBtnNatW + 'px';
+      aboutBtnEl.style.padding    = '';
+      aboutBtnEl.style.opacity    = '';
+      setTimeout(function () {
+        aboutBtnEl.style.width      = '';
+        aboutBtnEl.style.transition = '';
+      }, 600);
+    }
+
     requestAnimationFrame(function () { showIndicator(); });
     if (dsOuter && dsNatW) {
       dsOuter.style.transition   = 'width ' + expandEase + ', padding-right ' + expandEase;
@@ -426,14 +456,13 @@
     var delta = y - lastY;
 
     if (!wrapper.classList.contains('collapsed')) {
-      // Collapse: scrolling down, past 60 px, and at least 40 px below last expand
-      if (delta > 0 && y > 60 && y > expandY + 40 && !hoverExpanded) {
+      // Collapse: scrolling down past 30px, with 15px buffer from last expand
+      if (delta > 0 && y > 30 && y > expandY + 15 && !hoverExpanded) {
         doCollapse();
-        collapseY = y;
       }
     } else {
-      // Expand: any upward scroll while collapsed
-      if (delta < 0 && !hoverExpanded) {
+      // Expand: position-based — 15px above where we collapsed
+      if (y < collapseY - 15 && !hoverExpanded) {
         doExpand();
         expandY = y;
       }
