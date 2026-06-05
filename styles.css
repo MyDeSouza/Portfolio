@@ -408,6 +408,7 @@ p, .body {
 .nav-pill-wrapper.collapsed #work-btn {
   background: transparent;
   color: #ffffff;
+  transition: none;
 }
 
 
