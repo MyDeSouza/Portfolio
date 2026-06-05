@@ -1327,7 +1327,7 @@ p, .body {
 .bento-box {
   background: rgba(20, 20, 18, 0.48);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   border-radius: var(--r-lg);
   padding: 1.2rem;
   display: flex;
@@ -1340,7 +1340,6 @@ p, .body {
 
 .bento-box:hover {
   background: rgba(20, 20, 18, 0.64);
-  border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transform: translateY(-4px);
 }
@@ -1437,7 +1436,7 @@ p, .body {
   font-size: 0.75rem;
   padding: 0.4rem 0.8rem;
   background: rgba(20, 20, 18, 0.32);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   border-radius: var(--r-sm);
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
@@ -1447,7 +1446,6 @@ p, .body {
 .bento-tool:hover {
   background: rgba(20, 20, 18, 0.48);
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .bento-link {
@@ -1461,14 +1459,13 @@ p, .body {
   text-decoration: none;
   padding: 0.5rem 1rem;
   background: rgba(20, 20, 18, 0.32);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   border-radius: var(--r-md);
   transition: all var(--dur-2) var(--ease-out);
 }
 
 .bento-link:hover {
   background: rgba(20, 20, 18, 0.48);
-  border-color: rgba(255, 255, 255, 0.2);
   transform: translateX(4px);
 }
 
