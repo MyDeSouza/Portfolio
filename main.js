@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v43');
+  var seenIntro = sessionStorage.getItem('intro-seen-v44');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v43', '1');
+  sessionStorage.setItem('intro-seen-v44', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -141,18 +141,21 @@
 
       // Phase 3 – starts right when Hi I'm finishes (1200ms + 300ms fade = 1500ms)
       setTimeout(function () {
-        // Fade large mark out with upward drift
-        markEl.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-        markEl.style.opacity    = '0';
-        markEl.style.transform  = (markEl.style.transform || '') + ' translateY(-12px)';
+        // Force reflow so browser commits current state, then fade out with upward drift
+        markEl.offsetHeight;
+        requestAnimationFrame(function () {
+          markEl.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+          markEl.style.opacity    = '0';
+          markEl.style.transform  = 'scale(' + scaleStart.toFixed(4) + ') translateX(' + holdX.toFixed(2) + 'px) translateY(' + (holdR - 12) + 'px)';
+        });
 
-        // Snap mark to natural position at 350ms (still hidden)
+        // Snap mark to natural position after fade completes (still hidden)
         setTimeout(function () {
           markEl.style.transition      = '';
           markEl.style.transform       = '';
           markEl.style.transformOrigin = '';
           markEl.style.opacity         = '0';
-        }, 350);
+        }, 420);
 
         // Pill + grid + text fade in simultaneously with the mark fade-out (no gap)
         if (navWrapper) { navWrapper.style.transition = 'opacity 0.55s ease'; navWrapper.style.opacity = '1'; }
@@ -258,7 +261,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v43');
+  var seenKey    = sessionStorage.getItem('intro-seen-v44');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
