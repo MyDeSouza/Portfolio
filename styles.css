@@ -272,7 +272,7 @@ p, .body {
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 40;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -363,6 +363,7 @@ p, .body {
   left: 0;
   top: 0;
   bottom: 0;
+  padding-top: 4rem; /* clear the topbar */
   width: min(420px, 88vw);
   background: var(--bg);
   z-index: 30;
@@ -455,6 +456,7 @@ p, .body {
 
 /* Sliding indicator — JS sets left+top to item centre px; CSS offsets by own half-size */
 .nav-indicator {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
