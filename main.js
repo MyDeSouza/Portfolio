@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v42');
+  var seenIntro = sessionStorage.getItem('intro-seen-v43');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v42', '1');
+  sessionStorage.setItem('intro-seen-v43', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -137,9 +137,9 @@
           prefixInner.style.transform  = 'translateY(-' + (shiftUp + 5) + 'px)';
         });
 
-      }, 800);
+      }, 1200); // Hi I'm holds slightly longer
 
-      // Phase 3 – fade large mark out while content simultaneously fades in
+      // Phase 3 – starts right when Hi I'm finishes (1200ms + 300ms fade = 1500ms)
       setTimeout(function () {
         // Fade large mark out with upward drift
         markEl.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
@@ -182,7 +182,7 @@
           document.body.style.overflow = '';
           window.dispatchEvent(new CustomEvent('intro-done'));
         }, 600);
-      }, 700 + 1000); // Phase 3 starts sooner
+      }, 700 + 800); // 1500ms total — fires right as Hi I'm finishes
     });
   });
 }());
@@ -258,7 +258,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v42');
+  var seenKey    = sessionStorage.getItem('intro-seen-v43');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
