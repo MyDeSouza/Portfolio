@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v40');
+  var seenIntro = sessionStorage.getItem('intro-seen-v41');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v40', '1');
+  sessionStorage.setItem('intro-seen-v41', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -141,9 +141,10 @@
 
       // Phase 3 – fade large mark out, snap to natural position, fade pill + content in
       setTimeout(function () {
-        // Fade the large centred version out cleanly
-        markEl.style.transition = 'opacity 0.4s ease';
+        // Fade large version out with same upward drift as Hi I'm
+        markEl.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
         markEl.style.opacity    = '0';
+        markEl.style.transform  = (markEl.style.transform || '') + ' translateY(-12px)';
 
         setTimeout(function () {
           // Snap to natural small position with no visible movement
@@ -263,26 +264,39 @@
     checkDark();
   }
 
-  // ── Mark-name DeSouza split ──────────────────────────────────
+  // ── Mark-name split (deferred until after intro so intro shows "Max DeSouza") ──
   var markName   = document.querySelector('.mark-name');
+  var markGhost  = document.querySelector('.topbar-mark-ghost');
   var dsOuter    = null;
   var dsNatW     = 0;
 
-  if (markName) {
+  function setupMarkSplit() {
+    if (!markName) return;
     markName.textContent = '';
-    markName.appendChild(document.createTextNode('Product'));
-
+    markName.appendChild(document.createTextNode('Product '));
     dsOuter = document.createElement('span');
     dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
     var dsInner = document.createElement('span');
     dsInner.style.display = 'inline-block';
-    dsInner.textContent   = ' Designer';
+    dsInner.textContent   = 'Designer';
     dsOuter.appendChild(dsInner);
     markName.appendChild(dsOuter);
-
     requestAnimationFrame(function () {
       dsNatW = dsOuter.offsetWidth;
       dsOuter.style.width = dsNatW + 'px';
+    });
+  }
+
+  // Defer split until after intro; if no intro, split immediately
+  var navEntry0  = performance.getEntriesByType('navigation')[0];
+  var isReload0  = navEntry0 && navEntry0.type === 'reload';
+  var seenKey    = sessionStorage.getItem('intro-seen-v41');
+  if (!isReload0 && seenKey) {
+    setupMarkSplit(); // no intro playing — split right away
+  } else {
+    window.addEventListener('intro-done', function onID() {
+      window.removeEventListener('intro-done', onID);
+      setupMarkSplit();
     });
   }
 
@@ -334,27 +348,19 @@
   function doCollapse() {
     wrapper.classList.add('collapsed');
     hideIndicator();
-    if (markName) {
-      markName.style.transformOrigin = 'left center';
-      markName.style.transition     = 'transform ' + collapseEase;
-      markName.style.transform      = 'scale(0.82)';
-    }
-    if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width ' + collapseEase;
-      dsOuter.style.width      = '0';
+    // Fade out the "Product Designer" mark entirely on collapse
+    if (markGhost) {
+      markGhost.style.transition = 'opacity ' + collapseEase;
+      markGhost.style.opacity    = '0';
     }
   }
 
   function doExpand() {
     wrapper.classList.remove('collapsed');
     requestAnimationFrame(function () { showIndicator(); });
-    if (markName) {
-      markName.style.transition = 'transform ' + expandEase;
-      markName.style.transform  = 'scale(1)';
-    }
-    if (dsOuter && dsNatW) {
-      dsOuter.style.transition = 'width ' + expandEase;
-      dsOuter.style.width      = dsNatW + 'px';
+    if (markGhost) {
+      markGhost.style.transition = 'opacity ' + expandEase;
+      markGhost.style.opacity    = '1';
     }
   }
 
