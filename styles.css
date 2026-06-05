@@ -443,13 +443,17 @@ p, .body {
 .nav-indicator { display: none; }
 .nav-label     { display: none; }
 
-/* Collapse: hide non-active items */
+/* Collapse: hide non-active items; truncate suffix on active item */
 .nav-pill-wrapper.collapsed .nav-item:not(.active) {
   width: 0 !important;
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
   padding: 0 !important;
+}
+
+.nav-pill-wrapper.collapsed .nav-name-suffix {
+  display: none;
 }
 
 /* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
