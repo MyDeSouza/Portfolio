@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v49');
+  var seenIntro = sessionStorage.getItem('intro-seen-v50');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v49', '1');
+  sessionStorage.setItem('intro-seen-v50', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -223,27 +223,27 @@
     checkDark();
   }
 
-  // ── Mark-name split (deferred until after intro so intro shows "Max DeSouza") ──
-  var markName   = document.querySelector('.mark-name');
-  var markGhost  = document.querySelector('.topbar-mark-ghost');
-  var dsOuter    = null;
-  var dsNatW     = 0;
+  // ── Topbar label — completely separate from the intro mark ──────
+  var markGhost    = document.querySelector('.topbar-mark-ghost');
+  var topbarLabel  = document.getElementById('topbar-label');
+  var dsOuter      = null;
+  var dsNatW       = 0;
 
-  function setupMarkSplit() {
-    if (!markName) return;
-    markName.textContent = '';
+  function setupLabel() {
+    if (!topbarLabel) return;
+    topbarLabel.textContent = '';
 
-    // "Product " — collapses away on scroll, leaving "Designer"
+    // "Product " — collapses on scroll
     dsOuter = document.createElement('span');
     dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;padding-right:0.28em;';
     var dsInner = document.createElement('span');
     dsInner.style.display = 'inline-block';
     dsInner.textContent   = 'Product';
     dsOuter.appendChild(dsInner);
-    markName.appendChild(dsOuter);
+    topbarLabel.appendChild(dsOuter);
 
     // "Design" — always visible
-    markName.appendChild(document.createTextNode('Design'));
+    topbarLabel.appendChild(document.createTextNode('Design'));
 
     requestAnimationFrame(function () {
       dsNatW = dsOuter.offsetWidth;
@@ -251,22 +251,29 @@
     });
   }
 
-  // Defer split until after intro; if no intro, split immediately
-  var navEntry0  = performance.getEntriesByType('navigation')[0];
-  var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v49');
+  function showLabel() {
+    setupLabel();
+    // Hide the intro mark permanently
+    if (markGhost) markGhost.style.display = 'none';
+    // Fade in the label
+    requestAnimationFrame(function () {
+      if (topbarLabel) {
+        topbarLabel.style.transition = 'opacity 0.4s ease, color 0.5s ease';
+        topbarLabel.style.opacity    = '1';
+      }
+    });
+  }
+
+  // Show label immediately if intro won't play, else wait for intro-done
+  var navEntry0 = performance.getEntriesByType('navigation')[0];
+  var isReload0 = navEntry0 && navEntry0.type === 'reload';
+  var seenKey   = sessionStorage.getItem('intro-seen-v50');
   if (!isReload0 && seenKey) {
-    setupMarkSplit(); // no intro playing — split right away
+    showLabel();
   } else {
     window.addEventListener('intro-done', function onID() {
       window.removeEventListener('intro-done', onID);
-      setupMarkSplit(); // text changes to "Product Designer" while still opacity:0
-      requestAnimationFrame(function () {
-        if (markGhost) {
-          markGhost.style.transition = 'opacity 0.4s ease';
-          markGhost.style.opacity    = '1'; // fade in already showing correct text
-        }
-      });
+      showLabel();
     });
   }
 
@@ -323,10 +330,10 @@
       dsOuter.style.width        = '0';
       dsOuter.style.paddingRight = '0';
     }
-    if (markGhost) {
-      markGhost.style.transition      = 'transform ' + collapseEase;
-      markGhost.style.transformOrigin = 'left center';
-      markGhost.style.transform       = 'scale(0.82)';
+    if (topbarLabel) {
+      topbarLabel.style.transition      = 'transform ' + collapseEase + ', opacity 0.3s ease, color 0.5s ease';
+      topbarLabel.style.transformOrigin = 'left center';
+      topbarLabel.style.transform       = 'scale(0.82)';
     }
   }
 
@@ -338,9 +345,9 @@
       dsOuter.style.width        = dsNatW + 'px';
       dsOuter.style.paddingRight = '0.28em';
     }
-    if (markGhost) {
-      markGhost.style.transition = 'transform ' + expandEase;
-      markGhost.style.transform  = 'scale(1)';
+    if (topbarLabel) {
+      topbarLabel.style.transition = 'transform ' + expandEase + ', opacity 0.3s ease, color 0.5s ease';
+      topbarLabel.style.transform  = 'scale(1)';
     }
   }
 

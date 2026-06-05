@@ -19,10 +19,12 @@
 <body>
 
   <header class="topbar">
-    <!-- mark kept in DOM for intro animation; hidden after intro via JS -->
+    <!-- Intro animation element only — hidden permanently after intro -->
     <a href="/" class="mark topbar-mark-ghost">
       <span class="mark-name">Max DeSouza</span>
     </a>
+    <!-- Completely separate topbar label — no connection to the intro mark -->
+    <div class="topbar-label" id="topbar-label"></div>
     <div class="nav-pill-wrapper">
       <nav class="nav-pill">
         <a href="#" class="nav-item nav-item--text active" id="about-btn" aria-label="Max DeSouza">Max<span class="nav-name-suffix"> DeSouza</span></a>
