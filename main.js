@@ -235,10 +235,10 @@
 
     // "Product " — collapses away on scroll, leaving "Designer"
     dsOuter = document.createElement('span');
-    dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;';
+    dsOuter.style.cssText = 'display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;padding-right:0.28em;';
     var dsInner = document.createElement('span');
     dsInner.style.display = 'inline-block';
-    dsInner.textContent   = 'Product ';
+    dsInner.textContent   = 'Product';
     dsOuter.appendChild(dsInner);
     markName.appendChild(dsOuter);
 
@@ -318,20 +318,27 @@
   function doCollapse() {
     wrapper.classList.add('collapsed');
     hideIndicator();
-    // Collapse "Product " leaving "Designer" visible
     if (dsOuter && dsNatW) {
       dsOuter.style.transition = 'width ' + collapseEase;
       dsOuter.style.width      = '0';
+    }
+    if (markGhost) {
+      markGhost.style.transition      = 'transform ' + collapseEase;
+      markGhost.style.transformOrigin = 'left center';
+      markGhost.style.transform       = 'scale(0.82)';
     }
   }
 
   function doExpand() {
     wrapper.classList.remove('collapsed');
     requestAnimationFrame(function () { showIndicator(); });
-    // Restore "Product "
     if (dsOuter && dsNatW) {
       dsOuter.style.transition = 'width ' + expandEase;
       dsOuter.style.width      = dsNatW + 'px';
+    }
+    if (markGhost) {
+      markGhost.style.transition = 'transform ' + expandEase;
+      markGhost.style.transform  = 'scale(1)';
     }
   }
 
