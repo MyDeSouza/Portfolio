@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v46');
+  var seenIntro = sessionStorage.getItem('intro-seen-v47');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v46', '1');
+  sessionStorage.setItem('intro-seen-v47', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -157,7 +157,7 @@
           markEl.style.opacity         = '0';
         }, 500);
 
-        // Pill + grid + text fade in after mark has finished fading (500ms delay)
+        // Pill + grid + text fade in as mark nears end of fade
         setTimeout(function () {
           if (navWrapper) { navWrapper.style.transition = 'opacity 0.55s ease'; navWrapper.style.opacity = '1'; }
           var grid = document.querySelector('.projects-grid');
@@ -173,7 +173,7 @@
               el.style.transform  = 'translateY(0)';
             }, 80 + i * 100);
           });
-        }, 420);
+        }, 200);
 
         // Cleanup + intro-done
         setTimeout(function () {
@@ -263,7 +263,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v46');
+  var seenKey    = sessionStorage.getItem('intro-seen-v47');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
