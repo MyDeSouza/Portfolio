@@ -385,8 +385,18 @@ p, .body {
   opacity: 1;
 }
 
+#work-btn.active {
+  color: #000000;
+}
+
 .about-open #work-btn {
   opacity: 0.64;
+}
+
+/* When pill is dark (over dark background), work text should be white */
+.topbar.over-dark #work-btn.active,
+[data-mode="project"] #work-btn.active {
+  color: #ffffff;
 }
 
 /* ── About panel ─────────────────────────────────────────── */
