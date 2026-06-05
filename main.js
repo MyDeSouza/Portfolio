@@ -11,11 +11,11 @@
   // Skip on in-session navigation; play on first visit or refresh.
   var navEntry  = performance.getEntriesByType('navigation')[0];
   var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v47');
+  var seenIntro = sessionStorage.getItem('intro-seen-v48');
 
   if (!isReload && seenIntro) return;
 
-  sessionStorage.setItem('intro-seen-v47', '1');
+  sessionStorage.setItem('intro-seen-v48', '1');
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -173,7 +173,7 @@
               el.style.transform  = 'translateY(0)';
             }, 80 + i * 100);
           });
-        }, 200);
+        }, 50);
 
         // Cleanup + intro-done
         setTimeout(function () {
@@ -263,7 +263,7 @@
   // Defer split until after intro; if no intro, split immediately
   var navEntry0  = performance.getEntriesByType('navigation')[0];
   var isReload0  = navEntry0 && navEntry0.type === 'reload';
-  var seenKey    = sessionStorage.getItem('intro-seen-v47');
+  var seenKey    = sessionStorage.getItem('intro-seen-v48');
   if (!isReload0 && seenKey) {
     setupMarkSplit(); // no intro playing — split right away
   } else {
