@@ -413,20 +413,29 @@
   }
 
   // ── Scroll collapse ──────────────────────────────────────────
-  var lastY      = window.scrollY;
-  var expandedAt = 0; // y position when we last expanded
-  var ticking    = false;
+  var lastY     = window.scrollY;
+  var collapseY = 0; // y where we last collapsed
+  var expandY   = 0; // y where we last expanded
+  var ticking   = false;
 
   function updateCollapse() {
     var y     = window.scrollY;
     var delta = y - lastY;
-    if (delta > 0 && y > 60 && y > expandedAt + 30 && !hoverExpanded) {
-      // Must scroll 30 px below the expand point before collapsing again
-      doCollapse();
-    } else if (delta < -10 && wrapper.classList.contains('collapsed') && !hoverExpanded) {
-      doExpand();
-      expandedAt = y;
+
+    if (!wrapper.classList.contains('collapsed')) {
+      // Collapse: scrolling down, past 60 px, and at least 40 px below last expand
+      if (delta > 0 && y > 60 && y > expandY + 40 && !hoverExpanded) {
+        doCollapse();
+        collapseY = y;
+      }
+    } else {
+      // Expand: at least 20 px above where we collapsed
+      if (y < collapseY - 20 && !hoverExpanded) {
+        doExpand();
+        expandY = y;
+      }
     }
+
     lastY   = y;
     ticking = false;
   }
