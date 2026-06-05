@@ -390,15 +390,15 @@ p, .body {
 }
 
 #work-btn {
-  background: #0c1116;
-  color: #ffffff;
+  background: #ffffff;
+  color: #0c1116;
   opacity: 1;
   transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
 .about-open #work-btn {
-  background: #0c1116;
-  color: #ffffff;
+  background: #ffffff;
+  color: #0c1116;
   opacity: 0.64;
   transition: opacity 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
