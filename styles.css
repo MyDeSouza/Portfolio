@@ -407,7 +407,7 @@ body.about-open { background-color: #c8cad8; }
   top: 2.5rem;
   bottom: 1.5rem;
   width: min(780px, 82vw);
-  background: rgba(10, 12, 18, 0.45);
+  background: rgba(220, 222, 230, 0.25);
   backdrop-filter: blur(28px) saturate(150%);
   -webkit-backdrop-filter: blur(28px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.1);
