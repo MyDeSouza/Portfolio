@@ -366,7 +366,9 @@ p, .body {
 
 .topbar.over-dark .nav-item--text { color: #ffffff; }
 
-/* About panel open: white pill, black active label, muted Work */
+/* About panel open: white pill, black Max DeSouza, 64% Work, white topbar label */
+.about-open .topbar-label { color: #ffffff; }
+
 .about-open .nav-pill {
   background: #ffffff;
   transition: background-color 0.3s ease;
