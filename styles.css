@@ -488,7 +488,7 @@ p, .body {
   gap: 4px;
   background: rgba(205, 206, 212, 0.16);
   border-radius: 999px;
-  padding: 8px 6px;
+  padding: 3px 3px;
   position: relative;
   backdrop-filter: blur(6px) saturate(120%);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
