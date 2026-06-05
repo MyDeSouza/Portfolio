@@ -337,7 +337,44 @@ p, .body {
   letter-spacing: -0.01em;
   text-transform: none;
   color: var(--fg);
-  padding: 0 0.25rem;
+  padding: 0 0.5rem;
+}
+
+/* ── About panel ─────────────────────────────────────────── */
+.about-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.12);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.about-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.about-panel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: min(420px, 88vw);
+  background: var(--bg);
+  z-index: 30;
+  transform: translateX(-100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 8px 0 48px rgba(0, 0, 0, 0.12);
+}
+
+.about-panel.open {
+  transform: translateX(0);
+}
+
+.about-panel__inner {
+  padding: 6rem var(--gutter) 3rem;
 }
 
 .mark {

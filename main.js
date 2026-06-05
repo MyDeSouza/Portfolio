@@ -512,14 +512,14 @@
 
 
 
-// ── Projects filter toggle ────────────────────────────────────
+// ── About / Work nav ─────────────────────────────────────────
 (function () {
-  var toggle    = document.getElementById('projects-toggle');
-  var grid      = document.querySelector('.projects-grid');
+  var aboutBtn  = document.getElementById('about-btn');
+  var workBtn   = document.getElementById('work-btn');
+  var panel     = document.getElementById('about-panel');
+  var overlay   = document.getElementById('about-overlay');
   var indicator = document.querySelector('.nav-indicator');
   var pill      = document.querySelector('.nav-pill');
-  var homeItem  = document.querySelector('.nav-item[aria-label="Home"]');
-  if (!toggle || !grid) return;
 
   function moveIndicator(target) {
     if (!indicator || !pill || !target) return;
@@ -531,11 +531,21 @@
     indicator.style.top  = (ir.top  - pr.top  + ir.height / 2) + 'px';
   }
 
-  toggle.addEventListener('click', function (e) {
-    e.preventDefault();
-    var isFiltered = grid.classList.toggle('filtered');
-    moveIndicator(isFiltered ? toggle : homeItem);
-  });
+  function openAbout() {
+    if (panel)   { panel.classList.add('open');   panel.setAttribute('aria-hidden', 'false'); }
+    if (overlay) overlay.classList.add('open');
+    moveIndicator(aboutBtn);
+  }
+
+  function closeAbout() {
+    if (panel)   { panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
+    if (overlay) overlay.classList.remove('open');
+    moveIndicator(workBtn);
+  }
+
+  if (aboutBtn)  aboutBtn.addEventListener('click',  function (e) { e.preventDefault(); openAbout();  });
+  if (workBtn)   workBtn.addEventListener('click',   function (e) { e.preventDefault(); closeAbout(); });
+  if (overlay)   overlay.addEventListener('click',   closeAbout);
 }());
 
 
