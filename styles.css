@@ -331,8 +331,7 @@ p, .body {
 
 .nav-item--text {
   width: auto;
-  min-width: unset;
-  overflow: visible;
+  white-space: nowrap;
   font-size: 1.1rem;
   font-family: var(--font-body);
   font-weight: 500;
@@ -340,20 +339,9 @@ p, .body {
   text-transform: none;
   color: var(--fg);
   padding: 0 1rem;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.3s ease,
-              color 0.5s ease;
+  transition: color 0.5s ease;
 }
 
-/* Collapse: hide non-active text items */
-.nav-pill-wrapper.collapsed .nav-item--text:not(.active) {
-  width: 0 !important;
-  padding: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Dark pill: text flips white */
 .topbar.over-dark .nav-item--text { color: #ffffff; }
 
 /* ── About panel ─────────────────────────────────────────── */
@@ -425,178 +413,44 @@ p, .body {
 /* ── Nav pill ─────────────────────────────────────────── */
 .nav-pill-wrapper {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  margin-top: 4px;
 }
 
 .nav-pill {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 4px;
   background: rgba(205, 206, 212, 0.16);
   border-radius: 999px;
-  padding: 10px;
-  position: relative; /* contains the sliding indicator */
+  padding: 8px 6px;
+  position: relative;
   backdrop-filter: blur(6px) saturate(120%);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
-  transition: gap 0.35s ease, padding 0.35s ease, background-color 0.5s ease;
+  transition: background-color 0.5s ease;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  position: relative;
-  overflow: hidden;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.3s ease,
-              background-color 0.25s ease,
-              border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.nav-item:hover {
-  /* expand disabled */
-}
-/* Active: indicator handles the dark bg — no extra layer */
-.nav-item.active:hover  { background: transparent; }
-/* Non-active: no background — just text appears */
-.nav-item:not(.active):hover { background: transparent; }
-/* click flash only — indicator handles hover/active highlight */
-.nav-item:active { background: rgba(255, 255, 255, 0.28); }
-
-/* Sliding indicator — JS sets left+top to item centre px; CSS offsets by own half-size */
-.nav-indicator {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(-50%, -50%);
-  width: 44px;
-  height: 44px;
-  background: #0c1116;   /* dark circle on light pill */
+  height: 36px;
   border-radius: 999px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.5s ease;
-}
-
-/* Default: active icon is white on the dark circle (cancel inversion) */
-.nav-pill.active-shown .nav-item.active .nav-icon,
-.nav-pill.active-shown .nav-item.active .home-icon-wrap { filter: none; }
-
-/* Icons — black by default on light pill */
-.nav-icon {
-  width: 19px;
-  height: 19px;
-  display: block;
-  opacity: 1;
-  filter: invert(1);
-  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.18s ease,
-              transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.home-icon-wrap {
   position: relative;
-  display: inline-block;
-  width: 19px;
-  height: 19px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.nav-indicator { display: none; }
+.nav-label     { display: none; }
+
+/* Collapse: hide non-active items */
+.nav-pill-wrapper.collapsed .nav-item:not(.active) {
+  width: 0 !important;
   overflow: hidden;
-  opacity: 1;
-  filter: invert(1);
-  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.18s ease,
-              transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-}
-/* icon stays visible on hover */
-
-/* Hover label — injected by JS */
-.nav-item-label {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--fg);
-  white-space: nowrap;
   opacity: 0;
-  /* On leave: disappear instantly so pill collapses clean */
-  transition: opacity 0.08s ease;
   pointer-events: none;
+  padding: 0 !important;
 }
-/* Active item label is always white (dark pill bg) */
-.nav-item.active .nav-item-label { color: #ffffff; }
-/* Dark backdrop: non-active label also flips to white */
-.topbar.over-dark .nav-item:not(.active) .nav-item-label,
-[data-mode="project"] .nav-item:not(.active) .nav-item-label { color: #ffffff; }
-
-.nav-item:hover .nav-item-label {
-  opacity: 0; /* hover labels disabled */
-}
-
-/* Fade the indicator only when a non-active item is hovered */
-.nav-pill:has(.nav-item:not(.active):hover) .nav-indicator {
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-
-/* Home icon — 3-icon cycle: scroll → coffee → person (9 s, each visible ~3 s) */
-.icon-scroll,
-.icon-coffee,
-.icon-person {
-  position: absolute;
-  top: 0; left: 0;
-  width: 19px;
-  height: 19px;
-}
-.icon-scroll  { animation: homeIconScroll  9s linear infinite; }
-.icon-coffee  { animation: homeIconCoffee  9s linear infinite; }
-.icon-person  { animation: homeIconPerson  9s linear infinite; }
-
-@keyframes homeIconScroll {
-  0%   { transform: translateY(0); }
-  28%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
-  32%  { transform: translateY(-110%); animation-timing-function: step-start; }
-  33%  { transform: translateY(110%); }
-  95%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
-  99%  { transform: translateY(0); }
-  100% { transform: translateY(0); }
-}
-@keyframes homeIconCoffee {
-  0%   { transform: translateY(110%); }
-  28%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
-  33%  { transform: translateY(0); }
-  62%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
-  66%  { transform: translateY(-110%); animation-timing-function: step-start; }
-  67%  { transform: translateY(110%); }
-  100% { transform: translateY(110%); }
-}
-@keyframes homeIconPerson {
-  0%   { transform: translateY(110%); }
-  62%  { transform: translateY(110%); animation-timing-function: ease-in-out; }
-  67%  { transform: translateY(0); }
-  95%  { transform: translateY(0);     animation-timing-function: ease-in-out; }
-  99%  { transform: translateY(-110%); animation-timing-function: step-start; }
-  100% { transform: translateY(110%); }
-}
-
-/* Per-page label — hidden, replaced by per-icon hover labels */
-.nav-label { display: none; }
-
-/* Collapse on scroll-down — JS adds .collapsed to .nav-pill-wrapper */
-.nav-pill-wrapper.collapsed .nav-pill { gap: 0; padding: 8px; }
-.nav-pill-wrapper.collapsed .nav-item:not(.active) { width: 0; opacity: 0; }
-.nav-pill-wrapper.collapsed .nav-label { opacity: 0; }
 
 /* ── Portrait (phone & tablet): pill fixed at bottom ──────── */
 @media (max-width: 1366px) and (orientation: portrait) {
