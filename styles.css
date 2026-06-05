@@ -1302,9 +1302,13 @@ p, .body {
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: auto;
   gap: clamp(16px, 2vw, 24px);
-  padding: clamp(3rem, 8vw, 6rem) var(--gutter) clamp(3rem, 8vw, 6rem);
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3rem);
+  max-width: 100%;
+  margin: 0;
+}
+
+.about-panel__inner .bento-grid {
+  padding: clamp(2rem, 4vw, 3rem);
 }
 
 .bento-box {

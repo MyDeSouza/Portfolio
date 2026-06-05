@@ -3,7 +3,7 @@
   document.body.style.visibility = ''; // always restore — cleared by head script
 
   var pageEls = Array.prototype.slice.call(document.querySelectorAll('.h-display, .home-hero .eyebrow')).concat([
-    document.querySelector('.bento-grid'),
+    document.querySelector('.projects-grid'),
     document.querySelector('.body-lg'),
     document.querySelector('.footer'),
   ]).filter(Boolean);
@@ -168,9 +168,9 @@
           // markGhost fades in via nav IIFE's intro-done listener (already set up)
         }, 370);
 
-        // 4. At 700ms: bento grid fades in (~halfway through nav/mark fade)
+        // 4. At 700ms: projects grid fades in (~halfway through nav/mark fade)
         setTimeout(function () {
-          var grid = document.querySelector('.bento-grid');
+          var grid = document.querySelector('.projects-grid');
           if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
         }, 700);
       }, 700 + 800); // 1500ms total — fires right as Hi I'm finishes
