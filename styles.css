@@ -487,6 +487,7 @@ p, .body {
   background: rgba(205, 206, 212, 0.16);
   border-radius: 999px;
   padding: 3px 3px;
+  gap: 2px;
   position: relative;
   backdrop-filter: blur(6px) saturate(120%);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
@@ -497,7 +498,7 @@ p, .body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 44px;
+  height: 52px;
   border-radius: 999px;
   position: relative;
   cursor: pointer;
