@@ -296,13 +296,22 @@ p, .body {
 .nav-pill[data-lum="pitch-black"] { background: rgba(0,   0,   0,   0.05);
                                     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15); }
 
-/* LAYER 2: Inactive text — light states → muted dark charcoal */
+/* LAYER 2: Inactive text — light states → muted dark charcoal
+   Covers both about-btn (expanded) and work-btn (collapsed, transparent) */
 .topbar[data-lum="pure-white"] #about-btn,
-.topbar[data-lum="light"]      #about-btn { color: rgba(26, 26, 26, 0.6); font-weight: 400; }
+.topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed #work-btn,
+.topbar[data-lum="light"]      #about-btn,
+.topbar[data-lum="light"]      .nav-pill-wrapper.collapsed #work-btn {
+  color: rgba(26, 26, 26, 0.6); font-weight: 400;
+}
 
 /* LAYER 2: Inactive text — dark states → muted white */
 .topbar[data-lum="dark"]        #about-btn,
-.topbar[data-lum="pitch-black"] #about-btn { color: rgba(255, 255, 255, 0.6); font-weight: 400; }
+.topbar[data-lum="dark"]        .nav-pill-wrapper.collapsed #work-btn,
+.topbar[data-lum="pitch-black"] #about-btn,
+.topbar[data-lum="pitch-black"] .nav-pill-wrapper.collapsed #work-btn {
+  color: rgba(255, 255, 255, 0.6); font-weight: 400;
+}
 
 /* Topbar label + intro mark follow the same dark/light split */
 .topbar[data-lum="dark"] .topbar-label,
@@ -428,8 +437,8 @@ p, .body {
 
 .nav-pill-wrapper.collapsed #work-btn {
   background: transparent;
-  color: #ffffff;
   font-weight: 400;
+  /* color comes from luminance tier rules above */
   transition: background-color 0.25s ease, color 0.25s ease, font-weight 0.25s ease;
 }
 
@@ -468,7 +477,7 @@ p, .body {
   color: #0c1116;
 }
 
-/* Dark pill states */
+/* Dark pill states (about-open always dark; collapsed dark tiers) */
 .about-open .work-view-divider,
 .nav-pill-wrapper.collapsed .work-view-divider {
   background: rgba(255, 255, 255, 0.2);
@@ -482,6 +491,20 @@ p, .body {
 .about-open .work-view-btn.active,
 .nav-pill-wrapper.collapsed .work-view-btn.active {
   color: #ffffff;
+}
+
+/* Collapsed on light backgrounds — flip icons back to dark */
+.topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed .work-view-divider,
+.topbar[data-lum="light"]      .nav-pill-wrapper.collapsed .work-view-divider {
+  background: rgba(12, 17, 22, 0.18);
+}
+.topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed .work-view-btn,
+.topbar[data-lum="light"]      .nav-pill-wrapper.collapsed .work-view-btn {
+  color: rgba(12, 17, 22, 0.3);
+}
+.topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed .work-view-btn.active,
+.topbar[data-lum="light"]      .nav-pill-wrapper.collapsed .work-view-btn.active {
+  color: rgba(12, 17, 22, 0.8);
 }
 
 /* ── Grid layout variants ───────────────────────────────── */
