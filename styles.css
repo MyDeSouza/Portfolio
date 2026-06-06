@@ -270,8 +270,10 @@ p, .body {
    Top bar — no background bar, pill-only glass
    ========================================================= */
 .topbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 40;
   display: flex;
   justify-content: center;
