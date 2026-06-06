@@ -788,7 +788,7 @@ body.view-single-active .topbar {
   transition: opacity 0.2s ease;
 }
 
-.project-card:hover { opacity: 0.85; }
+.project-card:hover { opacity: 1; }
 
 .project-thumb {
   width: 100%;
