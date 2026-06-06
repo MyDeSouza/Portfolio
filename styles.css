@@ -834,13 +834,13 @@ body.view-single-active .topbar {
   letter-spacing: -0.01em;
 }
 
-/* Home: first project spans both columns */
+/* Home: uniform 2×2 grid, no hero card */
 .projects-grid:not(.projects-page-grid) .project-card:first-child {
-  grid-column: span 2;
+  grid-column: span 1;
 }
 
 .projects-grid:not(.projects-page-grid) .project-card:first-child .project-thumb {
-  aspect-ratio: 21 / 9;
+  aspect-ratio: 16 / 9;
 }
 
 /* Filtered view: uniform 2-per-row, all cards equal */
