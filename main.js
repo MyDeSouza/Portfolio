@@ -13,6 +13,13 @@
   var navType  = navEntry ? navEntry.type : 'navigate';
   if (navType === 'back_forward') return;
 
+  // Project pages: skip intro — nav is already visible, just hide the mark ghost
+  if (document.documentElement.dataset.mode === 'project') {
+    var mg = document.querySelector('.topbar-mark-ghost');
+    if (mg) mg.style.display = 'none';
+    return;
+  }
+
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
   pageEls.forEach(function (el) {

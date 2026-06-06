@@ -532,6 +532,7 @@ body.view-single-active .topbar {
 
 .projects-grid.view-single .project-card {
   gap: 0;
+  height: 100vh;
 }
 
 .projects-grid.view-single .project-card:first-child {
@@ -539,12 +540,13 @@ body.view-single-active .topbar {
 }
 
 .projects-grid.view-single .project-card:first-child .project-thumb {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: unset;
 }
 
 .projects-grid.view-single .project-thumb {
-  height: auto;
-  aspect-ratio: 16 / 9;
+  height: 100%;
+  aspect-ratio: unset;
+  flex: 1 1 0;
 }
 
 .projects-grid.view-single .project-meta {
@@ -564,8 +566,8 @@ body.view-single-active .topbar {
 .about-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
   z-index: 20;
   opacity: 0;
   pointer-events: none;
