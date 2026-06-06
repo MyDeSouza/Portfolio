@@ -442,8 +442,8 @@
         doCollapse();
       }
     } else {
-      // Expand: any upward scroll
-      if (delta < 0 && !hoverExpanded) {
+      // Expand: any upward scroll — only if there is an about-btn to expand to
+      if (delta < 0 && !hoverExpanded && aboutBtnEl) {
         doExpand();
       }
     }
@@ -458,7 +458,7 @@
 
   // ── Hover to expand / collapse (desktop) ─────────────────────
   wrapper.addEventListener('mouseenter', function () {
-    if (wrapper.classList.contains('collapsed')) {
+    if (aboutBtnEl && wrapper.classList.contains('collapsed')) {
       hoverExpanded = true;
       doExpand();
     }
