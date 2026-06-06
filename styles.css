@@ -825,10 +825,14 @@ body.view-single-active .topbar {
   background: var(--line);
 }
 
-/* Home grid: each card fills the full viewport height */
+/* Home grid: each card row is exactly one viewport height */
+.projects-grid:not(.projects-page-grid):not(.view-single) .project-card {
+  height: 100vh;
+}
 .projects-grid:not(.projects-page-grid):not(.view-single) .project-thumb {
   aspect-ratio: unset;
-  height: 100vh;
+  height: 100%;
+  flex: 1 1 0;
 }
 
 .project-meta {
