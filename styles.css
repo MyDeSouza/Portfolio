@@ -396,6 +396,11 @@ p, .body {
   transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s;
 }
 
+/* Prevent over-dark from making text white when about-btn has its own white background */
+.about-open .topbar.over-dark #about-btn {
+  color: #0c1116;
+}
+
 #work-btn {
   background: #ffffff;
   color: #0c1116;
