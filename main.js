@@ -610,3 +610,28 @@
 
 
 
+// ── Work view toggle (single / grid) ─────────────────────────
+(function () {
+  var singleBtn = document.getElementById('view-single');
+  var gridBtn   = document.getElementById('view-grid');
+  var grid      = document.querySelector('.projects-grid');
+  if (!singleBtn || !gridBtn || !grid) return;
+
+  function setView(view) {
+    if (view === 'single') {
+      grid.classList.add('view-single');
+      singleBtn.classList.add('active');
+      gridBtn.classList.remove('active');
+    } else {
+      grid.classList.remove('view-single');
+      gridBtn.classList.add('active');
+      singleBtn.classList.remove('active');
+    }
+  }
+
+  singleBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); setView('single'); });
+  gridBtn.addEventListener('click',   function (e) { e.preventDefault(); e.stopPropagation(); setView('grid');   });
+}());
+
+
+
