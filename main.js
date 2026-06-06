@@ -571,7 +571,7 @@
   }
 
   if (aboutBtn)  aboutBtn.addEventListener('click',  function (e) { e.preventDefault(); openAbout();  });
-  if (workBtn)   workBtn.addEventListener('click',   function (e) { e.preventDefault(); closeAbout(); });
+  if (workBtn && wrapper) workBtn.addEventListener('click', function (e) { e.preventDefault(); closeAbout(); });
   if (overlay)   overlay.addEventListener('click',   closeAbout);
 }());
 
