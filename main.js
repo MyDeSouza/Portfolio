@@ -474,7 +474,7 @@
   // ── Tap to expand collapsed nav, then navigate (mobile) ──────
   navItems.forEach(function (item) {
     item.addEventListener('click', function (e) {
-      if (wrapper.classList.contains('collapsed')) {
+      if (aboutBtnEl && wrapper.classList.contains('collapsed')) {
         e.preventDefault();
         doExpand();
       }
