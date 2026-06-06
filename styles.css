@@ -541,6 +541,7 @@ body.view-single-active .topbar {
 }
 
 .projects-grid.view-single .project-thumb {
+  height: auto;
   aspect-ratio: 16 / 9;
 }
 
@@ -820,6 +821,12 @@ body.view-single-active .topbar {
   width: 100%;
   aspect-ratio: 16 / 9;
   background: var(--line);
+}
+
+/* Home grid: each card fills the full viewport height */
+.projects-grid:not(.projects-page-grid):not(.view-single) .project-thumb {
+  aspect-ratio: unset;
+  height: 100vh;
 }
 
 .project-meta {
