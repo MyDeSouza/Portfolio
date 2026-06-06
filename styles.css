@@ -456,19 +456,16 @@ p, .body {
 
 /* Dark pill states */
 .about-open .work-view-divider,
-.topbar.over-dark .work-view-divider,
 .nav-pill-wrapper.collapsed .work-view-divider {
   background: rgba(255, 255, 255, 0.2);
 }
 
 .about-open .work-view-btn,
-.topbar.over-dark .work-view-btn,
 .nav-pill-wrapper.collapsed .work-view-btn {
   color: rgba(255, 255, 255, 0.3);
 }
 
 .about-open .work-view-btn.active,
-.topbar.over-dark .work-view-btn.active,
 .nav-pill-wrapper.collapsed .work-view-btn.active {
   color: #ffffff;
 }
