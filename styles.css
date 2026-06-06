@@ -474,17 +474,41 @@ p, .body {
 }
 
 /* ── Grid layout variants ───────────────────────────────── */
+
+/* Single: full-bleed images edge to edge, no whitespace */
 .projects-grid.view-single {
   grid-template-columns: 1fr;
+  gap: 0;
+  padding: 0;
+}
+
+.projects-grid.view-single .project-card {
+  gap: 0;
 }
 
 .projects-grid.view-single .project-card:first-child {
   grid-column: span 1;
 }
 
-.projects-grid.view-single .project-card:first-child .project-thumb,
+.projects-grid.view-single .project-card:first-child .project-thumb {
+  aspect-ratio: 16 / 9;
+}
+
 .projects-grid.view-single .project-thumb {
-  aspect-ratio: 21 / 9;
+  aspect-ratio: 16 / 9;
+}
+
+.projects-grid.view-single .project-meta {
+  display: none;
+}
+
+/* Grid: equal 2×2, hero card does not span both columns */
+.projects-grid.view-grid .project-card:first-child {
+  grid-column: span 1;
+}
+
+.projects-grid.view-grid .project-card:first-child .project-thumb {
+  aspect-ratio: 16 / 9;
 }
 
 /* ── About panel ─────────────────────────────────────────── */

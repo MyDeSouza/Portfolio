@@ -620,10 +620,12 @@
   function setView(view) {
     if (view === 'single') {
       grid.classList.add('view-single');
+      grid.classList.remove('view-grid');
       singleBtn.classList.add('active');
       gridBtn.classList.remove('active');
     } else {
       grid.classList.remove('view-single');
+      grid.classList.add('view-grid');
       gridBtn.classList.add('active');
       singleBtn.classList.remove('active');
     }
@@ -631,6 +633,8 @@
 
   singleBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); setView('single'); });
   gridBtn.addEventListener('click',   function (e) { e.preventDefault(); e.stopPropagation(); setView('grid');   });
+
+  setView('grid'); // default: equal 2×2 grid
 }());
 
 
