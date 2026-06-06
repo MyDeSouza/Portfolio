@@ -296,21 +296,20 @@ p, .body {
 .nav-pill[data-lum="pitch-black"] { background: rgba(0, 0, 0, 0.05);
                                     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15); }
 
-/* LAYER 2: Inactive text — light states → muted dark charcoal
-   Covers both about-btn (expanded) and work-btn (collapsed, transparent) */
+/* LAYER 2: Inactive text — light states → black */
 .topbar[data-lum="pure-white"] #about-btn,
 .topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed #work-btn,
 .topbar[data-lum="light"]      #about-btn,
 .topbar[data-lum="light"]      .nav-pill-wrapper.collapsed #work-btn {
-  color: rgba(26, 26, 26, 0.6); font-weight: 400;
+  color: #1a1a1a; font-weight: 400;
 }
 
-/* LAYER 2: Inactive text — dark states → muted white */
+/* LAYER 2: Inactive text — dark states → white */
 .topbar[data-lum="dark"]        #about-btn,
 .topbar[data-lum="dark"]        .nav-pill-wrapper.collapsed #work-btn,
 .topbar[data-lum="pitch-black"] #about-btn,
 .topbar[data-lum="pitch-black"] .nav-pill-wrapper.collapsed #work-btn {
-  color: rgba(255, 255, 255, 0.6); font-weight: 400;
+  color: #ffffff; font-weight: 400;
 }
 
 /* Topbar label + intro mark follow the same dark/light split */
@@ -496,7 +495,7 @@ p, .body {
 /* Collapsed on light backgrounds — flip to solid dark */
 .topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed #work-btn,
 .topbar[data-lum="light"]      .nav-pill-wrapper.collapsed #work-btn {
-  color: rgba(0, 0, 0, 0.75);
+  color: #000000;
 }
 .topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed .work-view-divider,
 .topbar[data-lum="light"]      .nav-pill-wrapper.collapsed .work-view-divider {
