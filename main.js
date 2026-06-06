@@ -324,23 +324,38 @@
   }
 
   // ── Collapse helpers ─────────────────────────────────────────
-  var hoverExpanded = false;
-  var collapseEase  = '0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-  var expandEase    = '0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+  var hoverExpanded   = false;
+  var collapseEase    = '0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+  var expandEase      = '0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+  var expandClearTimer = null;
 
   // Measure about-btn natural width for JS-driven animation
   var aboutBtnEl   = document.getElementById('about-btn');
   var aboutBtnNatW = aboutBtnEl ? aboutBtnEl.offsetWidth : 0;
 
+  function clearAboutBtnInline() {
+    if (!aboutBtnEl) return;
+    aboutBtnEl.style.width      = '';
+    aboutBtnEl.style.transition = '';
+    aboutBtnEl.style.opacity    = '';
+    aboutBtnEl.style.padding    = '';
+    aboutBtnEl.style.overflow   = '';
+  }
+
   function doCollapse() {
     collapseY = window.scrollY;
 
+    // Cancel any pending expand cleanup — we're taking over inline styles now
+    if (expandClearTimer) { clearTimeout(expandClearTimer); expandClearTimer = null; }
+
     if (aboutBtnEl && aboutBtnNatW) {
+      // Start from current rendered width (handles mid-animation state)
+      var fromW = aboutBtnEl.offsetWidth || aboutBtnNatW;
       aboutBtnEl.style.overflow   = 'hidden';
       aboutBtnEl.style.transition = 'none';
-      aboutBtnEl.style.width      = aboutBtnNatW + 'px';
+      aboutBtnEl.style.width      = fromW + 'px';
       aboutBtnEl.style.opacity    = '1';
-      aboutBtnEl.offsetHeight; // force reflow so transition starts from measured width
+      aboutBtnEl.offsetHeight; // force reflow
       aboutBtnEl.style.transition = 'opacity 0.15s ease, width ' + collapseEase + ' 0.05s, padding ' + collapseEase + ' 0.05s';
       aboutBtnEl.style.width      = '0';
       aboutBtnEl.style.padding    = '0';
@@ -362,16 +377,19 @@
   }
 
   function doExpand() {
+    expandedAt = Date.now();
     wrapper.classList.remove('collapsed');
 
     if (aboutBtnEl && aboutBtnNatW) {
+      if (expandClearTimer) { clearTimeout(expandClearTimer); expandClearTimer = null; }
+      aboutBtnEl.style.overflow   = 'hidden';
       aboutBtnEl.style.transition = 'width ' + expandEase + ', padding ' + expandEase + ', opacity 0.3s ease 0.2s';
       aboutBtnEl.style.width      = aboutBtnNatW + 'px';
       aboutBtnEl.style.padding    = '';
       aboutBtnEl.style.opacity    = '';
-      setTimeout(function () {
-        aboutBtnEl.style.width      = '';
-        aboutBtnEl.style.transition = '';
+      expandClearTimer = setTimeout(function () {
+        expandClearTimer = null;
+        clearAboutBtnInline();
       }, 600);
     }
 
@@ -465,7 +483,6 @@
       // Expand: any upward scroll
       if (delta < 0 && !hoverExpanded) {
         doExpand();
-        expandedAt = Date.now();
       }
     }
   }
