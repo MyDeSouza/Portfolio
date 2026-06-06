@@ -80,6 +80,7 @@
     prefixOuter.appendChild(prefixInner);
     markName.insertBefore(prefixOuter, markName.firstChild);
     markName.style.fontWeight = '600'; // name starts heavier; prefix overrides to 400
+    markName.style.color = '#0c1116'; // lock dark during intro — prevents data-lum white override
 
     // Hide the whole pill; it fades in when Max DeSouza lands
     var navWrapper = document.querySelector('.nav-pill-wrapper');
@@ -153,6 +154,7 @@
           markEl.style.opacity         = '0';
           prefixOuter.style.display    = 'none';
           markName.style.fontWeight    = '500';
+          markName.style.color         = ''; // restore — CSS data-lum rules take over
           // Fire intro-done so nav IIFE runs setupMarkSplit (text → "Product Designer")
           document.body.style.overflow = '';
           window.dispatchEvent(new CustomEvent('intro-done'));
