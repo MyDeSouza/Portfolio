@@ -182,42 +182,7 @@
   var pill    = document.querySelector('.nav-pill');
   if (!wrapper || !pill) return;
 
-  // ── Topbar over-dark detection ───────────────────────────
-  var topbar  = document.querySelector('.topbar');
-  var darkEls = document.querySelectorAll('.project-cover, [data-dark], .project-card');
-
-  var mark        = document.querySelector('.mark');
-  var markFadeTimer = null;
-  var lastDark    = null;
-
-  function checkDark() {
-    if (!topbar || !darkEls.length) return;
-    var h = topbar.offsetHeight;
-    var isDark = false;
-    darkEls.forEach(function (el) {
-      var r = el.getBoundingClientRect();
-      if (r.top < h && r.bottom > 0) isDark = true;
-    });
-    if (isDark === lastDark) return;
-    var firstCheck = lastDark === null;
-    lastDark = isDark;
-
-    if (mark && !firstCheck) {
-      mark.style.opacity = '0';
-      clearTimeout(markFadeTimer);
-      markFadeTimer = setTimeout(function () {
-        topbar.classList.toggle('over-dark', isDark);
-        mark.style.opacity = '1';
-      }, 150);
-    } else {
-      topbar.classList.toggle('over-dark', isDark);
-    }
-  }
-
-  if (darkEls.length) {
-    window.addEventListener('scroll', checkDark, { passive: true });
-    checkDark();
-  }
+  var topbar = document.querySelector('.topbar');
 
   // ── Topbar label — completely separate from the intro mark ──────
   var markGhost    = document.querySelector('.topbar-mark-ghost');
@@ -641,3 +606,152 @@
 
 
 
+// ── W3C Luminance nav theming ─────────────────────────────────
+// Samples real pixels behind the nav pill using document.elementsFromPoint,
+// walks the DOM to composite background colours, and samples images via canvas.
+// Sets data-lum on both .nav-pill and .topbar so CSS can style both layers.
+(function () {
+  var topbar = document.querySelector('.topbar');
+  var pill   = document.querySelector('.nav-pill');
+  if (!topbar || !pill) return;
+
+  // ─── W3C sRGB → linear → luminance ───────────────────────────
+  function lin(c) {
+    c /= 255;
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  }
+  function lum(r, g, b) {
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  }
+  function parseRGB(str) {
+    var m = str.match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s]+([0-9.]+))?\s*\)/);
+    return m ? { r: +m[1], g: +m[2], b: +m[3], a: m[4] !== undefined ? +m[4] : 1 } : null;
+  }
+
+  // ─── Image luminance — async canvas sample, cached per URL ────
+  var imgCache   = {};
+  var imgPending = {};
+
+  function sampleImg(url) {
+    if (url in imgCache)  return imgCache[url];
+    if (imgPending[url])  return null;
+    imgPending[url] = true;
+    var img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function () {
+      try {
+        var cw = Math.min(img.naturalWidth,  120);
+        var ch = Math.min(img.naturalHeight,  60);
+        var cv = document.createElement('canvas');
+        cv.width = cw; cv.height = ch;
+        var ctx = cv.getContext('2d');
+        // sample only the top 20 % of the image — that's where the nav sits
+        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight * 0.2, 0, 0, cw, ch);
+        var px = ctx.getImageData(0, 0, cw, ch).data;
+        var R = 0, G = 0, B = 0, n = px.length / 4;
+        for (var i = 0; i < px.length; i += 4) { R += px[i]; G += px[i + 1]; B += px[i + 2]; }
+        imgCache[url] = lum(R / n, G / n, B / n);
+      } catch (_) {
+        imgCache[url] = 0.5; // CORS block → assume mid-range
+      }
+      delete imgPending[url];
+      scheduleUpdate();
+    };
+    img.onerror = function () { imgCache[url] = 0.5; delete imgPending[url]; };
+    img.src = url;
+    return null; // not ready yet — caller uses fallback
+  }
+
+  // ─── Effective luminance of the element visually beneath a point ──
+  // Walks up the DOM compositing semi-transparent bg layers.
+  function elemLum(el) {
+    var R = 245, G = 245, B = 245; // page default fallback
+    var node = el;
+    while (node && node !== document.documentElement) {
+      var s   = getComputedStyle(node);
+      var bgi = s.backgroundImage;
+      if (bgi && bgi !== 'none') {
+        var m = bgi.match(/url\(["']?([^"')]+)["']?\)/);
+        if (m) {
+          var imgL = sampleImg(m[1]);
+          if (imgL !== null) return imgL; // cached value ready
+          // still loading — fall through to background-color as proxy
+        }
+      }
+      var col = parseRGB(s.backgroundColor);
+      if (col && col.a > 0) {
+        if (col.a >= 1) return lum(col.r, col.g, col.b);
+        // semi-transparent: composite over what we have so far
+        R = Math.round(col.r * col.a + R * (1 - col.a));
+        G = Math.round(col.g * col.a + G * (1 - col.a));
+        B = Math.round(col.b * col.a + B * (1 - col.a));
+        // keep walking up — there may be an opaque layer below
+      }
+      node = node.parentElement;
+    }
+    return lum(R, G, B);
+  }
+
+  // ─── Sample 5 x-positions across the pill, average luminance ──
+  function samplePill() {
+    var rect = pill.getBoundingClientRect();
+    if (!rect.width) return 0.9;
+    var cy = rect.top + rect.height / 2;
+    var xs = [0.15, 0.3, 0.5, 0.7, 0.85];
+    var total = 0, count = 0;
+    for (var i = 0; i < xs.length; i++) {
+      var x    = rect.left + rect.width * xs[i];
+      var els  = document.elementsFromPoint(x, cy);
+      // skip the topbar and all its children — we want what's behind
+      for (var j = 0; j < els.length; j++) {
+        var e = els[j];
+        if (e === topbar || topbar.contains(e)) continue;
+        if (e === document.body || e === document.documentElement) {
+          total += lum(245, 245, 245); count++; break;
+        }
+        total += elemLum(e); count++; break;
+      }
+    }
+    return count ? total / count : 0.9;
+  }
+
+  // ─── Map Y → tier name ────────────────────────────────────────
+  function tier(Y) {
+    if (Y >= 0.85) return 'pure-white';
+    if (Y >= 0.45) return 'light';
+    if (Y >= 0.15) return 'dark';
+    return 'pitch-black';
+  }
+
+  // ─── Apply tier with hysteresis to avoid flicker at boundaries ─
+  var lastTier = '';
+  var rafId    = null;
+
+  function update() {
+    rafId = null;
+    var t = tier(samplePill());
+    if (t === lastTier) return;
+    lastTier = t;
+    pill.setAttribute('data-lum', t);
+    topbar.setAttribute('data-lum', t);
+  }
+
+  function scheduleUpdate() {
+    if (!rafId) rafId = requestAnimationFrame(update);
+  }
+
+  window.addEventListener('scroll', scheduleUpdate, { passive: true });
+  window.addEventListener('resize', scheduleUpdate, { passive: true });
+
+  // Re-check after about panel toggle (background changes)
+  document.addEventListener('click', function (e) {
+    var ab = document.getElementById('about-btn');
+    var wb = document.getElementById('work-btn');
+    if ((ab && (e.target === ab || ab.contains(e.target))) ||
+        (wb && (e.target === wb || wb.contains(e.target)))) {
+      setTimeout(scheduleUpdate, 50);
+    }
+  });
+
+  scheduleUpdate();
+}());
