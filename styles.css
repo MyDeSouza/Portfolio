@@ -813,6 +813,8 @@ body.view-single-active .topbar {
   padding: 0;
 }
 
+.project-card--soon { cursor: default; }
+
 .project-card {
   display: flex;
   flex-direction: column;
