@@ -634,7 +634,7 @@
 
   function sampleImg(url) {
     if (url in imgCache)  return imgCache[url];
-    if (imgPending[url])  return null;
+    if (imgPending[url])  return 0.2; // still loading — assume dark
     imgPending[url] = true;
     var img = new Image();
     // No crossOrigin — same-origin images don't need it, and setting it
@@ -691,27 +691,45 @@
     return lum(R, G, B);
   }
 
-  // ─── Sample 5 x-positions across the pill, average luminance ──
+  // ─── Sample luminance behind the nav ─────────────────────────
+  // Two-pass approach so we don't miss dark images in the opposite grid column:
+  //   A) elementsFromPoint at 5 x-positions across the pill (precise, per-pixel)
+  //   B) All .project-thumb elements whose bounding rect overlaps the topbar band
+  // Final value = minimum (darkest wins).
   function samplePill() {
-    var rect = pill.getBoundingClientRect();
+    var rect    = pill.getBoundingClientRect();
+    var topbarH = topbar.offsetHeight || rect.height;
     if (!rect.width) return 0.9;
-    var cy = rect.top + rect.height / 2;
+    var cy  = rect.top + rect.height / 2;
+    var min = 1;
+
+    // Pass A — sample through elementsFromPoint across pill x range
     var xs = [0.15, 0.3, 0.5, 0.7, 0.85];
-    var total = 0, count = 0;
     for (var i = 0; i < xs.length; i++) {
-      var x    = rect.left + rect.width * xs[i];
-      var els  = document.elementsFromPoint(x, cy);
-      // skip the topbar and all its children — we want what's behind
+      var x   = rect.left + rect.width * xs[i];
+      var els = document.elementsFromPoint(x, cy);
       for (var j = 0; j < els.length; j++) {
         var e = els[j];
         if (e === topbar || topbar.contains(e)) continue;
-        if (e === document.body || e === document.documentElement) {
-          total += lum(245, 245, 245); count++; break;
-        }
-        total += elemLum(e); count++; break;
+        var y = (e === document.body || e === document.documentElement)
+          ? lum(245, 245, 245)
+          : elemLum(e);
+        if (y < min) min = y;
+        break;
       }
     }
-    return count ? total / count : 0.9;
+
+    // Pass B — any project thumb overlapping the topbar height band
+    var thumbs = document.querySelectorAll('.project-thumb');
+    for (var k = 0; k < thumbs.length; k++) {
+      var r = thumbs[k].getBoundingClientRect();
+      if (r.top < topbarH && r.bottom > 0) {
+        var ty = elemLum(thumbs[k]);
+        if (ty < min) min = ty;
+      }
+    }
+
+    return min < 1 ? min : 0.9;
   }
 
   // ─── Map Y → tier name ────────────────────────────────────────
