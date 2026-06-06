@@ -621,11 +621,13 @@
     if (view === 'single') {
       grid.classList.add('view-single');
       grid.classList.remove('view-grid');
+      document.body.classList.add('view-single-active');
       singleBtn.classList.add('active');
       gridBtn.classList.remove('active');
     } else {
       grid.classList.remove('view-single');
       grid.classList.add('view-grid');
+      document.body.classList.remove('view-single-active');
       gridBtn.classList.add('active');
       singleBtn.classList.remove('active');
     }

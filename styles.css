@@ -475,6 +475,15 @@ p, .body {
 
 /* ── Grid layout variants ───────────────────────────────── */
 
+/* Single: topbar floats above images */
+body.view-single-active .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+}
+
 /* Single: full-bleed images edge to edge, no whitespace */
 .projects-grid.view-single {
   grid-template-columns: 1fr;
