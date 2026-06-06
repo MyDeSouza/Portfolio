@@ -1650,7 +1650,7 @@ body.view-single-active .topbar {
 .bento-photo {
   width: 100%;
   height: 100%;
-  background: url('/images/ProfilePicture.jpg') center center/cover no-repeat;
+  background: #c8ccd0 url('/images/ProfilePicture.jpg') center top/contain no-repeat;
   min-height: 300px;
 }
 
