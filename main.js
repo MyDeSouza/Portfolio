@@ -637,7 +637,8 @@
     if (imgPending[url])  return null;
     imgPending[url] = true;
     var img = new Image();
-    img.crossOrigin = 'anonymous';
+    // No crossOrigin — same-origin images don't need it, and setting it
+    // can taint the canvas if the server doesn't send CORS headers.
     img.onload = function () {
       try {
         var cw = Math.min(img.naturalWidth,  120);
@@ -645,21 +646,21 @@
         var cv = document.createElement('canvas');
         cv.width = cw; cv.height = ch;
         var ctx = cv.getContext('2d');
-        // sample only the top 20 % of the image — that's where the nav sits
+        // sample only the top 20% of the image — that's where the nav sits
         ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight * 0.2, 0, 0, cw, ch);
         var px = ctx.getImageData(0, 0, cw, ch).data;
         var R = 0, G = 0, B = 0, n = px.length / 4;
         for (var i = 0; i < px.length; i += 4) { R += px[i]; G += px[i + 1]; B += px[i + 2]; }
         imgCache[url] = lum(R / n, G / n, B / n);
       } catch (_) {
-        imgCache[url] = 0.5; // CORS block → assume mid-range
+        imgCache[url] = 0.2; // canvas tainted — default to dark (safe for photos)
       }
       delete imgPending[url];
       scheduleUpdate();
     };
-    img.onerror = function () { imgCache[url] = 0.5; delete imgPending[url]; };
+    img.onerror = function () { imgCache[url] = 0.2; delete imgPending[url]; };
     img.src = url;
-    return null; // not ready yet — caller uses fallback
+    return 0.2; // not ready yet — assume dark until canvas sample completes
   }
 
   // ─── Effective luminance of the element visually beneath a point ──
@@ -673,9 +674,7 @@
       if (bgi && bgi !== 'none') {
         var m = bgi.match(/url\(["']?([^"')]+)["']?\)/);
         if (m) {
-          var imgL = sampleImg(m[1]);
-          if (imgL !== null) return imgL; // cached value ready
-          // still loading — fall through to background-color as proxy
+          return sampleImg(m[1]); // returns cached value or 0.2 (dark default)
         }
       }
       var col = parseRGB(s.backgroundColor);

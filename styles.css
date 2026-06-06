@@ -290,10 +290,10 @@ p, .body {
    ─────────────────────────────────────────────────────────────────────── */
 
 /* LAYER 1: Pill container background */
-.nav-pill[data-lum="pure-white"]  { background: rgba(0,   0,   0,   0.12); box-shadow: none; }
-.nav-pill[data-lum="light"]       { background: rgba(255, 255, 255, 0.08); box-shadow: none; }
-.nav-pill[data-lum="dark"]        { background: rgba(0,   0,   0,   0.10); box-shadow: none; }
-.nav-pill[data-lum="pitch-black"] { background: rgba(0,   0,   0,   0.05);
+.nav-pill[data-lum="pure-white"]  { background: rgba(0, 0, 0, 0.12); box-shadow: none; }
+.nav-pill[data-lum="light"]       { background: rgba(0, 0, 0, 0.08); box-shadow: none; }
+.nav-pill[data-lum="dark"]        { background: rgba(0, 0, 0, 0.10); box-shadow: none; }
+.nav-pill[data-lum="pitch-black"] { background: rgba(0, 0, 0, 0.05);
                                     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15); }
 
 /* LAYER 2: Inactive text — light states → muted dark charcoal
@@ -493,18 +493,22 @@ p, .body {
   color: #ffffff;
 }
 
-/* Collapsed on light backgrounds — flip icons back to dark */
+/* Collapsed on light backgrounds — flip to solid dark */
+.topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed #work-btn,
+.topbar[data-lum="light"]      .nav-pill-wrapper.collapsed #work-btn {
+  color: rgba(0, 0, 0, 0.75);
+}
 .topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed .work-view-divider,
 .topbar[data-lum="light"]      .nav-pill-wrapper.collapsed .work-view-divider {
-  background: rgba(12, 17, 22, 0.18);
+  background: rgba(0, 0, 0, 0.18);
 }
 .topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed .work-view-btn,
 .topbar[data-lum="light"]      .nav-pill-wrapper.collapsed .work-view-btn {
-  color: rgba(12, 17, 22, 0.3);
+  color: rgba(0, 0, 0, 0.3);
 }
 .topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed .work-view-btn.active,
 .topbar[data-lum="light"]      .nav-pill-wrapper.collapsed .work-view-btn.active {
-  color: rgba(12, 17, 22, 0.8);
+  color: rgba(0, 0, 0, 0.75);
 }
 
 /* ── Grid layout variants ───────────────────────────────── */
