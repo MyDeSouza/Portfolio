@@ -964,7 +964,7 @@ body.view-single-active .topbar {
 /* =========================================================
    Projects index — card grid
    ========================================================= */
-.projects-grid {
+.projects-page-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(16px, 2vw, 24px);
@@ -972,7 +972,7 @@ body.view-single-active .topbar {
 }
 
 @media (max-width: 640px) {
-  .projects-grid {
+  .projects-page-grid {
     grid-template-columns: 1fr;
   }
 }
