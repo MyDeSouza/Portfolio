@@ -641,13 +641,14 @@
     // can taint the canvas if the server doesn't send CORS headers.
     img.onload = function () {
       try {
-        var cw = Math.min(img.naturalWidth,  120);
-        var ch = Math.min(img.naturalHeight,  60);
+        var cw = Math.min(img.naturalWidth,  160);
+        var ch = Math.min(img.naturalHeight, 120);
         var cv = document.createElement('canvas');
         cv.width = cw; cv.height = ch;
         var ctx = cv.getContext('2d');
-        // sample only the top 20% of the image — that's where the nav sits
-        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight * 0.2, 0, 0, cw, ch);
+        // Sample the full image — the card can be at any scroll position behind the nav,
+        // so a full-image average is more representative than just the top slice.
+        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, cw, ch);
         var px = ctx.getImageData(0, 0, cw, ch).data;
         var R = 0, G = 0, B = 0, n = px.length / 4;
         for (var i = 0; i < px.length; i += 4) { R += px[i]; G += px[i + 1]; B += px[i + 2]; }
