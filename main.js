@@ -610,7 +610,7 @@
   singleBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); setView('single'); });
   gridBtn.addEventListener('click',   function (e) { e.preventDefault(); e.stopPropagation(); setView('grid');   });
 
-  setView('grid'); // default: equal 2×2 grid
+  setView(window.matchMedia('(max-width: 1366px) and (orientation: portrait)').matches ? 'single' : 'grid');
 }());
 
 

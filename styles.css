@@ -706,6 +706,10 @@ body.view-single-active .topbar {
   .icon-coffee,
   .icon-person     { width: 20px; height: 20px; }
   .nav-label { display: none; }
+  /* Mobile: shorten "Max DeSouza" → "Max", hide view toggle */
+  .nav-name-suffix    { display: none; }
+  .work-view-divider,
+  .work-view-icons    { display: none; }
 }
 
 /* ── Landscape (phone & tablet): pill back in topbar ──────── */
