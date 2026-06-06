@@ -800,8 +800,8 @@ body.view-single-active .topbar {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  padding: 5rem var(--gutter) 4rem;
+  gap: 1rem;
+  padding: 1.25rem clamp(12px, 2vw, 32px) 3rem;
 }
 
 .project-card {
