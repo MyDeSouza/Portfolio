@@ -1620,9 +1620,10 @@ body.view-single-active .topbar {
 .bento-box-2 { grid-column: 3 / span 2; grid-row: 1 / span 2; }  /* Photo */
 .bento-box-4 { grid-column: 1 / span 2; grid-row: 3; }            /* Experience */
 .bento-box-5 { grid-column: 3 / span 2; grid-row: 3; }            /* Education */
-.bento-box-3 { grid-column: 1 / span 2; grid-row: 4; }            /* Skills */
-.bento-box-6 { grid-column: 3 / span 2; grid-row: 4; }            /* Tools */
-.bento-box-7 { display: none; }                                    /* Connect — hidden */
+.bento-box-3 { grid-column: 1; grid-row: 4; }                     /* Skills */
+.bento-box-6 { grid-column: 2; grid-row: 4; }                     /* Software */
+.bento-box-7 { grid-column: 3; grid-row: 4; }                     /* Workflow */
+.bento-box-8 { grid-column: 4; grid-row: 4; }                     /* Engagement */
 
 .bento-title {
   font-family: var(--font-display);
