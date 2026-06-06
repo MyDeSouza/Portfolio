@@ -8,14 +8,10 @@
     document.querySelector('.footer'),
   ]).filter(Boolean);
 
-  // Skip on in-session navigation; play on first visit or refresh.
-  var navEntry  = performance.getEntriesByType('navigation')[0];
-  var isReload  = navEntry && navEntry.type === 'reload';
-  var seenIntro = sessionStorage.getItem('intro-seen-v50');
-
-  if (!isReload && seenIntro) return;
-
-  sessionStorage.setItem('intro-seen-v50', '1');
+  // Play intro on every fresh load (navigate + reload); skip only on browser back/forward.
+  var navEntry = performance.getEntriesByType('navigation')[0];
+  var navType  = navEntry ? navEntry.type : 'navigate';
+  if (navType === 'back_forward') return;
 
   document.body.style.overflow = 'hidden'; // prevent scroll during intro
 
@@ -270,11 +266,10 @@
     });
   }
 
-  // Show label immediately if intro won't play, else wait for intro-done
+  // Show label after intro completes; on back/forward skip straight to showing it
   var navEntry0 = performance.getEntriesByType('navigation')[0];
-  var isReload0 = navEntry0 && navEntry0.type === 'reload';
-  var seenKey   = sessionStorage.getItem('intro-seen-v50');
-  if (!isReload0 && seenKey) {
+  var navType0  = navEntry0 ? navEntry0.type : 'navigate';
+  if (navType0 === 'back_forward') {
     showLabel();
   } else {
     window.addEventListener('intro-done', function onID() {
