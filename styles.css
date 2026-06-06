@@ -1213,11 +1213,14 @@ body.view-single-active .topbar {
    Case study — project mode page
    ========================================================= */
 .case-hero {
-  min-height: calc(100vh - 64px);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   padding: var(--s-9) var(--gutter);
+  background: var(--ink);
+  background-size: cover;
+  background-position: center;
   position: relative;
 }
 
@@ -1248,7 +1251,7 @@ body.view-single-active .topbar {
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--fg-faint);
+  color: rgba(255, 255, 255, 0.5);
   margin-bottom: var(--s-4);
 }
 
@@ -1258,7 +1261,7 @@ body.view-single-active .topbar {
   font-size: clamp(64px, 11vw, 160px);
   line-height: 0.94;
   letter-spacing: -0.035em;
-  color: var(--fg);
+  color: #ffffff;
   margin-bottom: var(--s-5);
 }
 
@@ -1266,7 +1269,7 @@ body.view-single-active .topbar {
   font-family: var(--font-body);
   font-size: clamp(16px, 1.4vw, 20px);
   line-height: 1.5;
-  color: var(--fg);
+  color: #ffffff;
   opacity: 0.78;
   max-width: 48ch;
   margin-bottom: var(--s-7);

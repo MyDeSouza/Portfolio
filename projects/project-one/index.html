@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="project">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project One — Max DeSouza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    document.body.style.visibility = 'hidden';
+  </script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="/" class="mark topbar-mark-ghost">
+      <span class="mark-name">Max DeSouza</span>
+    </a>
+    <div class="topbar-label" id="topbar-label"></div>
+    <div class="nav-pill-wrapper">
+      <nav class="nav-pill">
+        <a href="/" class="nav-item nav-item--text" id="about-btn" aria-label="Max DeSouza"><span class="nav-name-prefix">Max&nbsp;</span>DeSouza</a>
+        <a href="/" class="nav-item nav-item--text active" id="work-btn" aria-label="Work">Work</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="case-hero" style="background-image: url('../../images/project-1.jpg.png'); background-size: cover; background-position: center;">
+      <a href="/" class="case-back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back
+      </a>
+      <p class="case-eyebrow">Product Design</p>
+      <h1 class="case-title">Project<br>One</h1>
+      <p class="case-summary">A brief description of what this project is about — the problem it solves, the people it serves, and why it matters.</p>
+      <div class="case-ctas">
+        <a href="#overview" class="btn btn--primary">View case study</a>
+      </div>
+    </section>
+
+    <div class="case-content" id="overview">
+      <section class="case-section">
+        <p class="eyebrow">Overview</p>
+        <h2>The problem</h2>
+        <p>Describe the core user problem or business challenge this project addressed. What was broken, missing, or painful for users?</p>
+      </section>
+
+      <section class="case-section">
+        <p class="eyebrow">Process</p>
+        <h2>How we approached it</h2>
+        <p>Walk through your design process — research, ideation, prototyping, and testing. What decisions were made and why?</p>
+        <p>Add more detail about your thinking here. What constraints shaped the solution? What did you learn along the way?</p>
+      </section>
+
+      <section class="case-section">
+        <p class="eyebrow">Outcome</p>
+        <h2>Results</h2>
+        <p>What shipped? What changed for users? Include metrics, qualitative feedback, or before/after comparisons if you have them.</p>
+      </section>
+    </div>
+  </main>
+
+  <script src="../../main.js"></script>
+</body>
+</html>
