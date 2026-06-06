@@ -446,30 +446,28 @@
   }
 
   // ── Scroll collapse ──────────────────────────────────────────
-  var lastY     = window.scrollY;
-  var collapseY = 0; // y where we last collapsed
-  var expandY   = 0; // y where we last expanded
-  var ticking   = false;
+  var lastY       = window.scrollY;
+  var ticking     = false;
+  var expandedAt  = 0; // timestamp of last expand, prevents instant re-collapse
 
   function updateCollapse() {
     var y     = window.scrollY;
     var delta = y - lastY;
+    lastY     = y;
+    ticking   = false;
 
     if (!wrapper.classList.contains('collapsed')) {
-      // Collapse: scrolling down past 30px, with 15px buffer from last expand
-      if (delta > 0 && y > 30 && y > expandY + 15 && !hoverExpanded) {
+      // Collapse: scrolling down past 50px, at least 400ms after last expand
+      if (delta > 0 && y > 50 && !hoverExpanded && Date.now() - expandedAt > 400) {
         doCollapse();
       }
     } else {
-      // Expand: position-based — 15px above where we collapsed
-      if (y < collapseY - 15 && !hoverExpanded) {
+      // Expand: any upward scroll
+      if (delta < 0 && !hoverExpanded) {
         doExpand();
-        expandY = y;
+        expandedAt = Date.now();
       }
     }
-
-    lastY   = y;
-    ticking = false;
   }
 
   window.addEventListener('scroll', function () {
