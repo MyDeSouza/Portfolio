@@ -322,9 +322,7 @@ p, .body {
 #sprints-btn { color: rgba(255, 255, 255, 0.75); }
 
 /* Topbar label + intro mark follow the same dark/light split */
-.topbar[data-lum="pure-white"] .topbar-label,
-.topbar[data-lum="light"]      .topbar-label { color: #1a1a1a; }
-.topbar[data-lum="dark"]       .topbar-label,
+.topbar[data-lum="dark"] .topbar-label,
 .topbar[data-lum="pitch-black"] .topbar-label { color: #ffffff; }
 
 .topbar[data-lum="dark"] .mark-name,
@@ -1564,7 +1562,9 @@ body.view-single-active .topbar {
 .sprints-panel {
   position: fixed;
   inset: 0;
-  background: #f5f4f2;
+  background: rgba(10, 14, 18, 0.82);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
   z-index: 30;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1598,7 +1598,7 @@ body.view-single-active .topbar {
   font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 300;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.4);
   margin: 0;
 }
 
@@ -1624,9 +1624,9 @@ body.view-single-active .topbar {
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.3);
   padding: 2.5rem 0 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
   margin-bottom: 0;
 }
 
@@ -1642,7 +1642,7 @@ body.view-single-active .topbar {
   margin-bottom: 1rem;
   border-radius: 12px;
   overflow: hidden;
-  background: #eae9e5;
+  background: #131619;
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.3s ease;
@@ -1650,7 +1650,7 @@ body.view-single-active .topbar {
 
 .sprint-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .sprint-card-visual {
@@ -1669,14 +1669,14 @@ body.view-single-active .topbar {
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.3);
   margin-bottom: 0.3rem;
 }
 
 .sprints-loading {
   font-family: var(--font-body);
   font-size: 0.85rem;
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.25);
   padding: 2rem 0;
 }
 
@@ -1684,30 +1684,31 @@ body.view-single-active .topbar {
   font-family: var(--font-body);
   font-size: 0.88rem;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.75);
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
   line-height: 1.3;
 }
 
 /* ── Nav state when sprints is open ──────────────────────── */
 
-body.sprints-open .topbar-label { color: #1a1a1a; }
+body.sprints-open .topbar-label { color: #ffffff; }
 
 body.sprints-open .nav-pill {
-  background: rgba(0, 0, 0, 0.07);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.10);
+  background: rgba(20, 20, 18, 0.48);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 body.sprints-open #sprints-btn {
-  color: #f5f4f2 !important;
-  background: #1a1a1a;
+  color: #0c1116 !important;
+  background: #ffffff;
   border-radius: 999px;
   font-weight: 450;
 }
 
 body.sprints-open #work-btn {
   background: transparent;
-  color: #1a1a1a;
+  color: #ffffff;
   font-weight: 450;
 }
 
