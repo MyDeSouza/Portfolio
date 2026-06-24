@@ -437,13 +437,13 @@ p, .body {
 
 .about-open #work-btn {
   background: transparent;
-  color: rgba(255, 255, 255, 0.55);
+  color: #ffffff;
   opacity: 1;
-  font-weight: 400;
+  font-weight: 450;
   transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
-.about-open #sprints-btn { color: rgba(255, 255, 255, 0.55); }
+.about-open #sprints-btn { color: #ffffff; font-weight: 450; }
 
 .nav-pill-wrapper.collapsed #work-btn {
   background: transparent;
@@ -1698,13 +1698,13 @@ body.sprints-open #sprints-btn {
   color: #0c1116 !important;
   background: #ffffff;
   border-radius: 999px;
-  font-weight: 600 !important;
+  font-weight: 450;
 }
 
 body.sprints-open #work-btn {
   background: transparent;
-  color: rgba(255, 255, 255, 0.55);
-  font-weight: 400;
+  color: #ffffff;
+  font-weight: 450;
 }
 
 body.sprints-open .work-view-divider {
