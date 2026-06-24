@@ -437,11 +437,13 @@ p, .body {
 
 .about-open #work-btn {
   background: transparent;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.55);
   opacity: 1;
   font-weight: 400;
   transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
+
+.about-open #sprints-btn { color: rgba(255, 255, 255, 0.55); }
 
 .nav-pill-wrapper.collapsed #work-btn {
   background: transparent;
@@ -1700,6 +1702,7 @@ body.sprints-open #sprints-btn {
 }
 
 body.sprints-open #work-btn {
+  background: transparent;
   color: rgba(255, 255, 255, 0.55);
   font-weight: 400;
 }
