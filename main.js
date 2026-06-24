@@ -657,13 +657,35 @@
   var workBtn    = document.getElementById('work-btn');
   var aboutBtn   = document.getElementById('about-btn');
   var panel      = document.getElementById('sprints-panel');
+  var masonry    = document.getElementById('sprints-masonry');
   if (!sprintsBtn || !panel) return;
+
+  // Read ?sprint=xxx from URL — falls back to 'default'
+  var sprintSet = (new URLSearchParams(window.location.search)).get('sprint') || 'default';
+  var loaded    = false;
+
+  function loadSprints() {
+    if (loaded) return;
+    loaded = true;
+    fetch('sprints/' + sprintSet + '/index.html')
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        if (masonry) masonry.innerHTML = html;
+      })
+      .catch(function () {
+        if (masonry) masonry.innerHTML = '<p class="sprints-loading">Sprint set “' + sprintSet + '” not found.</p>';
+      });
+  }
 
   function moveInd(target) {
     if (window.__moveNavIndicator) window.__moveNavIndicator(target);
   }
 
   function openSprints() {
+    loadSprints();
     // If about is open, close it cleanly first
     if (document.body.classList.contains('about-open')) {
       var aboutOverlay = document.getElementById('about-overlay');
