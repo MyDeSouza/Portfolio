@@ -300,19 +300,26 @@ p, .body {
 
 /* LAYER 2: Inactive text — light states → black */
 .topbar[data-lum="pure-white"] #about-btn,
+.topbar[data-lum="pure-white"] #sprints-btn,
 .topbar[data-lum="pure-white"] .nav-pill-wrapper.collapsed #work-btn,
 .topbar[data-lum="light"]      #about-btn,
+.topbar[data-lum="light"]      #sprints-btn,
 .topbar[data-lum="light"]      .nav-pill-wrapper.collapsed #work-btn {
   color: #1a1a1a; font-weight: 400;
 }
 
 /* LAYER 2: Inactive text — dark states → white */
 .topbar[data-lum="dark"]        #about-btn,
+.topbar[data-lum="dark"]        #sprints-btn,
 .topbar[data-lum="dark"]        .nav-pill-wrapper.collapsed #work-btn,
 .topbar[data-lum="pitch-black"] #about-btn,
+.topbar[data-lum="pitch-black"] #sprints-btn,
 .topbar[data-lum="pitch-black"] .nav-pill-wrapper.collapsed #work-btn {
   color: #ffffff; font-weight: 400;
 }
+
+/* Sprints-btn default: white (portfolio bg is almost always dark) */
+#sprints-btn { color: rgba(255, 255, 255, 0.75); }
 
 /* Topbar label + intro mark follow the same dark/light split */
 .topbar[data-lum="dark"] .topbar-label,

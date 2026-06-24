@@ -524,9 +524,6 @@
     }, { passive: true });
   });
 
-  // Expose indicator mover for other IIFEs
-  window.__moveNavIndicator = moveIndicator;
-
   // ── Initial page load ────────────────────────────────────────
   if (activeItem) {
     requestAnimationFrame(function () { showIndicator(); });
@@ -592,6 +589,8 @@
     indicator.style.left = (ir.left - pr.left + ir.width  / 2) + 'px';
     indicator.style.top  = (ir.top  - pr.top  + ir.height / 2) + 'px';
   }
+  // Expose for other IIFEs (sprints, etc.)
+  window.__moveNavIndicator = moveIndicator;
 
   function openAbout() {
     if (wrapper)  { wrapper.setAttribute('aria-hidden', 'false'); }
