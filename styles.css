@@ -322,7 +322,9 @@ p, .body {
 #sprints-btn { color: rgba(255, 255, 255, 0.75); }
 
 /* Topbar label + intro mark follow the same dark/light split */
-.topbar[data-lum="dark"] .topbar-label,
+.topbar[data-lum="pure-white"] .topbar-label,
+.topbar[data-lum="light"]      .topbar-label { color: #1a1a1a; }
+.topbar[data-lum="dark"]       .topbar-label,
 .topbar[data-lum="pitch-black"] .topbar-label { color: #ffffff; }
 
 .topbar[data-lum="dark"] .mark-name,
@@ -1689,11 +1691,11 @@ body.view-single-active .topbar {
 
 /* ── Nav state when sprints is open ──────────────────────── */
 
-body.sprints-open .topbar-label { color: #ffffff; }
+body.sprints-open .topbar-label { color: #1a1a1a; }
 
 body.sprints-open .nav-pill {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.10);
 }
 
 body.sprints-open #sprints-btn {
