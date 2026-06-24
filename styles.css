@@ -1592,14 +1592,12 @@ body.view-single-active .topbar {
   overflow-x: hidden;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(16px);
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.4s ease;
 }
 
 .sprints-panel[aria-hidden="false"] {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
 }
 
 .sprints-inner {
