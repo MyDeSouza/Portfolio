@@ -1679,6 +1679,26 @@ body.view-single-active .topbar {
   display: block;
 }
 
+.sprint-card-pdf {
+  height: 560px;
+  border: none;
+  pointer-events: none;
+}
+
+.sprint-card-video-ph {
+  width: 100%;
+  background: #0e1115;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sprint-card video.sprint-card-visual {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .sprint-card-meta {
   padding: 0.9rem 1rem 1rem;
 }
