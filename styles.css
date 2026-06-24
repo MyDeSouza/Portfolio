@@ -443,7 +443,9 @@ p, .body {
   transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
-.about-open #sprints-btn { color: #ffffff; font-weight: 450; }
+/* Luminance rules have higher specificity than .about-open — override with topbar scope */
+.about-open .topbar #sprints-btn,
+.about-open #sprints-btn { color: #ffffff !important; font-weight: 450; }
 
 .nav-pill-wrapper.collapsed #work-btn {
   background: transparent;

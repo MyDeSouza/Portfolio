@@ -886,12 +886,14 @@
   window.addEventListener('scroll', scheduleUpdate, { passive: true });
   window.addEventListener('resize', scheduleUpdate, { passive: true });
 
-  // Re-check after about panel toggle (background changes)
+  // Re-check after nav panel toggles (background changes)
   document.addEventListener('click', function (e) {
     var ab = document.getElementById('about-btn');
     var wb = document.getElementById('work-btn');
+    var sb = document.getElementById('sprints-btn');
     if ((ab && (e.target === ab || ab.contains(e.target))) ||
-        (wb && (e.target === wb || wb.contains(e.target)))) {
+        (wb && (e.target === wb || wb.contains(e.target))) ||
+        (sb && (e.target === sb || sb.contains(e.target)))) {
       setTimeout(scheduleUpdate, 50);
     }
   });
