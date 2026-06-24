@@ -419,7 +419,7 @@ p, .body {
   background: #ffffff;
   color: #0c1116;
   opacity: 1;
-  transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s;
+  transition: opacity 0.2s ease 0.15s, background-color 0.2s ease 0.15s, color 0.2s ease 0.15s;
 }
 
 /* Prevent dark luminance tier overriding text when about-btn has its own white pill */
