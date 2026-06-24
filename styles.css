@@ -1706,6 +1706,8 @@ body.sprints-open #sprints-btn {
   font-weight: 450;
 }
 
+body.sprints-open #about-btn { color: #ffffff; font-weight: 450; }
+
 body.sprints-open #work-btn {
   background: transparent;
   color: #ffffff;
