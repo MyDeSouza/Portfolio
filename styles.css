@@ -1675,6 +1675,7 @@ body.view-single-active .topbar {
 
 .sprint-card-visual {
   width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -1682,16 +1683,7 @@ body.view-single-active .topbar {
   padding: 0.9rem 1rem 1rem;
 }
 
-.sprint-card-tag {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.3);
-  margin-bottom: 0.3rem;
-}
+.sprint-card-tag { display: none; }
 
 .sprints-loading {
   font-family: var(--font-body);
