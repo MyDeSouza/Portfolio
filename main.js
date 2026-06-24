@@ -407,8 +407,9 @@
     }
   }
 
-  // Expose for Sprints IIFE so it can re-expand the nav on open
-  window.__expandNav = doExpand;
+  // Expose for Sprints IIFE so it can collapse/expand the nav
+  window.__expandNav   = doExpand;
+  window.__collapseNav = doCollapse;
 
   // ── Per-icon hover labels ────────────────────────────────────
   var measurer = document.createElement('span');
@@ -731,6 +732,19 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && document.body.classList.contains('sprints-open')) closeSprints();
   });
+
+  // Collapse/expand nav based on scroll within the panel (window scroll is locked)
+  var lastPanelScroll = 0;
+  panel.addEventListener('scroll', function () {
+    var y     = panel.scrollTop;
+    var delta = y - lastPanelScroll;
+    lastPanelScroll = y;
+    if (delta > 0 && y > 50) {
+      if (window.__collapseNav) window.__collapseNav();
+    } else if (delta < 0) {
+      if (window.__expandNav) window.__expandNav();
+    }
+  }, { passive: true });
 }());
 
 
