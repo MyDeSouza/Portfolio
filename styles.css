@@ -598,8 +598,9 @@ body.view-single-active .topbar {
 .about-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
+  background: rgba(10, 14, 18, 0.68);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
   z-index: 20;
   opacity: 0;
   pointer-events: none;
@@ -1583,9 +1584,9 @@ body.view-single-active .topbar {
 .sprints-panel {
   position: fixed;
   inset: 0;
-  background: rgba(10, 14, 18, 0.82);
-  backdrop-filter: blur(24px) saturate(120%);
-  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  background: rgba(10, 14, 18, 0.68);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
   z-index: 30;
   overflow-y: auto;
   overflow-x: hidden;
