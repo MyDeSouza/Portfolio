@@ -407,6 +407,9 @@
     }
   }
 
+  // Expose for Sprints IIFE so it can re-expand the nav on open
+  window.__expandNav = doExpand;
+
   // ── Per-icon hover labels ────────────────────────────────────
   var measurer = document.createElement('span');
   measurer.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:11px;font-weight:500;letter-spacing:0.05em;font-family:inherit;';
@@ -685,6 +688,7 @@
 
   function openSprints() {
     loadSprints();
+    if (window.__expandNav) window.__expandNav();
     // If about is open, close it cleanly first
     if (document.body.classList.contains('about-open')) {
       var aboutOverlay = document.getElementById('about-overlay');
