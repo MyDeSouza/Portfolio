@@ -1752,6 +1752,9 @@ body.sprints-open .nav-pill-wrapper.collapsed #sprints-btn {
   padding: 0 1rem !important;
   opacity: 1 !important;
   overflow: visible !important;
+  background: transparent !important;
+  color: #ffffff !important;
+  border-radius: 0;
 }
 
 body.sprints-open .nav-pill-wrapper.collapsed #work-btn {
