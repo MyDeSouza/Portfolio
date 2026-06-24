@@ -1736,6 +1736,7 @@ body.sprints-open #sprints-btn {
   background: #ffffff;
   border-radius: 999px;
   font-weight: 450;
+  transition: background-color 0.35s ease, color 0.35s ease, border-radius 0.35s ease;
 }
 
 body.sprints-open #about-btn { color: #ffffff !important; font-weight: 450; }
