@@ -298,9 +298,11 @@
   var expandEase      = '0.5s cubic-bezier(0.16, 1, 0.3, 1)';
   var expandClearTimer = null;
 
-  // Measure about-btn natural width for JS-driven animation
-  var aboutBtnEl   = document.getElementById('about-btn');
-  var aboutBtnNatW = aboutBtnEl ? aboutBtnEl.offsetWidth : 0;
+  // Measure about-btn + sprints-btn natural widths for JS-driven animation
+  var aboutBtnEl     = document.getElementById('about-btn');
+  var aboutBtnNatW   = aboutBtnEl   ? aboutBtnEl.offsetWidth   : 0;
+  var sprintsBtnEl   = document.getElementById('sprints-btn');
+  var sprintsBtnNatW = sprintsBtnEl ? sprintsBtnEl.offsetWidth : 0;
 
   function clearAboutBtnInline() {
     if (!aboutBtnEl) return;
@@ -309,6 +311,15 @@
     aboutBtnEl.style.opacity    = '';
     aboutBtnEl.style.padding    = '';
     aboutBtnEl.style.overflow   = '';
+  }
+
+  function clearSprintsBtnInline() {
+    if (!sprintsBtnEl) return;
+    sprintsBtnEl.style.width      = '';
+    sprintsBtnEl.style.transition = '';
+    sprintsBtnEl.style.opacity    = '';
+    sprintsBtnEl.style.padding    = '';
+    sprintsBtnEl.style.overflow   = '';
   }
 
   function doCollapse() {
@@ -329,6 +340,19 @@
       aboutBtnEl.style.width      = '0';
       aboutBtnEl.style.padding    = '0';
       aboutBtnEl.style.opacity    = '0';
+    }
+
+    if (sprintsBtnEl && sprintsBtnNatW) {
+      var fromSW = sprintsBtnEl.offsetWidth || sprintsBtnNatW;
+      sprintsBtnEl.style.overflow   = 'hidden';
+      sprintsBtnEl.style.transition = 'none';
+      sprintsBtnEl.style.width      = fromSW + 'px';
+      sprintsBtnEl.style.opacity    = '1';
+      sprintsBtnEl.offsetHeight;
+      sprintsBtnEl.style.transition = 'opacity 0.15s ease, width ' + collapseEase + ' 0.05s, padding ' + collapseEase + ' 0.05s';
+      sprintsBtnEl.style.width      = '0';
+      sprintsBtnEl.style.padding    = '0';
+      sprintsBtnEl.style.opacity    = '0';
     }
 
     wrapper.classList.add('collapsed');
@@ -359,7 +383,16 @@
       expandClearTimer = setTimeout(function () {
         expandClearTimer = null;
         clearAboutBtnInline();
+        clearSprintsBtnInline();
       }, 600);
+    }
+
+    if (sprintsBtnEl && sprintsBtnNatW) {
+      sprintsBtnEl.style.overflow   = 'hidden';
+      sprintsBtnEl.style.transition = 'width ' + expandEase + ', padding ' + expandEase + ', opacity 0.3s ease 0.2s';
+      sprintsBtnEl.style.width      = sprintsBtnNatW + 'px';
+      sprintsBtnEl.style.padding    = '';
+      sprintsBtnEl.style.opacity    = '';
     }
 
     requestAnimationFrame(function () { showIndicator(); });
@@ -491,6 +524,9 @@
     }, { passive: true });
   });
 
+  // Expose indicator mover for other IIFEs
+  window.__moveNavIndicator = moveIndicator;
+
   // ── Initial page load ────────────────────────────────────────
   if (activeItem) {
     requestAnimationFrame(function () { showIndicator(); });
@@ -611,6 +647,65 @@
   gridBtn.addEventListener('click',   function (e) { e.preventDefault(); e.stopPropagation(); setView('grid');   });
 
   setView(window.matchMedia('(max-width: 1366px) and (orientation: portrait)').matches ? 'single' : 'grid');
+}());
+
+
+
+// ── Sprints panel ─────────────────────────────────────────────
+(function () {
+  var sprintsBtn = document.getElementById('sprints-btn');
+  var workBtn    = document.getElementById('work-btn');
+  var aboutBtn   = document.getElementById('about-btn');
+  var panel      = document.getElementById('sprints-panel');
+  if (!sprintsBtn || !panel) return;
+
+  function moveInd(target) {
+    if (window.__moveNavIndicator) window.__moveNavIndicator(target);
+  }
+
+  function openSprints() {
+    // If about is open, close it cleanly first
+    if (document.body.classList.contains('about-open')) {
+      var aboutOverlay = document.getElementById('about-overlay');
+      var aboutPanel   = document.getElementById('about-panel');
+      if (aboutOverlay) aboutOverlay.classList.remove('open');
+      if (aboutPanel)   aboutPanel.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('about-open');
+      var er = document.getElementById('topbar-label-er');
+      if (er) { er.style.maxWidth = '0'; er.style.opacity = '0'; }
+    }
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('sprints-open');
+    document.body.style.overflow = 'hidden';
+    moveInd(sprintsBtn);
+  }
+
+  function closeSprints() {
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('sprints-open');
+    // Only reset overflow/indicator if about isn't taking over
+    if (!document.body.classList.contains('about-open')) {
+      document.body.style.overflow = '';
+      moveInd(workBtn);
+    }
+  }
+
+  sprintsBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (document.body.classList.contains('sprints-open')) {
+      closeSprints();
+    } else {
+      openSprints();
+    }
+  });
+
+  if (workBtn)  workBtn.addEventListener('click',  function () { if (document.body.classList.contains('sprints-open')) closeSprints(); });
+  if (aboutBtn) aboutBtn.addEventListener('click', function () { if (document.body.classList.contains('sprints-open')) closeSprints(); });
+
+  // Escape key closes sprints
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('sprints-open')) closeSprints();
+  });
 }());
 
 
