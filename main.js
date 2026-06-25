@@ -305,6 +305,7 @@
   var sprintsBtnNatW = sprintsBtnEl ? sprintsBtnEl.offsetWidth : 0;
   var workBtnEl      = document.getElementById('work-btn');
   var workBtnNatW    = workBtnEl    ? workBtnEl.offsetWidth    : 0;
+  var workBtnSavedW  = 0;
 
   function clearBtnInline(el) {
     if (!el) return;
@@ -350,6 +351,7 @@
     collapseBtn(aboutBtnEl, aboutBtnNatW);
 
     if (inSprints) {
+      workBtnSavedW = workBtnEl ? (workBtnEl.offsetWidth || workBtnNatW) : workBtnNatW;
       collapseBtn(workBtnEl, workBtnNatW);
     } else {
       collapseBtn(sprintsBtnEl, sprintsBtnNatW);
@@ -379,7 +381,7 @@
     expandBtn(aboutBtnEl, aboutBtnNatW);
 
     if (inSprints) {
-      expandBtn(workBtnEl, workBtnNatW);
+      expandBtn(workBtnEl, workBtnSavedW || workBtnNatW);
     } else {
       expandBtn(sprintsBtnEl, sprintsBtnNatW);
     }

@@ -1753,8 +1753,9 @@ body.sprints-open #work-btn {
 
 /* Collapsed visual for Sprints — strip white pill, show as plain text */
 body.sprints-open .nav-pill-wrapper.collapsed #sprints-btn {
-  background: transparent;
+  background: transparent !important;
   color: #ffffff !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 
