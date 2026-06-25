@@ -748,14 +748,15 @@
   });
 
   // Collapse/expand nav based on scroll within the panel (window scroll is locked)
-  var lastPanelScroll = 0;
-  var panelCollapsed  = false;
-  var panelUpAccum    = 0;
+  var lastPanelScroll  = 0;
+  var panelCollapsed   = false;
+  var panelUpAccum     = 0;
+  var panelExpandedAt  = 0;
   panel.addEventListener('scroll', function () {
     var y     = panel.scrollTop;
     var delta = y - lastPanelScroll;
     lastPanelScroll = y;
-    if (!panelCollapsed && y > 80) {
+    if (!panelCollapsed && y > 80 && Date.now() - panelExpandedAt > 500) {
       panelCollapsed = true;
       panelUpAccum   = 0;
       if (window.__collapseNav) window.__collapseNav();
@@ -763,8 +764,9 @@
       if (delta < 0) {
         panelUpAccum += Math.abs(delta);
         if (panelUpAccum > 40) {
-          panelCollapsed = false;
-          panelUpAccum   = 0;
+          panelCollapsed  = false;
+          panelUpAccum    = 0;
+          panelExpandedAt = Date.now();
           if (window.__expandNav) window.__expandNav();
         }
       } else {
