@@ -1409,9 +1409,8 @@ body.view-single-active .topbar {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: clamp(28px, 3vw, 44px);
-  color: #1a1a1a;
   letter-spacing: -0.018em;
-  color: var(--fg);
+  color: #1a1a1a;
   margin-bottom: var(--s-5);
 }
 
