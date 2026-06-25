@@ -173,11 +173,11 @@
           // markGhost fades in via nav IIFE's intro-done listener (already set up)
         }, 370);
 
-        // 4. At 700ms: projects grid fades in (~halfway through nav/mark fade)
+        // 4. At 100ms: projects grid fades in immediately with nav
         setTimeout(function () {
           var grid = document.querySelector('.projects-grid');
-          if (grid) { grid.style.transition = 'opacity 0.7s ease'; grid.style.opacity = '1'; }
-        }, 700);
+          if (grid) { grid.style.transition = 'opacity 0.5s ease'; grid.style.opacity = '1'; }
+        }, 100);
       }, 700 + 800); // 1500ms total — fires right as Hi I'm finishes
     });
   });
