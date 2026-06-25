@@ -356,6 +356,10 @@
       if (sprintsBtnEl) {
         sprintsBtnEl.style.setProperty('background', 'transparent', 'important');
         sprintsBtnEl.style.setProperty('color', '#ffffff', 'important');
+        sprintsBtnEl.style.width    = 'auto';
+        sprintsBtnEl.style.opacity  = '1';
+        sprintsBtnEl.style.padding  = '';
+        sprintsBtnEl.style.overflow = 'visible';
       }
     } else {
       collapseBtn(sprintsBtnEl, sprintsBtnNatW);
@@ -389,6 +393,10 @@
       if (sprintsBtnEl) {
         sprintsBtnEl.style.removeProperty('background');
         sprintsBtnEl.style.removeProperty('color');
+        sprintsBtnEl.style.width    = '';
+        sprintsBtnEl.style.opacity  = '';
+        sprintsBtnEl.style.padding  = '';
+        sprintsBtnEl.style.overflow = '';
       }
     } else {
       expandBtn(sprintsBtnEl, sprintsBtnNatW);
