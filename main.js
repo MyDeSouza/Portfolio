@@ -735,17 +735,17 @@
 
   // Collapse/expand nav based on scroll within the panel (window scroll is locked)
   var lastPanelScroll = 0;
-  var panelExpandTime = 0;
+  var panelCollapsed  = false;
   panel.addEventListener('scroll', function () {
-    var y     = panel.scrollTop;
-    var delta = y - lastPanelScroll;
-    lastPanelScroll = y;
-    if (delta > 4 && y > 50 && Date.now() - panelExpandTime > 400) {
+    var y = panel.scrollTop;
+    if (!panelCollapsed && y > 80) {
+      panelCollapsed = true;
       if (window.__collapseNav) window.__collapseNav();
-    } else if (delta < -4) {
-      panelExpandTime = Date.now();
+    } else if (panelCollapsed && y <= 30) {
+      panelCollapsed = false;
       if (window.__expandNav) window.__expandNav();
     }
+    lastPanelScroll = y;
   }, { passive: true });
 }());
 
