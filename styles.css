@@ -848,6 +848,7 @@ body.view-single-active .topbar {
   padding: 0.5rem;
   background: #e8ecf0;
   height: 100vh;
+  overflow: hidden;
 }
 
 .project-card--soon { cursor: default; }
@@ -867,6 +868,7 @@ body.view-single-active .topbar {
 .project-thumb {
   width: 100%;
   height: 100%;
+  min-height: 0;
   background: var(--line);
   position: relative;
   overflow: hidden;
