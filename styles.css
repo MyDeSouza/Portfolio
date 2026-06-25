@@ -339,6 +339,7 @@ p, .body {
 [data-mode="project"] .mark-role  { color: rgba(255, 255, 255, 0.65); }
 [data-mode="project"] .nav-pill   { background: rgba(20, 20, 18, 0.48); }
 [data-mode="project"] .nav-indicator { background: #ffffff; }
+[data-mode="project"] #work-btn   { color: #ffffff; }
 
 /* Mark absolute on the left; pill centres on its own as only flex child.
    margin-block: auto centres vertically without any CSS transform — avoids
