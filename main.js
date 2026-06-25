@@ -298,61 +298,61 @@
   var expandEase      = '0.5s cubic-bezier(0.16, 1, 0.3, 1)';
   var expandClearTimer = null;
 
-  // Measure about-btn + sprints-btn natural widths for JS-driven animation
+  // Measure nav-btn natural widths for JS-driven animation
   var aboutBtnEl     = document.getElementById('about-btn');
   var aboutBtnNatW   = aboutBtnEl   ? aboutBtnEl.offsetWidth   : 0;
   var sprintsBtnEl   = document.getElementById('sprints-btn');
   var sprintsBtnNatW = sprintsBtnEl ? sprintsBtnEl.offsetWidth : 0;
+  var workBtnEl      = document.getElementById('work-btn');
+  var workBtnNatW    = workBtnEl    ? workBtnEl.offsetWidth    : 0;
 
-  function clearAboutBtnInline() {
-    if (!aboutBtnEl) return;
-    aboutBtnEl.style.width      = '';
-    aboutBtnEl.style.transition = '';
-    aboutBtnEl.style.opacity    = '';
-    aboutBtnEl.style.padding    = '';
-    aboutBtnEl.style.overflow   = '';
+  function clearBtnInline(el) {
+    if (!el) return;
+    el.style.width      = '';
+    el.style.transition = '';
+    el.style.opacity    = '';
+    el.style.padding    = '';
+    el.style.overflow   = '';
+  }
+  function clearAboutBtnInline()   { clearBtnInline(aboutBtnEl); }
+  function clearSprintsBtnInline() { clearBtnInline(sprintsBtnEl); }
+  function clearWorkBtnInline()    { clearBtnInline(workBtnEl); }
+
+  function collapseBtn(el, natW) {
+    if (!el || !natW) return;
+    var fromW = el.offsetWidth || natW;
+    el.style.overflow   = 'hidden';
+    el.style.transition = 'none';
+    el.style.width      = fromW + 'px';
+    el.style.opacity    = '1';
+    el.offsetHeight;
+    el.style.transition = 'opacity 0.15s ease, width ' + collapseEase + ' 0.05s, padding ' + collapseEase + ' 0.05s';
+    el.style.width      = '0';
+    el.style.padding    = '0';
+    el.style.opacity    = '0';
   }
 
-  function clearSprintsBtnInline() {
-    if (!sprintsBtnEl) return;
-    sprintsBtnEl.style.width      = '';
-    sprintsBtnEl.style.transition = '';
-    sprintsBtnEl.style.opacity    = '';
-    sprintsBtnEl.style.padding    = '';
-    sprintsBtnEl.style.overflow   = '';
+  function expandBtn(el, natW) {
+    if (!el || !natW) return;
+    el.style.overflow   = 'hidden';
+    el.style.transition = 'width ' + expandEase + ', padding ' + expandEase + ', opacity 0.3s ease 0.2s';
+    el.style.width      = natW + 'px';
+    el.style.padding    = '';
+    el.style.opacity    = '';
   }
 
   function doCollapse() {
     collapseY = window.scrollY;
-
-    // Cancel any pending expand cleanup — we're taking over inline styles now
     if (expandClearTimer) { clearTimeout(expandClearTimer); expandClearTimer = null; }
 
-    if (aboutBtnEl && aboutBtnNatW) {
-      // Start from current rendered width (handles mid-animation state)
-      var fromW = aboutBtnEl.offsetWidth || aboutBtnNatW;
-      aboutBtnEl.style.overflow   = 'hidden';
-      aboutBtnEl.style.transition = 'none';
-      aboutBtnEl.style.width      = fromW + 'px';
-      aboutBtnEl.style.opacity    = '1';
-      aboutBtnEl.offsetHeight; // force reflow
-      aboutBtnEl.style.transition = 'opacity 0.15s ease, width ' + collapseEase + ' 0.05s, padding ' + collapseEase + ' 0.05s';
-      aboutBtnEl.style.width      = '0';
-      aboutBtnEl.style.padding    = '0';
-      aboutBtnEl.style.opacity    = '0';
-    }
+    var inSprints = document.body.classList.contains('sprints-open');
 
-    if (sprintsBtnEl && sprintsBtnNatW) {
-      var fromSW = sprintsBtnEl.offsetWidth || sprintsBtnNatW;
-      sprintsBtnEl.style.overflow   = 'hidden';
-      sprintsBtnEl.style.transition = 'none';
-      sprintsBtnEl.style.width      = fromSW + 'px';
-      sprintsBtnEl.style.opacity    = '1';
-      sprintsBtnEl.offsetHeight;
-      sprintsBtnEl.style.transition = 'opacity 0.15s ease, width ' + collapseEase + ' 0.05s, padding ' + collapseEase + ' 0.05s';
-      sprintsBtnEl.style.width      = '0';
-      sprintsBtnEl.style.padding    = '0';
-      sprintsBtnEl.style.opacity    = '0';
+    collapseBtn(aboutBtnEl, aboutBtnNatW);
+
+    if (inSprints) {
+      collapseBtn(workBtnEl, workBtnNatW);
+    } else {
+      collapseBtn(sprintsBtnEl, sprintsBtnNatW);
     }
 
     wrapper.classList.add('collapsed');
@@ -373,27 +373,23 @@
     expandedAt = Date.now();
     wrapper.classList.remove('collapsed');
 
-    if (aboutBtnEl && aboutBtnNatW) {
-      if (expandClearTimer) { clearTimeout(expandClearTimer); expandClearTimer = null; }
-      aboutBtnEl.style.overflow   = 'hidden';
-      aboutBtnEl.style.transition = 'width ' + expandEase + ', padding ' + expandEase + ', opacity 0.3s ease 0.2s';
-      aboutBtnEl.style.width      = aboutBtnNatW + 'px';
-      aboutBtnEl.style.padding    = '';
-      aboutBtnEl.style.opacity    = '';
-      expandClearTimer = setTimeout(function () {
-        expandClearTimer = null;
-        clearAboutBtnInline();
-        clearSprintsBtnInline();
-      }, 600);
+    var inSprints = document.body.classList.contains('sprints-open');
+
+    if (expandClearTimer) { clearTimeout(expandClearTimer); expandClearTimer = null; }
+    expandBtn(aboutBtnEl, aboutBtnNatW);
+
+    if (inSprints) {
+      expandBtn(workBtnEl, workBtnNatW);
+    } else {
+      expandBtn(sprintsBtnEl, sprintsBtnNatW);
     }
 
-    if (sprintsBtnEl && sprintsBtnNatW) {
-      sprintsBtnEl.style.overflow   = 'hidden';
-      sprintsBtnEl.style.transition = 'width ' + expandEase + ', padding ' + expandEase + ', opacity 0.3s ease 0.2s';
-      sprintsBtnEl.style.width      = sprintsBtnNatW + 'px';
-      sprintsBtnEl.style.padding    = '';
-      sprintsBtnEl.style.opacity    = '';
-    }
+    expandClearTimer = setTimeout(function () {
+      expandClearTimer = null;
+      clearAboutBtnInline();
+      clearSprintsBtnInline();
+      clearWorkBtnInline();
+    }, 600);
 
     requestAnimationFrame(function () { showIndicator(); });
     if (dsOuter && dsNatW) {

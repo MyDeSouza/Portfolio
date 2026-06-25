@@ -1751,23 +1751,10 @@ body.sprints-open #work-btn {
   font-weight: 450;
 }
 
-/* Collapsed state while Sprints is open — show Sprints pill, hide Work */
+/* Collapsed visual for Sprints — strip white pill, show as plain text */
 body.sprints-open .nav-pill-wrapper.collapsed #sprints-btn {
-  width: auto !important;
-  padding: 0 1rem !important;
-  opacity: 1 !important;
-  overflow: visible !important;
-  background: transparent !important;
+  background: transparent;
   color: #ffffff !important;
-  border-radius: 0;
-}
-
-body.sprints-open .nav-pill-wrapper.collapsed #work-btn {
-  width: 0 !important;
-  padding: 0 !important;
-  opacity: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none;
 }
 
 
