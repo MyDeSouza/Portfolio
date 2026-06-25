@@ -1704,6 +1704,9 @@ body.view-single-active .topbar {
   position: absolute;
   bottom: 0.6rem;
   left: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -1730,6 +1733,8 @@ body.view-single-active .topbar {
   color: #ffffff;
 }
 
+.pill-blender      { background: #E87D0D; }
+.pill-fusion       { background: #0696D7; }
 .pill-photoshop    { background: #31A8FF; }
 .pill-lightroom    { background: #149EF2; color: #ffffff; }
 .pill-figma        { background: #A259FF; }
