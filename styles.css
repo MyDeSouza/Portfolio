@@ -556,7 +556,7 @@ body.view-single-active .topbar {
   background: transparent;
 }
 
-/* Single: full-bleed images edge to edge, no whitespace */
+/* Single: each card fills the viewport height, scrollable */
 .projects-grid.view-single {
   grid-template-columns: 1fr;
   gap: 0.5rem;
@@ -586,7 +586,12 @@ body.view-single-active .topbar {
   display: none;
 }
 
-/* Grid: hero card spans full width top row */
+/* Grid: all 3 projects in viewport — hero top, two below */
+.projects-grid.view-grid {
+  grid-template-rows: 1fr 1fr;
+  height: 100vh;
+}
+
 .projects-grid.view-grid .project-card:first-child {
   grid-column: 1 / -1;
 }
@@ -843,12 +848,9 @@ body.view-single-active .topbar {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr 1fr;
   gap: 0.5rem;
   padding: 0.5rem;
   background: #e8ecf0;
-  height: 100vh;
-  overflow: hidden;
 }
 
 .project-card--soon { cursor: default; }
@@ -929,10 +931,7 @@ body.view-single-active .topbar {
   line-height: 1.1;
 }
 
-/* Home grid: each card row is exactly one viewport height */
-.projects-grid:not(.projects-page-grid):not(.view-single) .project-card {
-  height: 100vh;
-}
+/* Home grid: thumbs fill their cell */
 .projects-grid:not(.projects-page-grid):not(.view-single) .project-thumb {
   aspect-ratio: unset;
   height: 100%;
