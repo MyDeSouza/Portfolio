@@ -1717,13 +1717,25 @@ body.view-single-active .topbar {
 }
 
 .sprint-card-name {
+  display: inline-block;
   font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  color: #ffffff;
 }
+
+.pill-photoshop    { background: #31A8FF; }
+.pill-lightroom    { background: #149EF2; color: #ffffff; }
+.pill-figma        { background: #A259FF; }
+.pill-illustrator  { background: #FF9A00; }
+.pill-indesign     { background: #FF3366; }
+.pill-aftereffects { background: #9999FF; }
+.pill-premiere     { background: #EA77FF; }
 
 /* ── Nav state when sprints is open ──────────────────────── */
 
