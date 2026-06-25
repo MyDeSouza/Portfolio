@@ -353,6 +353,10 @@
     if (inSprints) {
       workBtnSavedW = workBtnEl ? (workBtnEl.offsetWidth || workBtnNatW) : workBtnNatW;
       collapseBtn(workBtnEl, workBtnNatW);
+      if (sprintsBtnEl) {
+        sprintsBtnEl.style.background = 'transparent';
+        sprintsBtnEl.style.color = '#ffffff';
+      }
     } else {
       collapseBtn(sprintsBtnEl, sprintsBtnNatW);
     }
@@ -382,6 +386,10 @@
 
     if (inSprints) {
       expandBtn(workBtnEl, workBtnSavedW || workBtnNatW);
+      if (sprintsBtnEl) {
+        sprintsBtnEl.style.background = '';
+        sprintsBtnEl.style.color = '';
+      }
     } else {
       expandBtn(sprintsBtnEl, sprintsBtnNatW);
     }
