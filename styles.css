@@ -1593,6 +1593,8 @@ body.view-single-active .topbar {
   overflow-x: hidden;
   opacity: 0;
   pointer-events: none;
+  will-change: opacity;
+  contain: layout style paint;
   transition: opacity 0.4s ease;
 }
 
