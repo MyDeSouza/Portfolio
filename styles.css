@@ -845,8 +845,7 @@ body.view-single-active .topbar {
   grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
   padding: 0.5rem;
-  background: var(--grid-glow, #000000);
-  transition: background-color 0.8s ease;
+  background: #e8ecf0;
 }
 
 .project-card--soon { cursor: default; }
