@@ -1658,25 +1658,26 @@ body.view-single-active .topbar {
 
 .sprint-card {
   break-inside: avoid;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   border-radius: 12px;
-  overflow: visible;
-  background: transparent;
+  overflow: hidden;
+  position: relative;
   cursor: pointer;
 }
 
 .sprint-card:hover .sprint-card-visual {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  transform: scale(1.03);
+}
+
+.sprint-card:hover .sprint-card-meta {
+  opacity: 1;
 }
 
 .sprint-card-visual {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 12px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sprint-card-pdf {
@@ -1700,7 +1701,11 @@ body.view-single-active .topbar {
 }
 
 .sprint-card-meta {
-  padding: 0.5rem 0.15rem 0;
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.6rem;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .sprint-card-tag { display: none; }
