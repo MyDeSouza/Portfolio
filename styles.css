@@ -1662,16 +1662,14 @@ body.view-single-active .topbar {
 
 .sprint-card {
   break-inside: avoid;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   border-radius: 12px;
-  overflow: hidden;
-  background: #131619;
+  overflow: visible;
+  background: transparent;
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s ease;
 }
 
-.sprint-card:hover {
+.sprint-card:hover .sprint-card-visual {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
@@ -1680,6 +1678,9 @@ body.view-single-active .topbar {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 12px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease;
 }
 
 .sprint-card-pdf {
@@ -1703,7 +1704,7 @@ body.view-single-active .topbar {
 }
 
 .sprint-card-meta {
-  padding: 0.9rem 1rem 1rem;
+  padding: 0.5rem 0.15rem 0;
 }
 
 .sprint-card-tag { display: none; }
@@ -1717,9 +1718,9 @@ body.view-single-active .topbar {
 
 .sprint-card-name {
   font-family: var(--font-body);
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
   margin: 0;
   line-height: 1.3;
 }
