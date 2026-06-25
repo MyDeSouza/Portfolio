@@ -586,13 +586,13 @@ body.view-single-active .topbar {
   display: none;
 }
 
-/* Grid: equal 2×2, hero card does not span both columns */
+/* Grid: hero card spans full width top row */
 .projects-grid.view-grid .project-card:first-child {
-  grid-column: span 1;
+  grid-column: 1 / -1;
 }
 
 .projects-grid.view-grid .project-card:first-child .project-thumb {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: unset;
 }
 
 /* ── About panel ─────────────────────────────────────────── */
@@ -843,9 +843,11 @@ body.view-single-active .topbar {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr 1fr;
   gap: 0.5rem;
   padding: 0.5rem;
   background: #e8ecf0;
+  height: 100vh;
 }
 
 .project-card--soon { cursor: default; }
@@ -853,18 +855,18 @@ body.view-single-active .topbar {
 .project-card {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
   text-decoration: none;
   color: var(--fg);
   overflow: hidden;
   transition: opacity 0.2s ease;
+  min-height: 0;
 }
 
 .project-card:hover { opacity: 1; }
 
 .project-thumb {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 100%;
   background: var(--line);
   position: relative;
   overflow: hidden;
@@ -946,13 +948,13 @@ body.view-single-active .topbar {
   letter-spacing: -0.01em;
 }
 
-/* Home: uniform 2×2 grid, no hero card */
+/* Home: hero card spans full width */
 .projects-grid:not(.projects-page-grid) .project-card:first-child {
-  grid-column: span 1;
+  grid-column: 1 / -1;
 }
 
 .projects-grid:not(.projects-page-grid) .project-card:first-child .project-thumb {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: unset;
 }
 
 /* Filtered view: uniform 2-per-row, all cards equal */
