@@ -1478,11 +1478,29 @@ body.view-single-active .topbar {
   padding: 3rem 4rem;
   background: #e8ecf0;
 }
+.case-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .case-icon-row img {
   width: 80px;
   height: 80px;
   object-fit: contain;
   display: block;
+}
+
+.case-icon-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.08);
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
 }
 .case-img-grid img {
   width: 100%;
