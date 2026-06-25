@@ -664,6 +664,17 @@
   gridBtn.addEventListener('click',   function (e) { e.preventDefault(); e.stopPropagation(); setView('grid');   });
 
   setView(window.matchMedia('(max-width: 1366px) and (orientation: portrait)').matches ? 'single' : 'grid');
+
+  // Background glow on card hover
+  var cards = grid.querySelectorAll('.project-card[data-glow]');
+  cards.forEach(function (card) {
+    card.addEventListener('mouseenter', function () {
+      grid.style.setProperty('--grid-glow', card.getAttribute('data-glow'));
+    });
+    card.addEventListener('mouseleave', function () {
+      grid.style.setProperty('--grid-glow', '#000000');
+    });
+  });
 }());
 
 
