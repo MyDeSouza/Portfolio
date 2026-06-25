@@ -559,8 +559,8 @@ body.view-single-active .topbar {
 /* Single: full-bleed images edge to edge, no whitespace */
 .projects-grid.view-single {
   grid-template-columns: 1fr;
-  gap: 0;
-  padding: 0;
+  gap: 0.5rem;
+  padding: 0.5rem;
 }
 
 .projects-grid.view-single .project-card {
@@ -843,8 +843,9 @@ body.view-single-active .topbar {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-  padding: 0;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #000000;
 }
 
 .project-card--soon { cursor: default; }
@@ -867,6 +868,7 @@ body.view-single-active .topbar {
   background: var(--line);
   position: relative;
   overflow: hidden;
+  border-radius: 12px;
 }
 
 /* Zoom layer — scales independently of any text overlay */
