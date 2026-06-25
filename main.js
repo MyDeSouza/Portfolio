@@ -751,26 +751,28 @@
   var lastPanelScroll  = 0;
   var panelCollapsed   = false;
   var panelUpAccum     = 0;
+  var panelDownAccum   = 0;
   var panelExpandedAt  = 0;
   panel.addEventListener('scroll', function () {
     var y     = panel.scrollTop;
     var delta = y - lastPanelScroll;
     lastPanelScroll = y;
-    if (!panelCollapsed && y > 80 && Date.now() - panelExpandedAt > 500) {
-      panelCollapsed = true;
-      panelUpAccum   = 0;
-      if (window.__collapseNav) window.__collapseNav();
-    } else if (panelCollapsed) {
-      if (delta < 0) {
-        panelUpAccum += Math.abs(delta);
-        if (panelUpAccum > 40) {
-          panelCollapsed  = false;
-          panelUpAccum    = 0;
-          panelExpandedAt = Date.now();
-          if (window.__expandNav) window.__expandNav();
-        }
-      } else {
-        panelUpAccum = 0;
+    if (delta > 0) {
+      panelDownAccum += delta;
+      panelUpAccum    = 0;
+      if (!panelCollapsed && panelDownAccum > 60 && y > 80 && Date.now() - panelExpandedAt > 500) {
+        panelCollapsed = true;
+        panelDownAccum = 0;
+        if (window.__collapseNav) window.__collapseNav();
+      }
+    } else if (delta < 0) {
+      panelUpAccum   += Math.abs(delta);
+      panelDownAccum  = 0;
+      if (panelCollapsed && panelUpAccum > 40) {
+        panelCollapsed  = false;
+        panelUpAccum    = 0;
+        panelExpandedAt = Date.now();
+        if (window.__expandNav) window.__expandNav();
       }
     }
   }, { passive: true });
