@@ -84,7 +84,7 @@ html {
 
 /* ── Project mode — body becomes the project color ── */
 [data-mode="project"] {
-  --bg:           var(--project, #0c1116);
+  --bg:           var(--project, #e8ecf0);
   --fg:           var(--project-fg, #ffffff);
   --fg-muted:     rgba(255, 255, 255, 0.72);
   --fg-faint:     rgba(255, 255, 255, 0.48);
@@ -1427,7 +1427,7 @@ body.view-single-active .topbar {
 .case-media {
   width: 100%;
   overflow: hidden;
-  background: var(--ink);
+  background: #e8ecf0;
 }
 .case-media img {
   width: 100%;
@@ -1466,6 +1466,7 @@ body.view-single-active .topbar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
+  background: #e8ecf0;
 }
 
 .case-icon-row {
@@ -1475,6 +1476,7 @@ body.view-single-active .topbar {
   align-items: center;
   gap: 3rem;
   padding: 3rem 4rem;
+  background: #e8ecf0;
 }
 .case-icon-row img {
   width: 80px;
