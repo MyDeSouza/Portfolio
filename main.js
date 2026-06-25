@@ -776,6 +776,40 @@
       }
     }
   }, { passive: true });
+
+  // PDF lightbox — click to expand
+  document.addEventListener('click', function (e) {
+    var card = e.target.closest('.sprint-card--pdf');
+    if (!card) return;
+    var src = card.getAttribute('data-pdf');
+    if (!src) return;
+
+    var overlay = document.createElement('div');
+    overlay.className = 'pdf-lightbox';
+    var frame = document.createElement('iframe');
+    frame.src = src + '#toolbar=0&navpanes=0';
+    frame.className = 'pdf-lightbox-frame';
+    var btn = document.createElement('button');
+    btn.className = 'pdf-lightbox-close';
+    btn.textContent = '×';
+
+    function close() {
+      overlay.classList.remove('open');
+      setTimeout(function () { overlay.remove(); }, 300);
+    }
+    btn.addEventListener('click', close);
+    overlay.addEventListener('click', function (ev) {
+      if (ev.target === overlay) close();
+    });
+    document.addEventListener('keydown', function handler(ev) {
+      if (ev.key === 'Escape') { close(); document.removeEventListener('keydown', handler); }
+    });
+
+    overlay.appendChild(btn);
+    overlay.appendChild(frame);
+    document.body.appendChild(overlay);
+    requestAnimationFrame(function () { overlay.classList.add('open'); });
+  });
 }());
 
 
